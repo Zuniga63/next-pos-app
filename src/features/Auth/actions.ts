@@ -8,7 +8,7 @@ const baseUrl = '/auth/local';
 export const signin = createAsyncThunk(
   'auth/signin',
   async (data: SigninData, { rejectWithValue }) => {
-    const url = `${baseUrl}/signin`;
+    const url = `${baseUrl}/singin`;
     try {
       const res = await axios.post<AuthResponse>(url, data);
       return res.data;

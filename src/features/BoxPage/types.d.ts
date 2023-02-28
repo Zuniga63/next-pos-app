@@ -1,10 +1,13 @@
 import { Dayjs } from 'dayjs';
+import { AxiosResponse } from 'axios';
 import { ErrorResponse } from '../CategoryPage/types';
 
 export interface ICashier {
   id: string;
   name: string;
 }
+
+export type ErrorResponse = Pick<AxiosResponse, 'data' | 'status'>;
 
 export interface IBox {
   id: string;

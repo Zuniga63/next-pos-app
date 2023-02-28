@@ -6,16 +6,15 @@ import Layout from 'src/components/Layout';
 import ChartJS from 'chart.js/auto';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
-// import CashChart from 'src/components/dashboard/CashChart';
-// import ReportStatistics from 'src/components/dashboard/ReportStatistics';
-// import CreditEvolution from 'src/components/dashboard/CreditEvolution';
 import { authSelector } from 'src/features/Auth';
+import Image from 'next/image';
+import buildingPic from '../../public/images/building-page.png';
 
 ChartJS.register();
 dayjs.extend(isLeapYear);
 
 const Home: NextPage = () => {
-  const { user, isAdmin } = useAppSelector(authSelector);
+  const { user } = useAppSelector(authSelector);
   const firtsRenderRef = useRef(true);
 
   useEffect(() => {
@@ -33,23 +32,12 @@ const Home: NextPage = () => {
             Bienvenido {user?.name}
           </h1>
           <p className="mt-4 text-center text-sm leading-tight">
-            Sección en continua actualización, actualmente se encuentra
-            implementado el flujo de caja y el flujo de ventas.
+            Este panel informativo se encuentra actualmente en construción.
           </p>
+          <figure className="mt-4 w-6/12 overflow-hidden rounded-md shadow-lg">
+            <Image src={buildingPic} alt="Building Page" />
+          </figure>
         </div>
-        {isAdmin ? (
-          <>
-            {/* <div className="mb-4">
-              <CreditEvolution />
-            </div>
-            <div className="mb-4">
-              <ReportStatistics />
-            </div> */}
-            {/* <div className="mb-8">
-              <CashChart />
-            </div> */}
-          </>
-        ) : null}
       </div>
     </Layout>
   );

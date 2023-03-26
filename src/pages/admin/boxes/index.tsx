@@ -8,6 +8,7 @@ import { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useAppDispatch } from 'src/store/hooks';
 import { fetchBoxes, unmountTransactions } from 'src/features/BoxPage';
+import CreateTransactionForm from 'src/components/BoxPage/CreateTransactionForm';
 
 const BoxesPage: NextPage = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +35,7 @@ const BoxesPage: NextPage = () => {
       <CreateForm />
       <OpenBoxForm />
       <CloseBoxForm />
+      <CreateTransactionForm />
     </>
   );
 };

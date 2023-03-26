@@ -18,7 +18,7 @@ import {
   IconEyeCheck,
   IconAlertCircle,
   IconMail,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import Image from 'next/image';
 import { authSelector, signin } from 'src/features/Auth';
 import { getCookie } from 'cookies-next';
@@ -112,7 +112,7 @@ const Login: NextPage = () => {
               )}
 
               {loading && (
-                <Notification loading disallowClose>
+                <Notification loading withCloseButton={false}>
                   Verificando credenciales...
                 </Notification>
               )}

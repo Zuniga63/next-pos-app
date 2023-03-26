@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
-import { Button, Modal, NumberInput } from '@mantine/core';
-import { IconLockOpen } from '@tabler/icons';
+import { Button, Checkbox, Modal, NumberInput } from '@mantine/core';
+import { IconLockOpen } from '@tabler/icons-react';
 import { toast } from 'react-toastify';
 import {
   boxPageSelector,
@@ -9,14 +9,17 @@ import {
 } from 'src/features/BoxPage';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { IValidationErrors } from 'src/types';
-import { currencyFormat } from 'src/utils';
+import { cashFormatter, cashParser, currencyFormat } from 'src/utils';
 import dayjs from 'dayjs';
+import CashBoxBankNotes from './CashBoxBankNotes';
 
 const OpenBoxForm = () => {
   const [opened, setOpened] = useState(false);
-  const [base, setBase] = useState<number | undefined>(undefined);
-  const [enabled, setEnabled] = useState(false);
+  const [base, setBase] = useState<number | ''>(0);
   const [errors, setErrors] = useState<IValidationErrors | null>(null);
+  const [coinAmount, setCoinAmount] = useState(0);
+  const [bankNotesAmount, setBankNotesAmount] = useState(0);
+  const [checked, setChecked] = useState(false);
 
   const {
     boxToOpen: box,
@@ -30,8 +33,9 @@ const OpenBoxForm = () => {
     if (!loading) {
       setErrors(null);
       setOpened(false);
+      setChecked(false);
       setTimeout(() => {
-        setBase(undefined);
+        setBase('');
         dispatch(unmountBoxToOpen());
       }, 150);
     }
@@ -62,8 +66,16 @@ const OpenBoxForm = () => {
   }, [isSuccess]);
 
   useEffect(() => {
+    if (checked) {
+      setBase(coinAmount + bankNotesAmount);
+    } else {
+      setCoinAmount(0);
+      setBankNotesAmount(0);
+    }
+  }, [checked, coinAmount, bankNotesAmount]);
+
+  useEffect(() => {
     if (error) {
-      console.log(error);
       const { data, status } = error;
       if (status === 422 && data.errors) {
         setErrors(data.errors);
@@ -75,50 +87,70 @@ const OpenBoxForm = () => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (typeof base === 'number' && base >= 0) setEnabled(true);
-    else setEnabled(false);
-  }, [base]);
-
   return (
-    <Modal opened={opened} onClose={closeHandler} size="sm">
+    <Modal
+      opened={opened}
+      onClose={closeHandler}
+      size="xl"
+      title={<p className="text-xl font-bold"> {box?.name}</p>}
+      padding="lg"
+      transitionProps={{ duration: 150 }}
+    >
       <form onSubmit={submitHandler}>
-        <header>
-          <h2 className="text-center text-xl font-bold"> {box?.name}</h2>
-        </header>
-        <div className="mb-2">
-          <NumberInput
-            label="Base"
-            required
-            placeholder="Escribe la base aquí"
-            hideControls
-            min={0}
-            step={100}
-            value={base}
-            onChange={value => setBase(value)}
-            error={errors?.base?.message}
-            parser={value => value?.replace(/\$\s?|(,*)/g, '')}
-            formatter={value => {
-              if (value) {
-                return !Number.isNaN(parseFloat(value))
-                  ? `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  : '$ ';
+        <div className="mb-4 grid grid-cols-4 items-center gap-x-12">
+          <div className="col-span-3">
+            <NumberInput
+              label="Base"
+              required
+              placeholder="Escribe la base aquí"
+              className="mb-4"
+              readOnly={checked}
+              hideControls
+              min={0}
+              step={100}
+              value={base}
+              onChange={setBase}
+              onFocus={e => e.currentTarget.select()}
+              error={errors?.base?.message}
+              parser={cashParser}
+              formatter={cashFormatter}
+            />
+            <Checkbox
+              label="Ingresar billetes y monedas"
+              checked={checked}
+              onChange={({ currentTarget }) =>
+                setChecked(currentTarget.checked)
               }
+              className="mb-4"
+            />
+          </div>
 
-              return '$ ';
-            }}
-          />
-        </div>
-        <footer className="flex items-center justify-end">
           <Button
-            leftIcon={<IconLockOpen />}
+            leftIcon={<IconLockOpen size={18} />}
             loading={loading}
             type="submit"
-            disabled={!enabled}
+            size="xs"
           >
             Abrir Caja
           </Button>
-        </footer>
+        </div>
+
+        {checked ? (
+          <div className="mb-16 grid grid-cols-2 gap-x-4">
+            {/* COINS */}
+            <CashBoxBankNotes
+              amount={coinAmount}
+              onChange={setCoinAmount}
+              coins
+            />
+
+            {/* BANK NOTES */}
+            <CashBoxBankNotes
+              amount={bankNotesAmount}
+              onChange={setBankNotesAmount}
+            />
+          </div>
+        ) : null}
       </form>
     </Modal>
   );

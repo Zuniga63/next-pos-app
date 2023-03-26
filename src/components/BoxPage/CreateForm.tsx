@@ -1,5 +1,5 @@
 import { Button, Modal, TextInput } from '@mantine/core';
-import { IconDeviceFloppy } from '@tabler/icons';
+import { IconDeviceFloppy } from '@tabler/icons-react';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import {
@@ -71,15 +71,12 @@ const CreateForm = () => {
   };
 
   return (
-    <Modal opened={opened} onClose={closeHandler}>
+    <Modal opened={opened} title={<p>Nueva Caja</p>} onClose={closeHandler}>
       <form onSubmit={submitHandler}>
-        <header>
-          <h2>Registrar Una Caja</h2>
-        </header>
         <div className="mb-2">
           <TextInput
             label="Nombre"
-            placeholder="Escribelo aquí"
+            placeholder="Escribe el nombre de la caja aquí"
             value={name}
             onChange={({ target }) => setName(target.value)}
             disabled={loading}
@@ -92,6 +89,7 @@ const CreateForm = () => {
             loading={loading}
             type="submit"
             disabled={!enabled}
+            size="xs"
           >
             Guardar
           </Button>

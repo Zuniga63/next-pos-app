@@ -1,13 +1,10 @@
-import { IconTrash } from '@tabler/icons';
+import { IconTrash } from '@tabler/icons-react';
 import axios, { AxiosError } from 'axios';
+import dayjs from 'dayjs';
 import React from 'react';
 import { boxPageSelector, removeTransaction } from 'src/features/BoxPage';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  IMainTransaction,
-  ITransaction,
-  ITransactionResponse,
-} from 'src/types';
+import { ITransaction } from 'src/types';
 import { currencyFormat } from 'src/utils';
 import Swal from 'sweetalert2';
 
@@ -43,7 +40,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
         const result = { ok: false, message: '' };
 
         try {
-          await axios.delete<ITransactionResponse>(url);
+          await axios.delete<ITransaction>(url);
           result.ok = true;
           result.message = `¡La transacción por valor de <strong>${currencyFormat(
             amount
@@ -81,22 +78,16 @@ const TransactionTableItem = ({ transaction }: Props) => {
       <td className="whitespace-nowrap px-3 py-2">
         <div className="text-center">
           <p className="text-sm">
-            {transaction.transactionDate.format('DD/MM/YY hh:mm a')}
+            {dayjs(transaction.transactionDate).format('DD/MM/YY hh:mm a')}
           </p>
-          <p className="text-xs">{transaction.transactionDate.fromNow()}</p>
+          <p className="text-xs">
+            {dayjs(transaction.transactionDate).fromNow()}
+          </p>
         </div>
       </td>
       <td className="px-3 py-2 text-sm">
         <div>
           <p>{transaction.description}</p>
-          {otherBox && (
-            <p className="text-xs">
-              pertenece a :{' '}
-              <span className="font-bold">
-                {(transaction as IMainTransaction).cashbox?.name}
-              </span>
-            </p>
-          )}
         </div>
       </td>
       <td className="px-3 py-2 text-right text-sm">

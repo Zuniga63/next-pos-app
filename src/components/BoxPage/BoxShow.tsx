@@ -1,107 +1,90 @@
-import { Button, ScrollArea } from '@mantine/core';
-import { IconWriting } from '@tabler/icons';
-import dayjs from 'dayjs';
+import { ActionIcon, Button, Notification, ScrollArea } from '@mantine/core';
+import { IconFile, IconWriting, IconX } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
-import { boxPageSelector, showTransactionForm } from 'src/features/BoxPage';
+import {
+  boxPageSelector,
+  showTransactionForm,
+  unmountBox,
+} from 'src/features/BoxPage';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { ITransaction, ITransactionResponse } from 'src/types';
 import { currencyFormat } from 'src/utils';
-import CreateTransactionForm from './CreateTransactionForm';
 import TransactionTable from './TransactionTable';
 import WaitingBox from './WaitingBox';
 
 const BoxShow = () => {
   const {
     boxSelected,
-    mainBox,
     showingMainBox,
     loadingTransactions: loading,
-    transactions: transactionsData,
-    mountBoxIsSuccess,
+    transactions,
   } = useAppSelector(boxPageSelector);
+  const [waitBox, setWaitBox] = useState(!(boxSelected || showingMainBox));
   const dispatch = useAppDispatch();
-
-  const [boxName, setBoxName] = useState('');
-  const [boxBalance, setBoxBalance] = useState(0);
-  const [waiting, setWaiting] = useState(true);
-  const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
   const addHandler = () => dispatch(showTransactionForm());
 
-  const transformTransactions = (
-    base = 0,
-    dataList: ITransactionResponse[]
-  ) => {
-    let balance = base;
-    const result: ITransaction[] = [];
-    dataList.forEach(item => {
-      balance += item.amount;
-      result.push({
-        ...item,
-        transactionDate: dayjs(item.transactionDate),
-        balance,
-        createdAt: dayjs(item.createdAt),
-        updatedAt: dayjs(item.updatedAt),
-      });
-    });
-
-    return result.reverse();
-  };
-
   useEffect(() => {
-    let name = '';
-    let boxBalance = 0;
-    let base = 0;
-    let transactionList: ITransaction[] = [];
-
-    if (mountBoxIsSuccess) {
-      if (showingMainBox && mainBox) {
-        name = mainBox.name;
-        boxBalance = mainBox.balance;
-      } else if (boxSelected) {
-        name = boxSelected.name;
-        boxBalance = boxSelected.balance || 0;
-        base = boxSelected.base;
-      }
-
-      transactionList = transformTransactions(base, transactionsData);
-    }
-
-    setBoxName(name);
-    setBoxBalance(boxBalance);
-    setTransactions(transactionList);
-  }, [mountBoxIsSuccess, transactionsData.length]);
-
-  useEffect(() => {
-    if (!showingMainBox && !boxSelected) setWaiting(true);
-    else setWaiting(false);
-  }, [showingMainBox, boxSelected]);
+    setWaitBox(loading || !(showingMainBox || boxSelected));
+  }, [showingMainBox, boxSelected, loading]);
 
   return (
     <>
-      {waiting ? <WaitingBox loading={loading} /> : null}
-      {!waiting && (
+      {waitBox ? (
+        <WaitingBox loading={loading} />
+      ) : (
         <div>
-          <header className="rounded-t-md bg-gray-300 px-6 py-2 dark:bg-header">
-            <h2 className="text-center text-xl font-bold tracking-wider">
-              {boxName}
+          <header className="relative rounded-t-md bg-gray-300 px-6 py-2 dark:bg-header">
+            <h2 className="py-2 text-center text-xl font-bold tracking-wider">
+              {showingMainBox ? 'Caja Global' : boxSelected?.name}
             </h2>
-            <p className="text-center font-bold">
-              {currencyFormat(boxBalance)}
-            </p>
+
+            <div className="absolute inset-0">
+              <div className="flex h-full items-center justify-end pr-4">
+                <ActionIcon
+                  variant="transparent"
+                  onClick={() => dispatch(unmountBox())}
+                >
+                  <IconX size={24} stroke={2} />
+                </ActionIcon>
+              </div>
+            </div>
           </header>
-          <ScrollArea className="relative h-[26rem] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header 3xl:h-[40rem]">
-            <TransactionTable transactions={transactions} />
+
+          <ScrollArea className="relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header 3xl:h-[40rem]">
+            {transactions.length > 0 ? (
+              <TransactionTable transactions={transactions} />
+            ) : (
+              <div className="mx-auto flex h-[60vh] w-1/2 items-center justify-center">
+                <div></div>
+                <Notification
+                  title="! No hay Transacciones !"
+                  withCloseButton={false}
+                  icon={<IconFile size="1.2rem" />}
+                  color="orange"
+                >
+                  Esta caja aun no tiene transacciones registradas
+                </Notification>
+              </div>
+            )}
           </ScrollArea>
-          <footer className="flex justify-end rounded-b-md bg-gray-300 px-6 py-2 dark:bg-header">
+
+          <footer className="flex items-center justify-between rounded-b-md bg-gray-300 px-6 py-2 dark:bg-header">
+            <div className="flex flex-col items-center gap-y-1 lg:flex-row lg:gap-x-2">
+              <span className="text-xs lg:text-base">Saldo:</span>
+              <span className="text-center text-xs font-bold lg:text-base">
+                {currencyFormat(boxSelected?.balance)}
+              </span>
+            </div>
+
+            <div className="hidden lg:block">
+              Registros: {transactions.length}
+            </div>
             <Button leftIcon={<IconWriting />} onClick={addHandler}>
               Agregar Transacción
             </Button>
           </footer>
         </div>
       )}
-
-      <CreateTransactionForm />
     </>
   );
 };

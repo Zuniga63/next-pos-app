@@ -6,20 +6,29 @@ import OpenBoxForm from 'src/components/BoxPage/OpenBoxForm';
 import Layout from 'src/components/Layout';
 import { NextPage } from 'next';
 import { useEffect } from 'react';
-import { useAppDispatch } from 'src/store/hooks';
-import { fetchBoxes, unmountTransactions } from 'src/features/BoxPage';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import {
+  fetchBoxes,
+  getGlobalBalance,
+  unmountTransactions,
+} from 'src/features/BoxPage';
 import CreateTransactionForm from 'src/components/BoxPage/CreateTransactionForm';
+import { authSelector } from 'src/features/Auth';
 
 const BoxesPage: NextPage = () => {
+  const { isAuth } = useAppSelector(authSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchBoxes());
+    if (isAuth) {
+      dispatch(fetchBoxes());
+      dispatch(getGlobalBalance());
+    }
 
     return () => {
       dispatch(unmountTransactions());
     };
-  }, []);
+  }, [isAuth]);
   return (
     <>
       <Layout title="Cajas">

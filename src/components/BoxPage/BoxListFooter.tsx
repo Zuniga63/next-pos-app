@@ -1,8 +1,14 @@
-import { Tooltip } from '@mantine/core';
-import { IconBox, IconLockOpen, IconLock } from '@tabler/icons-react';
+import { ActionIcon, Tooltip } from '@mantine/core';
+import {
+  IconBox,
+  IconLockOpen,
+  IconLock,
+  IconWorldDollar,
+} from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
-import { boxPageSelector } from 'src/features/BoxPage';
-import { useAppSelector } from 'src/store/hooks';
+import { authSelector } from 'src/features/Auth';
+import { boxPageSelector, mountGlobalTransactions } from 'src/features/BoxPage';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { currencyFormat } from 'src/utils';
 
 const BoxListFooter = () => {
@@ -12,7 +18,13 @@ const BoxListFooter = () => {
   const [balanceWithoutBase, setBalanceWithoutBase] = useState(0);
   const [balanceIsEquals, setBalanceIsEquals] = useState(false);
 
-  const { boxes, changeIsSuccess } = useAppSelector(boxPageSelector);
+  const {
+    boxes,
+    changeIsSuccess,
+    balance: globalBalance,
+  } = useAppSelector(boxPageSelector);
+  const { isAdmin } = useAppSelector(authSelector);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (changeIsSuccess) {
@@ -40,7 +52,7 @@ const BoxListFooter = () => {
 
   return (
     <footer className="min-h-[40px] rounded-b-md border-x border-b border-gray-400 bg-gray-300 px-4 py-2 dark:border-dark dark:bg-header">
-      <div className="flex justify-between">
+      <div className="flex items-center justify-between">
         {/* BOXES */}
         <div className="flex flex-col items-center gap-y-2">
           {/* ALL BOXES */}
@@ -68,6 +80,30 @@ const BoxListFooter = () => {
             </Tooltip>
           </div>
         </div>
+
+        {isAdmin ? (
+          <Tooltip
+            label={
+              <div className="flex flex-col items-center">
+                <p className="text-xs">Saldo Global</p>
+                <p className="text-sm font-bold tracking-widest">
+                  {currencyFormat(globalBalance)}
+                </p>
+              </div>
+            }
+            color="violet"
+            withArrow
+            arrowSize={12}
+          >
+            <ActionIcon
+              color="grape"
+              size={40}
+              onClick={() => dispatch(mountGlobalTransactions())}
+            >
+              <IconWorldDollar />
+            </ActionIcon>
+          </Tooltip>
+        ) : null}
 
         {/* BALANCES */}
         <div className="flex flex-col items-end justify-center">

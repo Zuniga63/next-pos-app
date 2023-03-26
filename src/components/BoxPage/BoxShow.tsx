@@ -17,6 +17,7 @@ const BoxShow = () => {
     showingMainBox,
     loadingTransactions: loading,
     transactions,
+    balance: globalBalance,
   } = useAppSelector(boxPageSelector);
   const [waitBox, setWaitBox] = useState(!(boxSelected || showingMainBox));
   const dispatch = useAppDispatch();
@@ -72,7 +73,9 @@ const BoxShow = () => {
             <div className="flex flex-col items-center gap-y-1 lg:flex-row lg:gap-x-2">
               <span className="text-xs lg:text-base">Saldo:</span>
               <span className="text-center text-xs font-bold lg:text-base">
-                {currencyFormat(boxSelected?.balance)}
+                {currencyFormat(
+                  showingMainBox ? globalBalance : boxSelected?.balance
+                )}
               </span>
             </div>
 

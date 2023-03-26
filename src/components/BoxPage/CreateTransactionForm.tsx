@@ -42,6 +42,7 @@ const CreateTransactionForm = () => {
   const {
     boxSelected: box,
     showingMainBox,
+    balance: globalBalance,
     storeTransactionFormOpened: opened,
     storeTransactionIsSuccess: isSuccess,
     storeTransactionError: error,
@@ -135,7 +136,7 @@ const CreateTransactionForm = () => {
     e.preventDefault();
     if (validateData()) {
       const formData = getFormData();
-      if (box) dispatch(storeTransaction({ boxId: box?.id, ...formData }));
+      dispatch(storeTransaction({ boxId: box?.id, ...formData }));
     }
   };
 
@@ -213,7 +214,8 @@ const CreateTransactionForm = () => {
             Registrar Transacción
           </h2>
           <p className="text-xs">
-            {box?.name} ({currencyFormat(balance)})
+            {showingMainBox ? 'Caja global' : box?.name} (
+            {currencyFormat(showingMainBox ? globalBalance : balance)})
           </p>
         </header>
         <div className="mb-4 py-4">
@@ -222,7 +224,6 @@ const CreateTransactionForm = () => {
             {/* Date */}
             <DateInput
               label="Fecha"
-              locale="es-do"
               placeholder="Selecciona una fecha"
               value={date}
               onChange={setDate}

@@ -23,7 +23,7 @@ export interface IBox {
 
 export interface ITransaction {
   id: string;
-  cashbox?: string;
+  cashbox?: string | { id: strig; name: string };
   transactionDate: string;
   description: string;
   isTransfer: string;
@@ -31,13 +31,6 @@ export interface ITransaction {
   balance: number;
   createdAt: strig; // string Date
   updatedAt: string; // string Date
-}
-
-export interface ITransactionWithCashbox extends ITransaction {
-  cashbox?: {
-    id: string;
-    name: string;
-  };
 }
 
 export interface ICashboxFull extends IBox {
@@ -76,6 +69,7 @@ export interface IStoreTransactionRequest {
 
 export type BoxPageState = {
   boxes: IBox[];
+  balance: number;
   firstFetchLoading: boolean;
   fetchLoading: boolean;
   fetchError: string | null;

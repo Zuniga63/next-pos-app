@@ -7,7 +7,6 @@ import {
   IOpenBoxRequest,
   IStoreTransactionRequest,
   ITransaction,
-  ITransactionWithCashbox,
 } from './types';
 // ----------------------------------------------------------------------------
 // MOUNT BOXES ACTIONS
@@ -16,7 +15,7 @@ export const fetchBoxes = createAsyncThunk(
   'boxPage/fetchBoxes',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get<IBox[]>('/cashboxes');
+      const res = await axios.get<IBox[]>('/cashboxes/minors');
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -26,6 +25,14 @@ export const fetchBoxes = createAsyncThunk(
 
       throw error;
     }
+  }
+);
+
+export const getGlobalBalance = createAsyncThunk(
+  'boxPage/getGlobalBalane',
+  async () => {
+    const res = await axios.get<number>('/cashboxes/main/balance');
+    return res.data;
   }
 );
 
@@ -61,7 +68,7 @@ export const openBox = createAsyncThunk(
   async (data: IOpenBoxRequest, { rejectWithValue }) => {
     try {
       const { boxId, ...rest } = data;
-      const url = `/cashboxes/${boxId}/open-box`;
+      const url = `/cashboxes/minors/${boxId}/open-box`;
       const response = await axios.patch<IBox>(url, rest);
       return response.data;
     } catch (error) {
@@ -83,7 +90,7 @@ export const closeBox = createAsyncThunk(
   'boxPage/closeBox',
   async (data: ICloseBoxRequest, { rejectWithValue }) => {
     const { boxId, ...rest } = data;
-    const url = `/cashboxes/${boxId}/close-box`;
+    const url = `/cashboxes/minors/${boxId}/close-box`;
 
     try {
       const res = await axios.patch<IBox>(url, rest);
@@ -105,7 +112,7 @@ export const mountBox = createAsyncThunk(
   'boxPage/mountBox',
   async (boxId: string, { rejectWithValue }) => {
     try {
-      const res = await axios.get<ICashboxFull>(`/cashboxes/${boxId}`);
+      const res = await axios.get<ICashboxFull>(`/cashboxes/minors/${boxId}`);
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -121,21 +128,9 @@ export const mountBox = createAsyncThunk(
 export const unmountBox = createAction('boxPage/unmountBox');
 export const mountGlobalTransactions = createAsyncThunk(
   'boxPage/mountGlobalTransactions',
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await axios.get<{ transactions: ITransactionWithCashbox[] }>(
-        '/main-box/transactions'
-      );
-
-      return res.data.transactions;
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        const { data, status } = error.response;
-        return rejectWithValue({ data, status });
-      }
-
-      throw error;
-    }
+  async () => {
+    const res = await axios.get<ITransaction[]>('/cashboxes/main/transactions');
+    return res.data;
   }
 );
 
@@ -148,8 +143,8 @@ export const storeTransaction = createAsyncThunk(
   'boxPage/storeTransaction',
   async (data: IStoreTransactionRequest, { rejectWithValue }) => {
     const url = data.boxId
-      ? `/cashboxes/${data.boxId}/transactions`
-      : `/main-box/transactions`;
+      ? `/cashboxes/minors/${data.boxId}/transactions`
+      : `/cashboxes/main/transactions`;
 
     try {
       const res = await axios.post<ITransaction>(url, data);

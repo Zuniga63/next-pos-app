@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import 'dayjs/locale/es-do';
+import 'dayjs/locale/es-mx';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { AppProps } from 'next/app';
 import {
@@ -32,10 +32,11 @@ import {
   authSuccessIsNotify,
   authenticate,
 } from 'src/features/Auth';
+import { DatesProvider } from '@mantine/dates';
 
 // Config
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_URL_API;
-dayjs.locale('es-do');
+dayjs.locale('es-mx');
 dayjs.extend(relativeTime);
 NProgress.configure({ showSpinner: false });
 
@@ -128,9 +129,11 @@ export function MyApp({ Component, pageProps }: AppProps) {
           loader: 'bars',
         }}
       >
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <DatesProvider settings={{ locale: 'es-mx', firstDayOfWeek: 1 }}>
+          <Provider store={store}>
+            <Component {...pageProps} />
+          </Provider>
+        </DatesProvider>
       </MantineProvider>
 
       <ToastContainer

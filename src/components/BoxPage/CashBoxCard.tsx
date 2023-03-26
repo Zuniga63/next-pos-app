@@ -54,7 +54,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
   };
 
   const deleteBox = async () => {
-    const url = `/cashboxes/${box.id}`;
+    const url = `/cashboxes/minors/${box.id}`;
     const message = /*html */ `La caja "<strong>${box.name}</strong>" será eliminada permanentemente y esta acción no puede revertirse.`;
 
     const result = await Swal.fire({

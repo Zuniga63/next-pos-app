@@ -1,13 +1,9 @@
 import { Dayjs } from 'dayjs';
-import { AxiosResponse } from 'axios';
-import { ErrorResponse } from '../CategoryPage/types';
 
 export interface ICashier {
   id: string;
   name: string;
 }
-
-export type ErrorResponse = Pick<AxiosResponse, 'data' | 'status'>;
 
 export interface IBox {
   id: string;
@@ -25,51 +21,33 @@ export interface IBox {
   updatedAt: string; // string Date
 }
 
-export interface ITransactionResponse {
+export interface ITransaction {
   id: string;
   cashbox?: string;
   transactionDate: string;
   description: string;
-  isTransfer: boolean;
+  isTransfer: string;
   amount: number;
   balance: number;
   createdAt: strig; // string Date
   updatedAt: string; // string Date
 }
 
-export interface ITransaction extends ITransactionResponse {
-  transactionDate: Dayjs;
-  balance: number;
-  createdAt: Dayjs;
-  updatedAt: Dayjs;
-}
-
-export interface IMainTransaction extends ITransaction {
+export interface ITransactionWithCashbox extends ITransaction {
   cashbox?: {
     id: string;
     name: string;
   };
 }
 
+export interface ICashboxFull extends IBox {
+  transactions: ITransaction[];
+}
+
 export interface ITransactionRequest {
   date?: Dayjs;
   description: string;
   amount: number;
-}
-
-export interface IBoxWithDayjs extends IBox {
-  openBox?: Dayjs;
-  closed?: Dayjs;
-  neverUsed: boolean;
-  createdAt: Dayjs;
-  updatedAt: Dayjs;
-  createIsSameUpdate: boolean;
-  dateRefreshRate?: number;
-}
-
-export interface IMainBox {
-  name: string;
-  balance: number;
 }
 
 export interface IBoxesResponse {
@@ -98,9 +76,11 @@ export interface IStoreTransactionRequest {
 
 export type BoxPageState = {
   boxes: IBox[];
+  firstFetchLoading: boolean;
   fetchLoading: boolean;
   fetchError: string | null;
-  mainBox: IMainBox | null;
+  fetchIsSuccess: boolean;
+  changeIsSuccess: boolean;
   showingMainBox: boolean;
   // Add box
   createFormOpened: boolean;
@@ -121,7 +101,7 @@ export type BoxPageState = {
   boxSelected?: IBox;
   loadingTransactions: boolean;
   mountBoxIsSuccess: boolean;
-  transactions: ITransactionResponse[];
+  transactions: ITransaction[];
   transactionsError: ErrorResponse | null;
   // Add Transaction
   storeTransactionFormOpened: boolean;

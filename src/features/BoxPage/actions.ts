@@ -2,22 +2,19 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
   IBox,
+  ICashboxFull,
   ICloseBoxRequest,
-  IMainBox,
   IOpenBoxRequest,
   IStoreTransactionRequest,
-  ITransactionResponse,
+  ITransaction,
+  ITransactionWithCashbox,
 } from './types';
 // ----------------------------------------------------------------------------
 // MOUNT BOXES ACTIONS
 // ----------------------------------------------------------------------------
-export const mountBoxes = createAction<IBox[]>('boxPage/mountBoxes');
-export const mountMainBox = createAction<IMainBox | null>(
-  'boxPage/mountMainBox'
-);
 export const fetchBoxes = createAsyncThunk(
   'boxPage/fetchBoxes',
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get<IBox[]>('/cashboxes');
       return res.data;
@@ -108,9 +105,8 @@ export const mountBox = createAsyncThunk(
   'boxPage/mountBox',
   async (boxId: string, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`/cashboxes/${boxId}`);
-      const { transactions } = res.data;
-      return { boxId, transactions };
+      const res = await axios.get<ICashboxFull>(`/cashboxes/${boxId}`);
+      return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const { data, status } = error.response;
@@ -121,11 +117,13 @@ export const mountBox = createAsyncThunk(
     }
   }
 );
+
+export const unmountBox = createAction('boxPage/unmountBox');
 export const mountGlobalTransactions = createAsyncThunk(
   'boxPage/mountGlobalTransactions',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get<{ transactions: ITransactionResponse[] }>(
+      const res = await axios.get<{ transactions: ITransactionWithCashbox[] }>(
         '/main-box/transactions'
       );
 
@@ -154,7 +152,7 @@ export const storeTransaction = createAsyncThunk(
       : `/main-box/transactions`;
 
     try {
-      const res = await axios.post<ITransactionResponse>(url, data);
+      const res = await axios.post<ITransaction>(url, data);
 
       return res.data;
     } catch (error) {

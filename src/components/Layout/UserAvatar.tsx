@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Menu } from '@mantine/core';
 import { useAppSelector, useAppDispatch } from 'src/store/hooks';
-import { IconCategory, IconLogout } from '@tabler/icons';
+import { IconCategory, IconLogout } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { authSelector, logout } from 'src/features/Auth';
@@ -30,7 +30,10 @@ export default function UserAvatar() {
   }, [user?.name]);
 
   return (
-    <Menu shadow="xl" transition="pop-top-right" transitionDuration={150}>
+    <Menu
+      shadow="xl"
+      transitionProps={{ transition: 'pop-top-right', duration: 150 }}
+    >
       <Menu.Target>
         <Avatar
           src={user?.profilePhoto?.url}

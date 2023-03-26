@@ -48,6 +48,16 @@ export function currencyFormat(
   return String(value);
 }
 
+export function cashFormatter(value: string) {
+  return !Number.isNaN(parseFloat(value))
+    ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+    : '$ ';
+}
+
+export function cashParser(value: string) {
+  return value.replace(/\$\s?|(,*)/g, '');
+}
+
 //-----------------------------------------------------------------------------
 // UTIL FOR CHARTS
 //-----------------------------------------------------------------------------

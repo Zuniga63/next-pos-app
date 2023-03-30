@@ -81,7 +81,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
     <tr
       className={
         otherBox
-          ? 'text-dark opacity-20 dark:text-gray-300'
+          ? 'text-dark opacity-40 dark:text-gray-300'
           : 'text-dark dark:text-gray-300'
       }
     >
@@ -111,15 +111,18 @@ const TransactionTableItem = ({ transaction }: Props) => {
       </td>
 
       {/* AMOUNT */}
-      <td className="text-right">{currencyFormat(transaction.amount)}</td>
+      <td
+        className={`text-right ${
+          transaction.amount < 0 ? 'text-red-500' : 'text-emerald-500'
+        }`}
+      >
+        {currencyFormat(transaction.amount)}
+      </td>
 
       {/* BALANCE */}
       <td
-        className={
-          otherBox
-            ? `hidden text-sm line-through lg:table-cell`
-            : `hidden  text-sm lg:table-cell`
-        }
+        className={`hidden  text-right text-sm font-bold lg:table-cell 
+        ${transaction.balance >= 0 ? 'text-emerald-500' : 'text-red-500'}`}
       >
         {currencyFormat(transaction.balance)}
       </td>

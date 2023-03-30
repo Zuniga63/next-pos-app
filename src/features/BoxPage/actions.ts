@@ -43,10 +43,10 @@ export const removeBox = createAction<string>('pageBox/removeBox');
 export const showCreateForm = createAction('boxPage/showCreateForm');
 export const hideCreateForm = createAction('boxPage/hideCreateForm');
 export const storeBox = createAsyncThunk(
-  'boxPage/sotoreBox',
+  'boxPage/storeBox',
   async (data: { name: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.post<IBox>('/cashboxes', data);
+      const res = await axios.post<IBox>('/cashboxes/minors', data);
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

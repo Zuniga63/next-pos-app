@@ -31,6 +31,7 @@ import {
 } from 'src/features/BoxPage';
 
 const CreateTransactionForm = () => {
+  const [rightNow, setRightNow] = useState(true);
   const [date, setDate] = useState<Date | undefined | null>(undefined);
   const [time, setTime] = useState('');
   const [description, setDescription] = useState('');
@@ -101,27 +102,30 @@ const CreateTransactionForm = () => {
 
   const getFormData = () => {
     let transactionDate = dayjs();
-    const dateFormat = 'YYYY-MM-DD';
-    const timeFormat = 'HH:mm';
 
-    if (date && time) {
-      const tempDate = dayjs(`${dayjs(date).format(dateFormat)} ${time}`);
-      if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
-        transactionDate = tempDate;
-      } else if (tempDate.isToday()) {
-        setTime(transactionDate.format(timeFormat));
-      }
-    } else if (date) {
-      const tempDate = dayjs(date);
-      if (tempDate.isValid() && !tempDate.isToday()) {
-        transactionDate = tempDate.endOf('day');
-      }
-    } else if (time) {
-      const tempDate = dayjs(`${dayjs().format(dateFormat)} ${time}`);
-      if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
-        transactionDate = tempDate;
-      } else {
-        setTime(transactionDate.format(timeFormat));
+    if (!rightNow) {
+      const dateFormat = 'YYYY-MM-DD';
+      const timeFormat = 'HH:mm';
+
+      if (date && time) {
+        const tempDate = dayjs(`${dayjs(date).format(dateFormat)} ${time}`);
+        if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
+          transactionDate = tempDate;
+        } else if (tempDate.isToday()) {
+          setTime(transactionDate.format(timeFormat));
+        }
+      } else if (date) {
+        const tempDate = dayjs(date);
+        if (tempDate.isValid() && !tempDate.isToday()) {
+          transactionDate = tempDate.endOf('day');
+        }
+      } else if (time) {
+        const tempDate = dayjs(`${dayjs().format(dateFormat)} ${time}`);
+        if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
+          transactionDate = tempDate;
+        } else {
+          setTime(transactionDate.format(timeFormat));
+        }
       }
     }
 
@@ -220,6 +224,14 @@ const CreateTransactionForm = () => {
         </header>
         <div className="mb-4 py-4">
           {/* DATE AND TIME */}
+          {/* Check */}
+          <Checkbox
+            label="En este momento"
+            className="mb-2"
+            checked={rightNow}
+            onChange={({ currentTarget }) => setRightNow(currentTarget.checked)}
+          />
+
           <div className="gap-x-2 md:mb-2 md:grid md:grid-cols-5">
             {/* Date */}
             <DateInput
@@ -233,6 +245,7 @@ const CreateTransactionForm = () => {
               icon={<IconCalendar size={16} />}
               error={errors?.transactionDate?.message}
               clearable
+              disabled={rightNow}
             />
             {/* Time */}
             <TimeInput
@@ -243,10 +256,14 @@ const CreateTransactionForm = () => {
               onChange={({ currentTarget }) => setTime(currentTarget.value)}
               className="mb-2 md:col-span-2 md:mb-0"
               rightSection={
-                <ActionIcon onClick={() => timeInputRef.current?.showPicker()}>
+                <ActionIcon
+                  onClick={() => timeInputRef.current?.showPicker()}
+                  disabled={rightNow}
+                >
                   <IconClock size="1rem" stroke={1.5} />
                 </ActionIcon>
               }
+              disabled={rightNow}
             />
           </div>
 

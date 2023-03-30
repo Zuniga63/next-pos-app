@@ -202,7 +202,6 @@ export const boxPageReducer = createReducer(initialState, builder => {
       state.loadingTransactions = true;
       state.mountBoxIsSuccess = false;
       state.transactionsError = null;
-      state.transactions = [];
       state.showingMainBox = false;
       state.changeIsSuccess = false;
     })
@@ -234,6 +233,7 @@ export const boxPageReducer = createReducer(initialState, builder => {
 
   builder.addCase(unmountBox, state => {
     state.boxSelected = undefined;
+    state.showingMainBox = false;
     state.transactions = [];
   });
   // --------------------------------------------------------------------------
@@ -244,11 +244,10 @@ export const boxPageReducer = createReducer(initialState, builder => {
       state.loadingTransactions = true;
       state.mountBoxIsSuccess = false;
       state.transactionsError = null;
-      state.boxSelected = undefined;
-      state.transactions = [];
     })
     .addCase(mountGlobalTransactions.fulfilled, (state, { payload }) => {
       state.showingMainBox = true;
+      state.boxSelected = undefined;
       state.transactions = payload;
       state.mountBoxIsSuccess = true;
       state.loadingTransactions = false;

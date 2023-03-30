@@ -18,22 +18,24 @@ const TransactionTable = ({ transactions }: Props) => {
       <thead className="sticky top-0 z-fixed bg-gray-200 dark:bg-dark">
         <tr className="text-dark dark:text-gray-300">
           <th scope="col">
-            <div className="text-center text-xs uppercase tracking-wide lg:text-base">
+            <div className="text-center text-xs uppercase tracking-wide lg:text-sm">
               Fecha
             </div>
           </th>
           <th scope="col">
-            <div className="text-center text-xs uppercase tracking-wide lg:text-base">
+            <div className="text-center text-xs uppercase tracking-wide lg:text-sm">
               Descripción
             </div>
           </th>
           <th scope="col">
-            <div className="text-center text-xs uppercase tracking-wide lg:text-base">
+            <div className="text-center text-xs uppercase tracking-wide lg:text-sm">
               Importe
             </div>
           </th>
           <th scope="col" className="hidden lg:table-cell">
-            <div className="text-center uppercase tracking-wide">Importe</div>
+            <div className="text-center text-sm uppercase tracking-wide">
+              Saldo
+            </div>
           </th>
           <th scope="col" className="relative px-6 py-3">
             <span className="sr-only">Actions</span>

@@ -14,6 +14,7 @@ import {
 } from 'src/features/BoxPage';
 import CreateTransactionForm from 'src/components/BoxPage/CreateTransactionForm';
 import { authSelector } from 'src/features/Auth';
+import CashTransferForm from 'src/components/BoxPage/CashTransferForm';
 
 const BoxesPage: NextPage = () => {
   const { isAuth } = useAppSelector(authSelector);
@@ -45,6 +46,7 @@ const BoxesPage: NextPage = () => {
       <OpenBoxForm />
       <CloseBoxForm />
       <CreateTransactionForm />
+      <CashTransferForm />
     </>
   );
 };

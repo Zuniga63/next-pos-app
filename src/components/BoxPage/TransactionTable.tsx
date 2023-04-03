@@ -42,7 +42,7 @@ const TransactionTable = ({ transactions }: Props) => {
           </th>
         </tr>
       </thead>
-      <tbody className="divide-y divide-gray-200">
+      <tbody>
         {transactions.map(item => (
           <TransactionTableItem key={item.id} transaction={item} />
         ))}

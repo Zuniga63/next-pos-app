@@ -5,10 +5,16 @@ import {
   Pagination,
   ScrollArea,
 } from '@mantine/core';
-import { IconFile, IconWriting, IconX } from '@tabler/icons-react';
+import {
+  IconArrowsExchange,
+  IconCirclePlus,
+  IconFile,
+  IconX,
+} from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 import {
   boxPageSelector,
+  showCashTransferForm,
   showTransactionForm,
   unmountBox,
 } from 'src/features/BoxPage';
@@ -48,10 +54,10 @@ const BoxShow = () => {
   };
 
   const filterTransactions = () => {
-    const list = allTransactions.slice().reverse();
+    const list = allTransactions.slice();
 
     updatePagination(list.length);
-    setFilteredTransactions(list);
+    setFilteredTransactions(list.reverse());
   };
 
   useEffect(() => {
@@ -128,9 +134,27 @@ const BoxShow = () => {
                 />
               ) : null}
             </div>
-            <Button leftIcon={<IconWriting />} onClick={addHandler}>
-              Agregar Transacción
-            </Button>
+
+            <div className="flex gap-x-2">
+              <Button
+                leftIcon={<IconCirclePlus size="1.5rem" stroke={1.5} />}
+                onClick={addHandler}
+                size="xs"
+              >
+                Agregar Transacción
+              </Button>
+
+              {!showingMainBox && Boolean(boxSelected) ? (
+                <Button
+                  leftIcon={<IconArrowsExchange size="1.5rem" stroke={1.5} />}
+                  onClick={() => dispatch(showCashTransferForm())}
+                  color="orange"
+                  size="xs"
+                >
+                  Transferir Fondos
+                </Button>
+              ) : null}
+            </div>
           </footer>
         </div>
       )}

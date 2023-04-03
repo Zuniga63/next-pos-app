@@ -4,6 +4,7 @@ import {
   closeBox,
   fetchBoxes,
   getGlobalBalance,
+  hideCashTransferForm,
   hideCreateForm,
   hideTransactionForm,
   mountBox,
@@ -13,9 +14,11 @@ import {
   openBox,
   removeBox,
   removeTransaction,
+  showCashTransferForm,
   showCreateForm,
   showTransactionForm,
   storeBox,
+  storeCashTransfer,
   storeTransaction,
   unmountBox,
   unmountBoxToClose,
@@ -59,6 +62,11 @@ const initialState: BoxPageState = {
   storeTransactionLoading: false,
   storeTransactionIsSuccess: false,
   storeTransactionError: null,
+  // CASH TRANSFER
+  cashTransferFormOpened: false,
+  cashTransferLoading: false,
+  cashTransferIsSuccess: false,
+  cashTransferError: null,
 };
 
 export const boxPageReducer = createReducer(initialState, builder => {
@@ -345,6 +353,56 @@ export const boxPageReducer = createReducer(initialState, builder => {
       state.balance -= transaction.amount;
     }
   });
+
+  // --------------------------------------------------------------------------
+  // CASH TRANSFER
+  // --------------------------------------------------------------------------
+  builder
+    .addCase(showCashTransferForm, state => {
+      state.cashTransferFormOpened = Boolean(
+        state.showingMainBox || state.boxSelected
+      );
+    })
+    .addCase(hideCashTransferForm, state => {
+      state.cashTransferFormOpened = false;
+      state.cashTransferIsSuccess = false;
+      state.cashTransferLoading = false;
+      state.cashTransferError = null;
+    });
+
+  builder
+    .addCase(storeCashTransfer.pending, state => {
+      state.cashTransferLoading = true;
+      state.cashTransferIsSuccess = false;
+      state.cashTransferError = null;
+    })
+    .addCase(storeCashTransfer.fulfilled, (state, { payload }) => {
+      const boxes = state.boxes.slice();
+      const { senderBoxId, addresseeBoxId, senderTransaction } = payload;
+
+      const senderBox = boxes.find(box => box.id === senderBoxId);
+      const addresseeBox = boxes.find(box => box.id === addresseeBoxId);
+
+      if (senderBox && addresseeBox) {
+        const amount = Math.abs(senderTransaction.amount);
+        senderBox.balance -= amount;
+        addresseeBox.balance += amount;
+        senderTransaction.balance = senderBox.balance;
+
+        if (state.boxSelected) {
+          state.boxSelected.balance = senderBox.balance;
+        }
+      }
+
+      state.transactions.push(senderTransaction);
+      state.cashTransferLoading = false;
+      state.cashTransferIsSuccess = true;
+      state.boxes = boxes;
+    })
+    .addCase(storeCashTransfer.rejected, (state, { payload }) => {
+      state.cashTransferLoading = false;
+      state.cashTransferError = payload as ErrorResponse | null;
+    });
 });
 
 export default boxPageReducer;

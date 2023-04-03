@@ -1,5 +1,5 @@
 import { ActionIcon } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
+import { IconArrowsExchange, IconTrash } from '@tabler/icons-react';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -79,11 +79,9 @@ const TransactionTableItem = ({ transaction }: Props) => {
 
   return (
     <tr
-      className={
-        otherBox
-          ? 'text-dark opacity-40 dark:text-gray-300'
-          : 'text-dark dark:text-gray-300'
-      }
+      className={`${transaction.isTransfer ? 'italic' : ''} ${
+        otherBox ? 'opacity-40' : ''
+      }`}
     >
       {/* TRANSACTION DATE */}
       <td>
@@ -100,7 +98,16 @@ const TransactionTableItem = ({ transaction }: Props) => {
       {/* DESCRIPTION */}
       <td className="px-3 py-2 text-sm">
         <div>
-          <p className="text-xs lg:text-base">{transaction.description}</p>
+          <div className="flex items-center gap-x-2">
+            {transaction.isTransfer ? (
+              <IconArrowsExchange
+                size="1.5rem"
+                className="text-amber-500"
+                stroke={2}
+              />
+            ) : null}
+            <p className="text-xs lg:text-base">{transaction.description}</p>
+          </div>
           {otherBox ? (
             <p className="text-xs">
               <span>Pertence a: </span>
@@ -127,11 +134,13 @@ const TransactionTableItem = ({ transaction }: Props) => {
         {currencyFormat(transaction.balance)}
       </td>
       <td>
-        <div className="flex justify-center">
-          <ActionIcon color="red" size="lg" onClick={deleteTransaction}>
-            <IconTrash size={16} stroke={3} />
-          </ActionIcon>
-        </div>
+        {!Boolean(transaction.isTransfer) ? (
+          <div className="flex justify-center">
+            <ActionIcon color="red" size="lg" onClick={deleteTransaction}>
+              <IconTrash size={16} stroke={3} />
+            </ActionIcon>
+          </div>
+        ) : null}
       </td>
     </tr>
   );

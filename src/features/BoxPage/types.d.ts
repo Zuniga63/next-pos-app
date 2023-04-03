@@ -1,4 +1,5 @@
 import { Dayjs } from 'dayjs';
+import { ErrorResponse } from 'src/types';
 
 export interface ICashier {
   id: string;
@@ -67,6 +68,19 @@ export interface IStoreTransactionRequest {
   amount: number;
 }
 
+export interface ICashTransferRequest {
+  senderBoxId: string;
+  addresseeBoxId: string;
+  transferDate: Dayjs;
+  amount: number;
+}
+
+export interface ICashTransferResponse {
+  senderBoxId: string;
+  addresseeBoxId: string;
+  senderTransaction: ITransaction;
+}
+
 export type BoxPageState = {
   boxes: IBox[];
   balance: number;
@@ -102,4 +116,9 @@ export type BoxPageState = {
   storeTransactionLoading: boolean;
   storeTransactionIsSuccess: boolean;
   storeTransactionError: ErrorResponse | null;
+  // CASH TRANSFER
+  cashTransferFormOpened: boolean;
+  cashTransferLoading: boolean;
+  cashTransferIsSuccess: boolean;
+  cashTransferError: ErrorResponse | null;
 };

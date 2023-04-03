@@ -1,32 +1,79 @@
-import { ActionIcon, Button, Notification, ScrollArea } from '@mantine/core';
-import { IconFile, IconWriting, IconX } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Button,
+  Notification,
+  Pagination,
+  ScrollArea,
+} from '@mantine/core';
+import {
+  IconArrowsExchange,
+  IconCirclePlus,
+  IconFile,
+  IconX,
+} from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
 import {
   boxPageSelector,
+  showCashTransferForm,
   showTransactionForm,
   unmountBox,
 } from 'src/features/BoxPage';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { ITransaction } from 'src/types';
 import { currencyFormat } from 'src/utils';
 import TransactionTable from './TransactionTable';
 import WaitingBox from './WaitingBox';
 
 const BoxShow = () => {
+  const transactionsByPage = 50;
   const {
     boxSelected,
     showingMainBox,
     loadingTransactions: loading,
-    transactions,
+    transactions: allTransactions,
     balance: globalBalance,
   } = useAppSelector(boxPageSelector);
   const [waitBox, setWaitBox] = useState(!(boxSelected || showingMainBox));
   const dispatch = useAppDispatch();
 
+  const [paginationPages, setPaginationPages] = useState(0);
+  const [activePage, setActivePage] = useState(12);
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    ITransaction[]
+  >([]);
+  const [transactions, setTransactions] = useState<ITransaction[]>([]);
+
   const addHandler = () => dispatch(showTransactionForm());
+
+  const updatePagination = (items: number) => {
+    const pages = Math.ceil(items / transactionsByPage);
+    const page = activePage > pages ? pages || 1 : activePage;
+
+    setPaginationPages(pages);
+    setActivePage(page);
+  };
+
+  const filterTransactions = () => {
+    const list = allTransactions.slice();
+
+    updatePagination(list.length);
+    setFilteredTransactions(list.reverse());
+  };
 
   useEffect(() => {
     setWaitBox(loading || !(showingMainBox || boxSelected));
   }, [showingMainBox, boxSelected, loading]);
+
+  useEffect(() => {
+    filterTransactions();
+  }, [allTransactions]);
+
+  useEffect(() => {
+    const startIndex = (activePage - 1) * transactionsByPage;
+    const endIndex = startIndex + transactionsByPage;
+    const list = filteredTransactions.slice(startIndex, endIndex);
+    setTransactions(list);
+  }, [filteredTransactions, activePage]);
 
   return (
     <>
@@ -52,11 +99,10 @@ const BoxShow = () => {
           </header>
 
           <ScrollArea className="relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header 3xl:h-[40rem]">
-            {transactions.length > 0 ? (
+            {allTransactions.length > 0 ? (
               <TransactionTable transactions={transactions} />
             ) : (
               <div className="mx-auto flex h-[60vh] w-1/2 items-center justify-center">
-                <div></div>
                 <Notification
                   title="! No hay Transacciones !"
                   withCloseButton={false}
@@ -80,11 +126,35 @@ const BoxShow = () => {
             </div>
 
             <div className="hidden lg:block">
-              Registros: {transactions.length}
+              {paginationPages > 1 ? (
+                <Pagination
+                  total={paginationPages}
+                  value={activePage}
+                  onChange={setActivePage}
+                />
+              ) : null}
             </div>
-            <Button leftIcon={<IconWriting />} onClick={addHandler}>
-              Agregar Transacción
-            </Button>
+
+            <div className="flex gap-x-2">
+              <Button
+                leftIcon={<IconCirclePlus size="1.5rem" stroke={1.5} />}
+                onClick={addHandler}
+                size="xs"
+              >
+                Agregar Transacción
+              </Button>
+
+              {!showingMainBox && Boolean(boxSelected) ? (
+                <Button
+                  leftIcon={<IconArrowsExchange size="1.5rem" stroke={1.5} />}
+                  onClick={() => dispatch(showCashTransferForm())}
+                  color="orange"
+                  size="xs"
+                >
+                  Transferir Fondos
+                </Button>
+              ) : null}
+            </div>
           </footer>
         </div>
       )}

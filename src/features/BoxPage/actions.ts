@@ -2,6 +2,8 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {
   IBox,
+  ICashTransferRequest,
+  ICashTransferResponse,
   ICashboxFull,
   ICloseBoxRequest,
   IOpenBoxRequest,
@@ -43,10 +45,10 @@ export const removeBox = createAction<string>('pageBox/removeBox');
 export const showCreateForm = createAction('boxPage/showCreateForm');
 export const hideCreateForm = createAction('boxPage/hideCreateForm');
 export const storeBox = createAsyncThunk(
-  'boxPage/sotoreBox',
+  'boxPage/storeBox',
   async (data: { name: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.post<IBox>('/cashboxes', data);
+      const res = await axios.post<IBox>('/cashboxes/minors', data);
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -167,4 +169,34 @@ export const unmountTransactions = createAction('boxPage/unmountTransactions');
 // ----------------------------------------------------------------------------
 export const removeTransaction = createAction<string>(
   'boxPage/removeTransaction'
+);
+
+// ----------------------------------------------------------------------------
+// CASH TRANSFER
+// ----------------------------------------------------------------------------
+
+export const showCashTransferForm = createAction(
+  'boxPgae/showCashTransferForm'
+);
+export const hideCashTransferForm = createAction(
+  'boxPage/hideCashTransferForm'
+);
+
+export const storeCashTransfer = createAsyncThunk(
+  'boxPage/storeCashTransfer',
+  async (data: ICashTransferRequest, { rejectWithValue }) => {
+    const url = '/cashboxes/minors/cash-transfer';
+
+    try {
+      const res = await axios.post<ICashTransferResponse>(url, data);
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const { data, status } = error.response;
+        return rejectWithValue({ data, status });
+      }
+
+      throw error;
+    }
+  }
 );

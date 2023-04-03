@@ -46,7 +46,6 @@ const ProfilePage: NextPage = () => {
           setPassword('');
         } else if (status === 400 && data.errors) {
           setErrors(data.errors);
-          console.log(data);
         } else if (status === 404) {
           dispatch(logout());
           setTimeout(() => {

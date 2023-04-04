@@ -4,6 +4,7 @@ import {
   Notification,
   NumberInput,
   Select,
+  Textarea,
 } from '@mantine/core';
 import { IconArrowsExchange2, IconX } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
@@ -32,6 +33,7 @@ const CashTransferForm = () => {
 
   const [addresseeBox, setAddressBox] = useState<string | null>(null);
   const [amount, setAmount] = useState<number | ''>(0);
+  const [description, setDescription] = useState('');
   const [errors, setErrors] = useState<IValidationErrors | null>(null);
 
   const close = () => {
@@ -87,6 +89,7 @@ const CashTransferForm = () => {
       senderBoxId: boxSelected?.id || '',
       addresseeBoxId: addresseeBox || '',
       amount: typeof amount === 'number' ? amount : 0,
+      description: description || undefined,
     };
   };
 
@@ -188,7 +191,17 @@ const CashTransferForm = () => {
           error={errors?.amount?.message}
         />
 
-        <footer className="flex items-center justify-between">
+        <Textarea
+          label="Descripción"
+          withAsterisk
+          placeholder="La descripcion es opcional"
+          className="mb-2"
+          value={description}
+          onChange={({ target }) => setDescription(target.value)}
+          error={errors?.description.message}
+        />
+
+        <footer className="mt-4 flex items-center justify-between">
           <Button
             leftIcon={<IconX size={14} stroke={4} />}
             color="red"

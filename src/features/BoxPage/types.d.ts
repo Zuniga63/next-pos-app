@@ -73,6 +73,7 @@ export interface ICashTransferRequest {
   addresseeBoxId: string;
   transferDate: Dayjs;
   amount: number;
+  description?: string;
 }
 
 export interface ICashTransferResponse {

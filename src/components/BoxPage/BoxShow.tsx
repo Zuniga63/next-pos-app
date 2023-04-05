@@ -1,17 +1,20 @@
 import {
   ActionIcon,
   Button,
+  Loader,
   Notification,
   Pagination,
   ScrollArea,
+  TextInput,
 } from '@mantine/core';
 import {
   IconArrowsExchange,
   IconCirclePlus,
   IconFile,
+  IconSearch,
   IconX,
 } from '@tabler/icons-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   boxPageSelector,
   showCashTransferForm,
@@ -20,7 +23,7 @@ import {
 } from 'src/features/BoxPage';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 import { ITransaction } from 'src/types';
-import { currencyFormat } from 'src/utils';
+import { currencyFormat, normalizeText } from 'src/utils';
 import TransactionTable from './TransactionTable';
 import WaitingBox from './WaitingBox';
 
@@ -35,6 +38,10 @@ const BoxShow = () => {
   } = useAppSelector(boxPageSelector);
   const [waitBox, setWaitBox] = useState(!(boxSelected || showingMainBox));
   const dispatch = useAppDispatch();
+
+  const [search, setSearch] = useState<string | undefined>('');
+  const [searchLoading, setSearchLoading] = useState(false);
+  const debounceSearch = useRef<undefined | NodeJS.Timeout>();
 
   const [paginationPages, setPaginationPages] = useState(0);
   const [activePage, setActivePage] = useState(12);
@@ -54,11 +61,33 @@ const BoxShow = () => {
   };
 
   const filterTransactions = () => {
-    const list = allTransactions.slice();
+    let list: ITransaction[] = [];
+
+    if (search) {
+      const text = normalizeText(search);
+      list = allTransactions.filter(item =>
+        normalizeText(item.description).includes(text)
+      );
+    } else {
+      list = allTransactions.slice();
+    }
 
     updatePagination(list.length);
     setFilteredTransactions(list.reverse());
   };
+
+  function updateSearch(value: string) {
+    if (debounceSearch.current) {
+      console.log('Limpiando el intervalo');
+      clearTimeout(debounceSearch.current);
+    }
+
+    setSearchLoading(true);
+    debounceSearch.current = setTimeout(() => {
+      setSearchLoading(false);
+      setSearch(value);
+    }, 500);
+  }
 
   useEffect(() => {
     setWaitBox(loading || !(showingMainBox || boxSelected));
@@ -66,7 +95,7 @@ const BoxShow = () => {
 
   useEffect(() => {
     filterTransactions();
-  }, [allTransactions]);
+  }, [allTransactions, search]);
 
   useEffect(() => {
     const startIndex = (activePage - 1) * transactionsByPage;
@@ -95,6 +124,24 @@ const BoxShow = () => {
                   <IconX size={24} stroke={2} />
                 </ActionIcon>
               </div>
+            </div>
+
+            <div className="pr-8">
+              <TextInput
+                size="xs"
+                placeholder="Buscar transacción"
+                onFocus={({ currentTarget }) => currentTarget.select()}
+                icon={
+                  searchLoading ? (
+                    <Loader size={14} variant="dots" />
+                  ) : (
+                    <IconSearch size={14} stroke={1.5} />
+                  )
+                }
+                onChange={({ currentTarget }) =>
+                  updateSearch(currentTarget.value)
+                }
+              />
             </div>
           </header>
 

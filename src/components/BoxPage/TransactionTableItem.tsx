@@ -86,17 +86,20 @@ const TransactionTableItem = ({ transaction }: Props) => {
       {/* TRANSACTION DATE */}
       <td>
         <div className="whitespace-nowrap text-center">
-          <p className="text-sm">
+          <p className="hidden text-sm lg:block">
             {dayjs(transaction.transactionDate).format('DD/MM/YY hh:mm a')}
           </p>
-          <p className="text-xs">
+          <p className="text-sm lg:hidden">
+            {dayjs(transaction.transactionDate).format('DD/MM/YY')}
+          </p>
+          <p className="hidden text-xs lg:block">
             {dayjs(transaction.transactionDate).fromNow()}
           </p>
         </div>
       </td>
 
       {/* DESCRIPTION */}
-      <td className="px-3 py-2 text-sm">
+      <td className="text-sm">
         <div>
           <div className="flex items-center gap-x-2">
             {transaction.isTransfer ? (

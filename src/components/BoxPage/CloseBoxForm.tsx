@@ -119,7 +119,7 @@ function CloseBoxForm() {
       padding="xl"
     >
       <form onSubmit={submitHandler}>
-        <div className="mb-8 grid grid-cols-2 gap-x-8">
+        <div className="mb-8 grid gap-x-8 gap-y-4 lg:grid-cols-2">
           <div>
             <NumberInput
               label="Dinero"
@@ -154,7 +154,7 @@ function CloseBoxForm() {
             />
           </div>
 
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between gap-y-2">
             <div className="mx-auto min-h-[60px] w-10/12 overflow-hidden rounded-lg bg-light bg-opacity-20">
               <h2 className="bg-amber-900 bg-opacity-80 py-2 text-center text-lg font-bold">
                 Resumen
@@ -196,22 +196,20 @@ function CloseBoxForm() {
               </div>
             </div>
 
-            <div className="flex items-center ">
-              <Button
-                leftIcon={<IconLock />}
-                loading={loading}
-                type="submit"
-                fullWidth
-              >
-                Cerrar Caja
-              </Button>
-            </div>
+            <Button
+              leftIcon={<IconLock />}
+              loading={loading}
+              type="submit"
+              fullWidth
+            >
+              Cerrar Caja
+            </Button>
           </div>
         </div>
 
         {/* BANK NOTES */}
         {checked ? (
-          <div className="mb-16 grid grid-cols-2 gap-x-4">
+          <div className="mb-16 grid gap-y-2 gap-x-4 lg:grid-cols-2">
             {/* COINS */}
             <CashBoxBankNotes
               amount={coinAmount}

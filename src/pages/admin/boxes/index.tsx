@@ -31,23 +31,22 @@ const BoxesPage: NextPage = () => {
     };
   }, [isAuth]);
   return (
-    <>
-      <Layout title="Cajas">
-        <div className="flex gap-x-4 px-8 py-2 text-dark dark:text-light">
-          <div className="w-80 flex-shrink-0 flex-grow-0">
-            <BoxList />
-          </div>
-          <div className="flex-grow">
-            <BoxShow />
-          </div>
+    <Layout title="Cajas">
+      <div className="px-8 py-2 text-dark dark:text-light lg:flex lg:gap-x-4">
+        <div className="w-full flex-shrink-0 flex-grow-0 lg:w-80">
+          <BoxList />
         </div>
-      </Layout>
+        <div className="mt-4 flex-grow lg:mt-0">
+          <BoxShow />
+        </div>
+      </div>
+
       <CreateForm />
       <OpenBoxForm />
       <CloseBoxForm />
       <CreateTransactionForm />
       <CashTransferForm />
-    </>
+    </Layout>
   );
 };
 

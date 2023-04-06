@@ -50,9 +50,11 @@ export const authReducer = createReducer(initialState, builder => {
       }
     })
     .addCase(signin.rejected, (state, { payload }) => {
+      const { statusCode } = payload as AuthErrorResponse;
+
       state.loading = false;
       state.error =
-        (payload as AuthErrorResponse).statusCode === 401
+        statusCode && statusCode === 401
           ? 'Email o contraseña inválido'
           : 'Error desconocido, contacte con el administrador';
     })
@@ -68,7 +70,6 @@ export const authReducer = createReducer(initialState, builder => {
         state.isAuth = true;
         state.user = payload;
         state.isAdmin = payload.isAdmin;
-        state.authIsSuccess = true;
       } else {
         clearAuthData();
       }

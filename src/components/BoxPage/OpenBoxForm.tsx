@@ -97,8 +97,8 @@ const OpenBoxForm = () => {
       transitionProps={{ duration: 150 }}
     >
       <form onSubmit={submitHandler}>
-        <div className="mb-4 grid grid-cols-4 items-center gap-x-12">
-          <div className="col-span-3">
+        <div className="mb-4 flex flex-col gap-y-2 lg:grid lg:grid-cols-4 lg:items-center lg:gap-y-0 lg:gap-x-12">
+          <div className="lg:col-span-3">
             <NumberInput
               label="Base"
               required
@@ -136,7 +136,7 @@ const OpenBoxForm = () => {
         </div>
 
         {checked ? (
-          <div className="mb-16 grid grid-cols-2 gap-x-4">
+          <div className="mb-16 grid gap-x-4 lg:grid-cols-2">
             {/* COINS */}
             <CashBoxBankNotes
               amount={coinAmount}

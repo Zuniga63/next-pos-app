@@ -162,7 +162,7 @@ const BoxShow = () => {
             )}
           </ScrollArea>
 
-          <footer className="flex items-center justify-between rounded-b-md bg-gray-300 px-6 py-2 dark:bg-header">
+          <footer className="flex flex-col items-center justify-between gap-y-2 rounded-b-md bg-gray-300 px-6 py-2 dark:bg-header lg:flex-row">
             <div className="flex flex-col items-center gap-y-1 lg:flex-row lg:gap-x-2">
               <span className="text-xs lg:text-base">Saldo:</span>
               <span className="text-center text-xs font-bold lg:text-base">
@@ -172,7 +172,7 @@ const BoxShow = () => {
               </span>
             </div>
 
-            <div className="hidden lg:block">
+            <div>
               {paginationPages > 1 ? (
                 <Pagination
                   total={paginationPages}
@@ -182,7 +182,7 @@ const BoxShow = () => {
               ) : null}
             </div>
 
-            <div className="flex gap-x-2">
+            <div className="flex flex-col gap-x-2 gap-y-2 lg:flex-row">
               <Button
                 leftIcon={<IconCirclePlus size="1.5rem" stroke={1.5} />}
                 onClick={addHandler}

@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import Head from 'next/head';
 import Header from './Header';
-import { ScrollArea } from '@mantine/core';
 
 interface Props {
   title?: string;
@@ -18,13 +17,9 @@ export default function Layout({ title, children }: Props) {
         <title>{TITLE}</title>
       </Head>
 
-      <div className="relative xl:h-screen xl:overflow-hidden">
+      <div className="relative">
         <Header title={title} />
-        <div className="h-[calc(100vh-62px)]">
-          <ScrollArea className="h-full">
-            <main>{children}</main>
-          </ScrollArea>
-        </div>
+        <main>{children}</main>
       </div>
     </>
   );

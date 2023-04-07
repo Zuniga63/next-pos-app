@@ -28,27 +28,6 @@ export const Links = [
     active: false,
     Icon: IconBox,
   },
-  // {
-  //   id: 3,
-  //   name: 'Clientes',
-  //   path: '/admin/customers',
-  //   active: false,
-  //   Icon: IconUsers,
-  // },
-  // {
-  //   id: 4,
-  //   name: 'Productos',
-  //   path: '/admin/products',
-  //   active: false,
-  //   Icon: IconBuildingStore,
-  // },
-  // {
-  //   id: 5,
-  //   name: 'Facturación',
-  //   path: '/admin/invoices',
-  //   active: false,
-  //   Icon: IconFileInvoice,
-  // },
 ];
 
 export default function NavLinks({ close }: Props) {

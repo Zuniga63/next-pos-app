@@ -138,7 +138,7 @@ export function MyApp({ Component, pageProps }: AppProps) {
 
       <ToastContainer
         position="top-left"
-        theme="dark"
+        theme={colorScheme}
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}

@@ -32,7 +32,7 @@ const BoxesPage: NextPage = () => {
   }, [isAuth]);
   return (
     <Layout title="Cajas">
-      <div className="px-8 py-2 text-dark dark:text-light lg:flex lg:gap-x-4">
+      <div className="py-2 text-dark dark:text-light lg:flex lg:gap-x-4 lg:px-8">
         <div className="w-full flex-shrink-0 flex-grow-0 lg:w-80">
           <BoxList />
         </div>

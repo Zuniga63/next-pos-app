@@ -15,7 +15,7 @@ const BoxListBody = ({ children }: Props) => {
     <BoxListLoading />
   ) : (
     <ScrollArea className="h-[65vh] overflow-y-auto border-x border-gray-400 px-6 py-4 dark:border-header">
-      {children}
+      <div className="flex flex-col gap-y-4">{children}</div>
     </ScrollArea>
   );
 };

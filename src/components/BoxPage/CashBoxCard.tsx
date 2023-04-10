@@ -2,19 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { IBox } from 'src/types';
 import {
   IconAlertTriangle,
-  IconAward,
-  IconChevronDown,
-  IconChevronUp,
   IconDeviceFloppy,
   IconEditCircle,
-  IconFolder,
   IconLock,
   IconLockOpen,
-  IconTrash,
 } from '@tabler/icons-react';
 import { currencyFormat } from 'src/utils';
-import { useAppDispatch } from 'src/store/hooks';
-import { ActionIcon, Collapse, Divider, Tooltip } from '@mantine/core';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { ActionIcon, Tooltip } from '@mantine/core';
 import Swal from 'sweetalert2';
 import axios, { AxiosError } from 'axios';
 import {
@@ -22,9 +17,10 @@ import {
   removeBox,
   mountBoxToOpen,
   mountBoxToClose,
-  mountBox,
+  boxPageSelector,
 } from 'src/features/BoxPage';
 import dayjs from 'dayjs';
+import CashBoxCardHeader from './CashBoxCardHeader';
 
 interface Props {
   box: IBox;
@@ -37,7 +33,9 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
   const [updatedAt, setUpdatedAt] = useState('');
   const [neverUsed, setNeverUsed] = useState(true);
   const [createIsSameUpdate, setCreateIsSameUpdate] = useState(true);
-  const [opened, setOpened] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const [isOpen, setIsOpen] = useState(Boolean(box.openBox));
+  const { boxSelected } = useAppSelector(boxPageSelector);
 
   const dispatch = useAppDispatch();
 
@@ -105,13 +103,6 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
     }
   };
 
-  const toggleHandler = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.stopPropagation();
-    setOpened(current => !current);
-  };
-
   useEffect(() => {
     refreshState();
     let intervalId: NodeJS.Timer;
@@ -127,8 +118,10 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
 
     if (box.openBox) {
       timeDiffs.push(now.diff(box.openBox, timeUnit));
+      setIsOpen(true);
     } else if (box.closed) {
       timeDiffs.push(now.diff(box.closed, timeUnit));
+      setIsOpen(false);
     }
 
     if (timeDiffs.length > 0) {
@@ -147,178 +140,115 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
     };
   }, [box.openBox, box.closed, box.createdAt, box.updatedAt]);
 
+  useEffect(() => {
+    setIsSelected(Boolean(boxSelected && boxSelected.id === box.id));
+  }, [boxSelected]);
+
   return (
-    <div className="mb-4">
-      <div className="overflow-hidden rounded-lg border shadow-sm dark:border-header dark:shadow-gray-500">
-        <header
-          className="flex cursor-pointer items-center justify-between bg-gray-300 px-4 py-2 dark:bg-header"
-          onClick={() => setOpened(current => !current)}
-        >
-          {/* TOGGLE BUTTOM */}
-          <Tooltip label={opened ? 'Contraer' : 'Expandir'}>
-            <ActionIcon size="xs" onClick={toggleHandler}>
-              {opened ? (
-                <IconChevronDown size={16} />
-              ) : (
-                <IconChevronUp size={16} />
-              )}
-            </ActionIcon>
-          </Tooltip>
-
-          {/* BOX INFO */}
-          <div className="flex-grow">
-            <h1 className="text-center text-sm font-bold tracking-wider line-clamp-1">
-              {box.name}
-            </h1>
-            {box.openBox ? (
-              <div className="flex items-center justify-center gap-x-2 text-gray-dark dark:text-gray-400">
-                <IconAward size={18} />
-                <p className="text-xs">
-                  {box.cashier ? box.cashier.name : box.cashierName}
-                </p>
-              </div>
-            ) : null}
-          </div>
-
-          {/* BOX ACTIONS */}
-          <div className="flex-shrink-0">
-            <div className="flex gap-x-1">
-              {box.openBox ? (
-                <>
-                  {/* CERRAR CAJA */}
-                  <Tooltip label="Cerrar caja" color="orange" withArrow>
-                    <ActionIcon
-                      color="orange"
-                      onClick={(
-                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                      ) => {
-                        e.stopPropagation();
-                        dispatch(mountBoxToClose(box.id));
-                      }}
-                    >
-                      <IconLock size={14} stroke={2} />
-                    </ActionIcon>
-                  </Tooltip>
-
-                  {/* VER TRANSACCIONES */}
-                  <Tooltip label="Ver Transacciones" color="blue" withArrow>
-                    <ActionIcon
-                      color="blue"
-                      onClick={(
-                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                      ) => {
-                        e.stopPropagation();
-                        dispatch(mountBox(box.id));
-                      }}
-                    >
-                      <IconFolder size={14} stroke={2} />
-                    </ActionIcon>
-                  </Tooltip>
-                </>
-              ) : (
-                <>
-                  {/* OPEN BOX */}
-                  <Tooltip label="Abrir caja" color="green" withArrow>
-                    <ActionIcon
-                      color="green"
-                      onClick={(
-                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                      ) => {
-                        e.stopPropagation();
-                        dispatch(mountBoxToOpen(box.id));
-                      }}
-                    >
-                      <IconLockOpen size={14} stroke={2} />
-                    </ActionIcon>
-                  </Tooltip>
-
-                  {/* VER TRANSACCIONES */}
-                  <Tooltip label="Eliminar caja" color="red" withArrow>
-                    <ActionIcon
-                      color="red"
-                      onClick={(
-                        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                      ) => {
-                        e.stopPropagation();
-                        deleteBox();
-                      }}
-                    >
-                      <IconTrash size={14} stroke={2} />
-                    </ActionIcon>
-                  </Tooltip>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
-        {/* Body */}
-        <Collapse in={opened}>
-          <div className="bg-gradient-to-b from-gray-200 to-indigo-300 px-4 py-2 dark:bg-none">
-            {box.openBox ? (
-              <div className="flex justify-between text-xs text-gray-dark dark:text-gray-400">
-                <p>
-                  Base:{' '}
-                  <span className="font-bold">{currencyFormat(box.base)}</span>
-                </p>
-                <div className="flex items-center gap-x-2 ">
-                  <IconLockOpen size={18} />
-                  <span>{openFromNow}</span>
-                </div>
-              </div>
-            ) : null}
-
-            {box.closed ? (
-              <div className="flex flex-col items-center gap-y-3 py-4 text-gray-dark dark:text-gray-400">
-                <IconLock size={30} stroke={2} />
-                <p className="text-xs">Cerrada {closedFronNow}</p>
-              </div>
-            ) : null}
-
-            {neverUsed ? (
-              <div className="flex flex-col items-center gap-y-3 py-4 text-gray-dark dark:text-gray-400">
-                <IconAlertTriangle size={30} stroke={2} />
-                <p className="text-xs tracking-widest">¡Caja nunca usada!</p>
-              </div>
-            ) : null}
-
-            <div className="mt-2 flex justify-between text-xs text-gray-dark dark:text-gray-400">
-              <div className="flex items-center gap-x-2">
-                <IconDeviceFloppy size={18} />
-                <span>{createdAt}</span>
-              </div>
-              {!createIsSameUpdate && (
-                <div className="flex items-center gap-x-2">
-                  <IconEditCircle size={18} />
-                  <span>{updatedAt}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </Collapse>
-        {!opened && box.openBox ? <Divider /> : null}
-
-        {/* Footer */}
+    <div className="overflow-hidden rounded-t-lg rounded-b border shadow-sm dark:border-header dark:shadow-header">
+      <CashBoxCardHeader
+        boxId={box.id}
+        boxName={box.name}
+        cashierName={box.cashier ? box.cashier.name : box.cashierName}
+        isOpen={isOpen}
+        isSelected={isSelected}
+        onDelete={deleteBox}
+      />
+      {/* Body */}
+      <div className="bg-gradient-to-b from-gray-200 to-indigo-300 px-4 py-2 dark:bg-none">
         {box.openBox ? (
-          <footer className="bg-indigo-400 px-4 py-2 dark:bg-header">
-            <Tooltip
-              label={
-                <div className="flex flex-col items-center">
-                  <h4 className="text-sm">Saldo sin la base</h4>
-                  <p className="text-xs font-bold tracking-widest">
-                    {currencyFormat(box.balance - box.base)}
-                  </p>
-                </div>
-              }
-              withArrow
-              hidden={!box.base}
-            >
-              <p className="text-center text-xl font-bold tracking-wider">
-                {currencyFormat(box.balance)}
-              </p>
-            </Tooltip>
-          </footer>
+          <div className="flex justify-between text-xs text-gray-dark dark:text-gray-400">
+            <p>
+              Base:{' '}
+              <span className="font-bold">{currencyFormat(box.base)}</span>
+            </p>
+            <div className="flex items-center gap-x-2 ">
+              <IconLockOpen size={18} />
+              <span>{openFromNow}</span>
+            </div>
+          </div>
         ) : null}
+
+        {box.closed ? (
+          <div className="flex flex-col items-center gap-y-2 py-2 text-gray-dark dark:text-gray-400">
+            <IconLock size={24} stroke={2} />
+            <p className="text-xs">Cerrada {closedFronNow}</p>
+          </div>
+        ) : null}
+
+        {neverUsed ? (
+          <div className="flex flex-col items-center gap-y-1 py-2 text-gray-dark dark:text-gray-400">
+            <IconAlertTriangle size={24} stroke={2} />
+            <p className="text-xs tracking-widest">¡Caja nunca usada!</p>
+          </div>
+        ) : null}
+
+        {box.openBox && (
+          <Tooltip
+            label={
+              <div className="flex flex-col items-center">
+                <h4 className="text-sm">Saldo sin la base</h4>
+                <p className="text-xs font-bold tracking-widest">
+                  {currencyFormat(box.balance - box.base)}
+                </p>
+              </div>
+            }
+            withArrow
+            hidden={!box.base}
+          >
+            <p className="py-2 text-center text-xl font-bold tracking-wider">
+              {currencyFormat(box.balance)}
+            </p>
+          </Tooltip>
+        )}
+
+        <div className="mt-2 flex justify-between text-xs text-gray-dark dark:text-gray-400">
+          <div className="flex items-center gap-x-2">
+            <IconDeviceFloppy size={18} />
+            <span>{createdAt}</span>
+          </div>
+          {!createIsSameUpdate && (
+            <div className="flex items-center gap-x-2">
+              <IconEditCircle size={18} />
+              <span>{updatedAt}</span>
+            </div>
+          )}
+        </div>
       </div>
+      {/* Footer */}
+      <footer className="flex justify-center bg-indigo-400 px-4 py-1 dark:bg-header">
+        <div className="flex gap-x-1">
+          {isOpen ? (
+            <Tooltip label="Cerrar caja" color="orange" withArrow>
+              <ActionIcon
+                color="orange"
+                onClick={(
+                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                ) => {
+                  e.stopPropagation();
+                  dispatch(mountBoxToClose(box.id));
+                }}
+              >
+                <IconLock size={14} stroke={2} />
+              </ActionIcon>
+            </Tooltip>
+          ) : (
+            <Tooltip label="Abrir caja" color="green" withArrow>
+              <ActionIcon
+                color="green"
+                onClick={(
+                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                ) => {
+                  e.stopPropagation();
+                  dispatch(mountBoxToOpen(box.id));
+                }}
+              >
+                <IconLockOpen size={14} stroke={2} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
+      </footer>
     </div>
   );
 };

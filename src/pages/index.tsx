@@ -3,14 +3,12 @@ import { useAppSelector } from 'src/store/hooks';
 import { useEffect, useRef } from 'react';
 
 import Layout from 'src/components/Layout';
-import ChartJS from 'chart.js/auto';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import { authSelector } from 'src/features/Auth';
 import Image from 'next/image';
 import buildingPic from '../../public/images/building-page.png';
 
-ChartJS.register();
 dayjs.extend(isLeapYear);
 
 const Home: NextPage = () => {

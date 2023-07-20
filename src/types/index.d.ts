@@ -33,7 +33,7 @@ export interface IValidationErrorResponse {
 
 export type ErrorResponse = Pick<AxiosResponse, 'data' | 'status'>;
 
-export * from 'src/features/Auth/types';
-export * from 'src/features/CategoryPage/types';
-export * from 'src/features/BoxPage/types';
-export * from 'src/features/InvoicePage/types';
+export * from '@/features/Auth/types';
+export * from '@/features/CategoryPage/types';
+export * from '@/features/BoxPage/types';
+export * from '@/features/InvoicePage/types';

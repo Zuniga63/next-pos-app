@@ -1,34 +1,18 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
-import {
-  ActionIcon,
-  Button,
-  Checkbox,
-  Modal,
-  NumberInput,
-  Textarea,
-} from '@mantine/core';
-import {
-  IconCalendar,
-  IconClock,
-  IconDeviceFloppy,
-  IconX,
-} from '@tabler/icons-react';
+import { ActionIcon, Button, Checkbox, Modal, NumberInput, Textarea } from '@mantine/core';
+import { IconCalendar, IconClock, IconDeviceFloppy, IconX } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { IValidationErrors } from 'src/types';
-import { cashFormatter, cashParser, currencyFormat } from 'src/utils';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { IValidationErrors } from '@/types';
+import { cashFormatter, cashParser, currencyFormat } from '@/utils';
 import { DateInput, TimeInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 
 dayjs.extend(isToday);
 
-import {
-  boxPageSelector,
-  hideTransactionForm,
-  storeTransaction,
-} from 'src/features/BoxPage';
+import { boxPageSelector, hideTransactionForm, storeTransaction } from '@/features/BoxPage';
 
 const CreateTransactionForm = () => {
   const [rightNow, setRightNow] = useState(true);
@@ -82,9 +66,7 @@ const CreateTransactionForm = () => {
       isOk = false;
     } else if (typeof amount === 'number' && amount <= 0) {
       validationError.amount.message =
-        amount < 0
-          ? 'El importe no puede ser negativo.'
-          : 'La transacción no puede ser cero (0)';
+        amount < 0 ? 'El importe no puede ser negativo.' : 'La transacción no puede ser cero (0)';
       isOk = false;
     }
 
@@ -205,21 +187,12 @@ const CreateTransactionForm = () => {
   }, [showingMainBox, box?.balance]);
 
   return (
-    <Modal
-      opened={opened}
-      onClose={closeHandler}
-      size="sm"
-      withCloseButton={false}
-    >
+    <Modal opened={opened} onClose={closeHandler} size="sm" withCloseButton={false}>
       <form onSubmit={submitHandler} className="px-4 py-6">
         <header className="mb-4 border-b-2 pb-2 text-center">
-          <h2 className="text-center text-xl font-bold">
-            {' '}
-            Registrar Transacción
-          </h2>
+          <h2 className="text-center text-xl font-bold"> Registrar Transacción</h2>
           <p className="text-xs">
-            {showingMainBox ? 'Caja global' : box?.name} (
-            {currencyFormat(showingMainBox ? globalBalance : balance)})
+            {showingMainBox ? 'Caja global' : box?.name} ({currencyFormat(showingMainBox ? globalBalance : balance)})
           </p>
         </header>
         <div className="mb-4 py-4">
@@ -256,10 +229,7 @@ const CreateTransactionForm = () => {
               onChange={({ currentTarget }) => setTime(currentTarget.value)}
               className="mb-2 md:col-span-2 md:mb-0"
               rightSection={
-                <ActionIcon
-                  onClick={() => timeInputRef.current?.showPicker()}
-                  disabled={rightNow}
-                >
+                <ActionIcon onClick={() => timeInputRef.current?.showPicker()} disabled={rightNow}>
                   <IconClock size="1rem" stroke={1.5} />
                 </ActionIcon>
               }
@@ -298,9 +268,7 @@ const CreateTransactionForm = () => {
           <Checkbox
             label="Es un egreso."
             checked={isExpense}
-            onChange={({ currentTarget }) =>
-              setIsExpense(currentTarget.checked)
-            }
+            onChange={({ currentTarget }) => setIsExpense(currentTarget.checked)}
           />
         </div>
         <footer className="flex items-center justify-between">

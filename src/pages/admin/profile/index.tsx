@@ -1,14 +1,14 @@
 import { Button, PasswordInput } from '@mantine/core';
 import { IconEyeCheck, IconEyeOff, IconLock } from '@tabler/icons-react';
 import axios, { AxiosError } from 'axios';
-import Layout from 'src/components/Layout';
+import Layout from '@/components/Layout';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useAppDispatch } from 'src/store/hooks';
-import { logout } from 'src/features/Auth';
-import { IValidationErrors } from 'src/types';
+import { useAppDispatch } from '@/store/hooks';
+import { logout } from '@/features/Auth';
+import { IValidationErrors } from '@/types';
 
 const ProfilePage: NextPage = () => {
   const [password, setPassword] = useState('');
@@ -53,9 +53,7 @@ const ProfilePage: NextPage = () => {
           }, 1000);
         }
       } else {
-        toast.error(
-          'Error inesperado, consulte la consola para mas información'
-        );
+        toast.error('Error inesperado, consulte la consola para mas información');
         console.log(error);
       }
     } finally {
@@ -72,8 +70,7 @@ const ProfilePage: NextPage = () => {
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium">Actualizar Contraseña</h3>
               <p className="mt-1 text-sm text-gray-400">
-                Aseguresé de que su cuenta esté usando una contraseña larga y
-                aleatoria para mantenerse seguro.
+                Aseguresé de que su cuenta esté usando una contraseña larga y aleatoria para mantenerse seguro.
               </p>
             </div>
           </div>
@@ -87,16 +84,10 @@ const ProfilePage: NextPage = () => {
                   required
                   className="col-span-6 md:col-span-4"
                   visibilityToggleIcon={({ reveal, size }) =>
-                    reveal ? (
-                      <IconEyeOff size={size} />
-                    ) : (
-                      <IconEyeCheck size={size} />
-                    )
+                    reveal ? <IconEyeOff size={size} /> : <IconEyeCheck size={size} />
                   }
                   value={password}
-                  onChange={({ currentTarget }) =>
-                    setPassword(currentTarget.value)
-                  }
+                  onChange={({ currentTarget }) => setPassword(currentTarget.value)}
                   disabled={loading}
                   autoComplete="current-password"
                 />
@@ -106,16 +97,10 @@ const ProfilePage: NextPage = () => {
                   required
                   className="col-span-6 md:col-span-4"
                   visibilityToggleIcon={({ reveal, size }) =>
-                    reveal ? (
-                      <IconEyeOff size={size} />
-                    ) : (
-                      <IconEyeCheck size={size} />
-                    )
+                    reveal ? <IconEyeOff size={size} /> : <IconEyeCheck size={size} />
                   }
                   value={newPassword}
-                  onChange={({ currentTarget }) =>
-                    setNewPassword(currentTarget.value)
-                  }
+                  onChange={({ currentTarget }) => setNewPassword(currentTarget.value)}
                   disabled={loading}
                   error={errors?.newPassword?.message}
                   autoComplete="new-password"
@@ -126,16 +111,10 @@ const ProfilePage: NextPage = () => {
                   required
                   className="col-span-6 md:col-span-4"
                   visibilityToggleIcon={({ reveal, size }) =>
-                    reveal ? (
-                      <IconEyeOff size={size} />
-                    ) : (
-                      <IconEyeCheck size={size} />
-                    )
+                    reveal ? <IconEyeOff size={size} /> : <IconEyeCheck size={size} />
                   }
                   value={passwordConfirm}
-                  onChange={({ currentTarget }) =>
-                    setConfirmPassword(currentTarget.value)
-                  }
+                  onChange={({ currentTarget }) => setConfirmPassword(currentTarget.value)}
                   disabled={loading}
                   error={errors?.passwordConfirm?.message}
                   autoComplete="new-password"

@@ -3,10 +3,10 @@ import { IconArrowsExchange, IconTrash } from '@tabler/icons-react';
 import axios, { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React from 'react';
-import { boxPageSelector, removeTransaction } from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { ITransaction } from 'src/types';
-import { currencyFormat } from 'src/utils';
+import { boxPageSelector, removeTransaction } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { ITransaction } from '@/types';
+import { currencyFormat } from '@/utils';
 import Swal from 'sweetalert2';
 
 interface Props {
@@ -16,15 +16,11 @@ const TransactionTableItem = ({ transaction }: Props) => {
   const { showingMainBox: isMainBox } = useAppSelector(boxPageSelector);
   const dispatch = useAppDispatch();
   const otherBox =
-    isMainBox && transaction.cashbox && typeof transaction.cashbox !== 'string'
-      ? transaction.cashbox
-      : null;
+    isMainBox && transaction.cashbox && typeof transaction.cashbox !== 'string' ? transaction.cashbox : null;
 
   const deleteTransaction = async () => {
     const { id, description, amount } = transaction;
-    const url = otherBox
-      ? `/cashboxes/minors/${otherBox.id}/transactions/${id}`
-      : `/cashboxes/main/transactions/${id}`;
+    const url = otherBox ? `/cashboxes/minors/${otherBox.id}/transactions/${id}` : `/cashboxes/main/transactions/${id}`;
 
     const message = /*html */ `
       La transacción "<strong>${description}</strong>"
@@ -47,7 +43,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
           await axios.delete<ITransaction>(url);
           result.ok = true;
           result.message = `¡La transacción por valor de <strong>${currencyFormat(
-            amount
+            amount,
           )}</strong> fue eliminada con éxito!`;
 
           dispatch(removeTransaction(transaction.id));
@@ -68,9 +64,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
 
     if (result.isConfirmed && result.value) {
       const { ok, message } = result.value;
-      const title = ok
-        ? '<strong>¡Transacción Eliminada!</strong>'
-        : '¡Ops, algo salio mal!';
+      const title = ok ? '<strong>¡Transacción Eliminada!</strong>' : '¡Ops, algo salio mal!';
       const icon = ok ? 'success' : 'error';
 
       Swal.fire({ title, html: message, icon });
@@ -78,23 +72,13 @@ const TransactionTableItem = ({ transaction }: Props) => {
   };
 
   return (
-    <tr
-      className={`${transaction.isTransfer ? 'italic' : ''} ${
-        otherBox ? 'opacity-40' : ''
-      }`}
-    >
+    <tr className={`${transaction.isTransfer ? 'italic' : ''} ${otherBox ? 'opacity-40' : ''}`}>
       {/* TRANSACTION DATE */}
       <td>
         <div className="whitespace-nowrap text-center">
-          <p className="hidden text-sm lg:block">
-            {dayjs(transaction.transactionDate).format('DD/MM/YY hh:mm a')}
-          </p>
-          <p className="text-sm lg:hidden">
-            {dayjs(transaction.transactionDate).format('DD/MM/YY')}
-          </p>
-          <p className="hidden text-xs lg:block">
-            {dayjs(transaction.transactionDate).fromNow()}
-          </p>
+          <p className="hidden text-sm lg:block">{dayjs(transaction.transactionDate).format('DD/MM/YY hh:mm a')}</p>
+          <p className="text-sm lg:hidden">{dayjs(transaction.transactionDate).format('DD/MM/YY')}</p>
+          <p className="hidden text-xs lg:block">{dayjs(transaction.transactionDate).fromNow()}</p>
         </div>
       </td>
 
@@ -102,13 +86,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
       <td className="text-sm">
         <div>
           <div className="flex items-center gap-x-2">
-            {transaction.isTransfer ? (
-              <IconArrowsExchange
-                size="1.5rem"
-                className="text-amber-500"
-                stroke={2}
-              />
-            ) : null}
+            {transaction.isTransfer ? <IconArrowsExchange size="1.5rem" className="text-amber-500" stroke={2} /> : null}
             <p className="text-xs lg:text-base">{transaction.description}</p>
           </div>
           {otherBox ? (
@@ -121,11 +99,7 @@ const TransactionTableItem = ({ transaction }: Props) => {
       </td>
 
       {/* AMOUNT */}
-      <td
-        className={`text-right ${
-          transaction.amount < 0 ? 'text-red-500' : 'text-emerald-500'
-        }`}
-      >
+      <td className={`text-right ${transaction.amount < 0 ? 'text-red-500' : 'text-emerald-500'}`}>
         {currencyFormat(transaction.amount)}
       </td>
 

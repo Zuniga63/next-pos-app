@@ -1,26 +1,14 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { FormEvent, useEffect, useState } from 'react';
-import { SigninData } from 'src/types';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { SigninData } from '@/types';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-import AuthenticationCard from 'src/components/AuthenticationCard';
-import {
-  TextInput,
-  PasswordInput,
-  Alert,
-  Notification,
-  Button,
-} from '@mantine/core';
-import {
-  IconLock,
-  IconEyeOff,
-  IconEyeCheck,
-  IconAlertCircle,
-  IconMail,
-} from '@tabler/icons-react';
+import AuthenticationCard from '@/components/AuthenticationCard';
+import { TextInput, PasswordInput, Alert, Notification, Button } from '@mantine/core';
+import { IconLock, IconEyeOff, IconEyeCheck, IconAlertCircle, IconMail } from '@tabler/icons-react';
 import Image from 'next/image';
-import { authSelector, signin } from 'src/features/Auth';
+import { authSelector, signin } from '@/features/Auth';
 import { getCookie } from 'cookies-next';
 
 const Login: NextPage = () => {
@@ -31,8 +19,7 @@ const Login: NextPage = () => {
   //---------------------------------------------------------------------------
   // AUTH STATE
   //---------------------------------------------------------------------------
-  const { loading, error, authIsSuccess, isAuth } =
-    useAppSelector(authSelector);
+  const { loading, error, authIsSuccess, isAuth } = useAppSelector(authSelector);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -87,11 +74,7 @@ const Login: NextPage = () => {
               required
               icon={<IconLock size={20} />}
               visibilityToggleIcon={({ reveal, size }) =>
-                reveal ? (
-                  <IconEyeOff size={size} />
-                ) : (
-                  <IconEyeCheck size={size} />
-                )
+                reveal ? <IconEyeOff size={size} /> : <IconEyeCheck size={size} />
               }
               disabled={loading}
             />

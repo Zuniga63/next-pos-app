@@ -1,24 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { IBox } from 'src/types';
-import {
-  IconAlertTriangle,
-  IconDeviceFloppy,
-  IconEditCircle,
-  IconLock,
-  IconLockOpen,
-} from '@tabler/icons-react';
-import { currencyFormat } from 'src/utils';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { IBox } from '@/types';
+import { IconAlertTriangle, IconDeviceFloppy, IconEditCircle, IconLock, IconLockOpen } from '@tabler/icons-react';
+import { currencyFormat } from '@/utils';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { ActionIcon, Tooltip } from '@mantine/core';
 import Swal from 'sweetalert2';
 import axios, { AxiosError } from 'axios';
-import {
-  fetchBoxes,
-  removeBox,
-  mountBoxToOpen,
-  mountBoxToClose,
-  boxPageSelector,
-} from 'src/features/BoxPage';
+import { fetchBoxes, removeBox, mountBoxToOpen, mountBoxToClose, boxPageSelector } from '@/features/BoxPage';
 import dayjs from 'dayjs';
 import CashBoxCardHeader from './CashBoxCardHeader';
 
@@ -111,10 +99,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
     let dateRefreshRate: number | undefined;
     const now = dayjs();
 
-    timeDiffs.push(
-      now.diff(box.createdAt, timeUnit),
-      now.diff(box.updatedAt, timeUnit)
-    );
+    timeDiffs.push(now.diff(box.createdAt, timeUnit), now.diff(box.updatedAt, timeUnit));
 
     if (box.openBox) {
       timeDiffs.push(now.diff(box.openBox, timeUnit));
@@ -145,7 +130,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
   }, [boxSelected]);
 
   return (
-    <div className="overflow-hidden rounded-t-lg rounded-b border shadow-sm dark:border-header dark:shadow-header">
+    <div className="overflow-hidden rounded-b rounded-t-lg border shadow-sm dark:border-header dark:shadow-header">
       <CashBoxCardHeader
         boxId={box.id}
         boxName={box.name}
@@ -159,8 +144,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
         {box.openBox ? (
           <div className="flex justify-between text-xs text-gray-dark dark:text-gray-400">
             <p>
-              Base:{' '}
-              <span className="font-bold">{currencyFormat(box.base)}</span>
+              Base: <span className="font-bold">{currencyFormat(box.base)}</span>
             </p>
             <div className="flex items-center gap-x-2 ">
               <IconLockOpen size={18} />
@@ -188,17 +172,13 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
             label={
               <div className="flex flex-col items-center">
                 <h4 className="text-sm">Saldo sin la base</h4>
-                <p className="text-xs font-bold tracking-widest">
-                  {currencyFormat(box.balance - box.base)}
-                </p>
+                <p className="text-xs font-bold tracking-widest">{currencyFormat(box.balance - box.base)}</p>
               </div>
             }
             withArrow
             hidden={!box.base}
           >
-            <p className="py-2 text-center text-xl font-bold tracking-wider">
-              {currencyFormat(box.balance)}
-            </p>
+            <p className="py-2 text-center text-xl font-bold tracking-wider">{currencyFormat(box.balance)}</p>
           </Tooltip>
         )}
 
@@ -222,9 +202,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
             <Tooltip label="Cerrar caja" color="orange" withArrow>
               <ActionIcon
                 color="orange"
-                onClick={(
-                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                ) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                   e.stopPropagation();
                   dispatch(mountBoxToClose(box.id));
                 }}
@@ -236,9 +214,7 @@ const CashBoxCard: React.FC<Props> = ({ box }) => {
             <Tooltip label="Abrir caja" color="green" withArrow>
               <ActionIcon
                 color="green"
-                onClick={(
-                  e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                ) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                   e.stopPropagation();
                   dispatch(mountBoxToOpen(box.id));
                 }}

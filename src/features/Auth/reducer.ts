@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { setCookie } from 'cookies-next';
-import { buildCookieOption } from 'src/utils';
+import { buildCookieOption } from '@/utils';
 import { authenticate, authSuccessIsNotify, logout, signin } from './actions';
 import { AuthState, AuthErrorResponse } from './types';
 import axios from 'axios';

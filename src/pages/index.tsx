@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
-import { useAppSelector } from 'src/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 import { useEffect, useRef } from 'react';
 
-import Layout from 'src/components/Layout';
+import Layout from '@/components/Layout';
 import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
-import { authSelector } from 'src/features/Auth';
+import { authSelector } from '@/features/Auth';
 import Image from 'next/image';
 import buildingPic from '../../public/images/building-page.png';
 
@@ -26,9 +26,7 @@ const Home: NextPage = () => {
     <Layout title="Dashboard">
       <div className="px-4 pb-40 lg:px-8">
         <div className="mb-2 flex flex-col items-center justify-center py-8 text-dark dark:text-light">
-          <h1 className="m-0 text-center text-2xl leading-tight">
-            Bienvenido {user?.name}
-          </h1>
+          <h1 className="m-0 text-center text-2xl leading-tight">Bienvenido {user?.name}</h1>
           <p className="mt-4 text-center text-sm leading-tight">
             Este panel informativo se encuentra actualmente en construción.
           </p>

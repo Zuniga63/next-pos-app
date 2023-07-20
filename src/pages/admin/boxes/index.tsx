@@ -1,20 +1,16 @@
-import BoxList from 'src/components/BoxPage/BoxList';
-import BoxShow from 'src/components/BoxPage/BoxShow';
-import CloseBoxForm from 'src/components/BoxPage/CloseBoxForm';
-import CreateForm from 'src/components/BoxPage/CreateForm';
-import OpenBoxForm from 'src/components/BoxPage/OpenBoxForm';
-import Layout from 'src/components/Layout';
+import BoxList from '@/components/BoxPage/BoxList';
+import BoxShow from '@/components/BoxPage/BoxShow';
+import CloseBoxForm from '@/components/BoxPage/CloseBoxForm';
+import CreateForm from '@/components/BoxPage/CreateForm';
+import OpenBoxForm from '@/components/BoxPage/OpenBoxForm';
+import Layout from '@/components/Layout';
 import { NextPage } from 'next';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import {
-  fetchBoxes,
-  getGlobalBalance,
-  unmountTransactions,
-} from 'src/features/BoxPage';
-import CreateTransactionForm from 'src/components/BoxPage/CreateTransactionForm';
-import { authSelector } from 'src/features/Auth';
-import CashTransferForm from 'src/components/BoxPage/CashTransferForm';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchBoxes, getGlobalBalance, unmountTransactions } from '@/features/BoxPage';
+import CreateTransactionForm from '@/components/BoxPage/CreateTransactionForm';
+import { authSelector } from '@/features/Auth';
+import CashTransferForm from '@/components/BoxPage/CashTransferForm';
 
 const BoxesPage: NextPage = () => {
   const { isAuth } = useAppSelector(authSelector);

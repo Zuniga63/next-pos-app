@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { ErrorResponse } from 'src/types';
+import { ErrorResponse } from '@/types';
 import {
   closeBox,
   fetchBoxes,
@@ -359,9 +359,7 @@ export const boxPageReducer = createReducer(initialState, builder => {
   // --------------------------------------------------------------------------
   builder
     .addCase(showCashTransferForm, state => {
-      state.cashTransferFormOpened = Boolean(
-        state.showingMainBox || state.boxSelected
-      );
+      state.cashTransferFormOpened = Boolean(state.showingMainBox || state.boxSelected);
     })
     .addCase(hideCashTransferForm, state => {
       state.cashTransferFormOpened = false;

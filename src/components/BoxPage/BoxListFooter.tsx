@@ -1,15 +1,10 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import {
-  IconBox,
-  IconLockOpen,
-  IconLock,
-  IconWorldDollar,
-} from '@tabler/icons-react';
+import { IconBox, IconLockOpen, IconLock, IconWorldDollar } from '@tabler/icons-react';
 import React, { useEffect, useState } from 'react';
-import { authSelector } from 'src/features/Auth';
-import { boxPageSelector, mountGlobalTransactions } from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { currencyFormat } from 'src/utils';
+import { authSelector } from '@/features/Auth';
+import { boxPageSelector, mountGlobalTransactions } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { currencyFormat } from '@/utils';
 
 const BoxListFooter = () => {
   const [openBoxes, setOpenBoxes] = useState(0);
@@ -18,11 +13,7 @@ const BoxListFooter = () => {
   const [balanceWithoutBase, setBalanceWithoutBase] = useState(0);
   const [balanceIsEquals, setBalanceIsEquals] = useState(false);
 
-  const {
-    boxes,
-    changeIsSuccess,
-    balance: globalBalance,
-  } = useAppSelector(boxPageSelector);
+  const { boxes, changeIsSuccess, balance: globalBalance } = useAppSelector(boxPageSelector);
   const { isAdmin } = useAppSelector(authSelector);
   const dispatch = useAppDispatch();
 
@@ -86,20 +77,14 @@ const BoxListFooter = () => {
             label={
               <div className="flex flex-col items-center">
                 <p className="text-xs">Saldo Global</p>
-                <p className="text-sm font-bold tracking-widest">
-                  {currencyFormat(globalBalance)}
-                </p>
+                <p className="text-sm font-bold tracking-widest">{currencyFormat(globalBalance)}</p>
               </div>
             }
             color="violet"
             withArrow
             arrowSize={12}
           >
-            <ActionIcon
-              color="grape"
-              size={40}
-              onClick={() => dispatch(mountGlobalTransactions())}
-            >
+            <ActionIcon color="grape" size={40} onClick={() => dispatch(mountGlobalTransactions())}>
               <IconWorldDollar />
             </ActionIcon>
           </Tooltip>
@@ -108,16 +93,12 @@ const BoxListFooter = () => {
         {/* BALANCES */}
         <div className="flex flex-col items-end justify-center">
           <Tooltip label="Saldo">
-            <p className="text-sm font-bold text-emerald-500">
-              {currencyFormat(balance)}
-            </p>
+            <p className="text-sm font-bold text-emerald-500">{currencyFormat(balance)}</p>
           </Tooltip>
 
           {!balanceIsEquals ? (
             <Tooltip label="Saldo sin bases">
-              <p className="text-sm font-bold text-green-500">
-                {currencyFormat(balanceWithoutBase)}
-              </p>
+              <p className="text-sm font-bold text-green-500">{currencyFormat(balanceWithoutBase)}</p>
             </Tooltip>
           ) : null}
         </div>

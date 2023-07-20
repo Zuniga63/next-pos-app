@@ -1,14 +1,9 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
 import { IconCirclePlus, IconRefresh } from '@tabler/icons-react';
 import React from 'react';
-import { authSelector } from 'src/features/Auth';
-import {
-  boxPageSelector,
-  fetchBoxes,
-  getGlobalBalance,
-  showCreateForm,
-} from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { authSelector } from '@/features/Auth';
+import { boxPageSelector, fetchBoxes, getGlobalBalance, showCreateForm } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 const BoxListHeader = () => {
   const { fetchLoading } = useAppSelector(boxPageSelector);
@@ -34,10 +29,7 @@ const BoxListHeader = () => {
           </Tooltip>
 
           <Tooltip label="Agregar caja" withArrow>
-            <ActionIcon
-              onClick={() => dispatch(showCreateForm())}
-              color="green"
-            >
+            <ActionIcon onClick={() => dispatch(showCreateForm())} color="green">
               <IconCirclePlus size={24} />
             </ActionIcon>
           </Tooltip>

@@ -27,10 +27,7 @@ export const buildCookieOption = (duration = 1) => ({
 //-----------------------------------------------------------------------------
 // UTIL FOR FORMAT CURRENCY
 //-----------------------------------------------------------------------------
-export function currencyFormat(
-  value: string | number | undefined,
-  fractionDigits = 0
-): string {
+export function currencyFormat(value: string | number | undefined, fractionDigits = 0): string {
   const parseValue = parseFloat(String(value));
 
   if (!isNaN(parseValue)) {
@@ -49,9 +46,7 @@ export function currencyFormat(
 }
 
 export function cashFormatter(value: string) {
-  return !Number.isNaN(parseFloat(value))
-    ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-    : '$ ';
+  return !Number.isNaN(parseFloat(value)) ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : '$ ';
 }
 
 export function cashParser(value: string) {
@@ -116,10 +111,7 @@ export const CHART_COLORS = {
   indigo: '#2B4162',
 };
 
-export function transparentize(
-  value: string | number[] | Color | RGBA,
-  opacity?: number
-) {
+export function transparentize(value: string | number[] | Color | RGBA, opacity?: number) {
   const alpha = opacity === undefined ? 0.5 : 1 - opacity;
   return colorLib(value).alpha(alpha).rgbString();
 }

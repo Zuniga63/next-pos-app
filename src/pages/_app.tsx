@@ -3,11 +3,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/es-mx';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import type { AppProps } from 'next/app';
-import {
-  ColorScheme,
-  ColorSchemeProvider,
-  MantineProvider,
-} from '@mantine/core';
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import { toast, ToastContainer } from 'react-toastify';
 
 // For route progress with NProgress
@@ -16,22 +12,18 @@ import NProgress from 'nprogress';
 
 // Store
 import { Provider } from 'react-redux';
-import { store } from 'src/store';
+import { store } from '@/store';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { createWrapper } from 'next-redux-wrapper';
 
 // Styles
 import '../styles/globals.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'nprogress/nprogress.css';
-import { emCache } from 'src/utils/emotionCache';
+import { emCache } from '@/utils/emotionCache';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
-import {
-  authSelector,
-  authSuccessIsNotify,
-  authenticate,
-} from 'src/features/Auth';
+import { authSelector, authSuccessIsNotify, authenticate } from '@/features/Auth';
 import { DatesProvider } from '@mantine/dates';
 
 // Config
@@ -116,10 +108,7 @@ export function MyApp({ Component, pageProps }: AppProps) {
   }, [authIsSuccess]);
 
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
-      toggleColorScheme={toggleColorScheme}
-    >
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider
         withGlobalStyles
         theme={{

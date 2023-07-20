@@ -5,19 +5,16 @@ import { SigninData, AuthResponse, IUser } from './types';
 
 const baseUrl = '/auth/local';
 
-export const signin = createAsyncThunk(
-  'auth/signin',
-  async (data: SigninData, { rejectWithValue }) => {
-    const url = `${baseUrl}/singin`;
-    try {
-      const res = await axios.post<AuthResponse>(url, data);
-      return res.data;
-    } catch (error) {
-      if (!axios.isAxiosError(error) || !error.response) throw error;
-      return rejectWithValue(error.response.data);
-    }
+export const signin = createAsyncThunk('auth/signin', async (data: SigninData, { rejectWithValue }) => {
+  const url = `${baseUrl}/singin`;
+  try {
+    const res = await axios.post<AuthResponse>(url, data);
+    return res.data;
+  } catch (error) {
+    if (!axios.isAxiosError(error) || !error.response) throw error;
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 export const authenticate = createAsyncThunk('auth/authenticate', async () => {
   const url = `${baseUrl}/profile`;

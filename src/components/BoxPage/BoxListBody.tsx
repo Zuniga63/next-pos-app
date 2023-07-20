@@ -1,15 +1,14 @@
 import { ScrollArea } from '@mantine/core';
 import React from 'react';
-import { boxPageSelector } from 'src/features/BoxPage';
-import { useAppSelector } from 'src/store/hooks';
+import { boxPageSelector } from '@/features/BoxPage';
+import { useAppSelector } from '@/store/hooks';
 import BoxListLoading from './BoxListLoading';
 
 interface Props {
   children: React.ReactNode;
 }
 const BoxListBody = ({ children }: Props) => {
-  const { fetchLoading: loading, firstFetchLoading: firstLoading } =
-    useAppSelector(boxPageSelector);
+  const { fetchLoading: loading, firstFetchLoading: firstLoading } = useAppSelector(boxPageSelector);
 
   return loading && firstLoading ? (
     <BoxListLoading />

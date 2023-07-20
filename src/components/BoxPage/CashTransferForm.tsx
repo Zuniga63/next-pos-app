@@ -1,24 +1,13 @@
-import {
-  Button,
-  Modal,
-  Notification,
-  NumberInput,
-  Select,
-  Textarea,
-} from '@mantine/core';
+import { Button, Modal, Notification, NumberInput, Select, Textarea } from '@mantine/core';
 import { IconArrowsExchange2, IconX } from '@tabler/icons-react';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import {
-  boxPageSelector,
-  hideCashTransferForm,
-  storeCashTransfer,
-} from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { ICashTransferRequest, IValidationErrors } from 'src/types';
-import { cashFormatter, cashParser, currencyFormat } from 'src/utils';
+import { boxPageSelector, hideCashTransferForm, storeCashTransfer } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { ICashTransferRequest, IValidationErrors } from '@/types';
+import { cashFormatter, cashParser, currencyFormat } from '@/utils';
 
 const CashTransferForm = () => {
   const {
@@ -64,15 +53,12 @@ const CashTransferForm = () => {
       isOk = false;
     } else if (typeof amount === 'number' && amount <= 0) {
       validationError.amount.message =
-        amount < 0
-          ? 'El importe no puede ser negativo.'
-          : 'La transferencia no puede ser cero (0)';
+        amount < 0 ? 'El importe no puede ser negativo.' : 'La transferencia no puede ser cero (0)';
       isOk = false;
     }
 
     if (!addresseeBox) {
-      validationError.addresseeBoxId.message =
-        'Se debe seleccionar una caja destino';
+      validationError.addresseeBoxId.message = 'Se debe seleccionar una caja destino';
       isOk = false;
     }
 
@@ -133,24 +119,13 @@ const CashTransferForm = () => {
     <Modal opened={opened} title="Transferir fondos" onClose={close}>
       {/* SENDER BOX */}
       <div className="mb-6 rounded-md border border-amber-400 px-4 py-2">
-        <p className="mb-2 border-b border-amber-500 text-center text-lg font-bold tracking-wider">
-          Caja Origen
-        </p>
+        <p className="mb-2 border-b border-amber-500 text-center text-lg font-bold tracking-wider">Caja Origen</p>
         <div className="flex items-center justify-between gap-x-4 px-4">
-          <h3 className="text-center text-xs italic line-clamp-2">
-            {boxSelected?.name}
-          </h3>
-          <p className="text-xs font-bold tracking-widest">
-            {currencyFormat(boxSelected?.balance)}
-          </p>
+          <h3 className="line-clamp-2 text-center text-xs italic">{boxSelected?.name}</h3>
+          <p className="text-xs font-bold tracking-widest">{currencyFormat(boxSelected?.balance)}</p>
         </div>
         {errors?.senderBoxId?.message ? (
-          <Notification
-            color="red"
-            icon={<IconX size="1rem" />}
-            className="mt-4"
-            withCloseButton={false}
-          >
+          <Notification color="red" icon={<IconX size="1rem" />} className="mt-4" withCloseButton={false}>
             {errors.senderBoxId.message}
           </Notification>
         ) : null}
@@ -213,12 +188,7 @@ const CashTransferForm = () => {
             Cancelar
           </Button>
 
-          <Button
-            leftIcon={<IconArrowsExchange2 size={14} stroke={2} />}
-            loading={loading}
-            type="submit"
-            size="xs"
-          >
+          <Button leftIcon={<IconArrowsExchange2 size={14} stroke={2} />} loading={loading} type="submit" size="xs">
             Transferir Fondos
           </Button>
         </footer>

@@ -3,27 +3,39 @@ import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token');
-  let isAuthenticated = false;
-  const isLoginPage = request.nextUrl.pathname.startsWith('/login');
+  const isLoginPage = request.nextUrl.pathname === '/';
 
-  if (token) {
-    const baseUrl = process.env.NEXT_PUBLIC_URL_API;
-    const url = `${baseUrl}/auth/local/profile`;
-    const headers = { Authorization: `Bearer ${token.value}` };
-    try {
-      const res = await fetch(url, { headers });
-      const data = await res.json();
-      isAuthenticated = data && data.isActive && data.isAdmin;
-    } catch (error) {
-      console.log(error);
-    }
+  if (!token && isLoginPage) return NextResponse.next();
+
+  const baseUrl = process.env.NEXT_PUBLIC_URL_API;
+  const url = `${baseUrl}/auth/local/profile`;
+  const headers = { Authorization: `Bearer ${token?.value}` };
+  let isAuthenticated = false;
+
+  try {
+    const res = await fetch(url, { headers });
+    const data = await res.json();
+    isAuthenticated = data && data.isActive && data.isAdmin;
+  } catch (error) {
+    console.log(error);
   }
 
-  if (isLoginPage && isAuthenticated) return NextResponse.redirect(new URL('/', request.url));
-  if ((isLoginPage && !isAuthenticated) || isAuthenticated) return NextResponse.next();
-  else return NextResponse.redirect(new URL('/login', request.url));
+  if (isAuthenticated) {
+    if (isLoginPage) return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.next();
+  } else {
+    if (isLoginPage) return NextResponse.next();
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 }
 
 export const config = {
-  matcher: ['/', '/login', '/admin/:path*'],
+  /**
+   * Match all request paths execpt for the ones starting with:
+   * - api (API routes)
+   * - _next/static (stactic files)
+   * - _next/image (image optimization files)
+   * - favicon.ico (favicon file)
+   */
+  matcher: ['/((?!api|_next/static|_nex/image|favicon.ico).*)'],
 };

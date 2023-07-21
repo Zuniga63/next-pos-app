@@ -36,6 +36,7 @@ export const config = {
    * - _next/static (stactic files)
    * - _next/image (image optimization files)
    * - favicon.ico (favicon file)
+   * - image on public folder
    */
-  matcher: ['/((?!api|_next/static|_nex/image|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_nex/image|images|favicon.ico).*)'],
 };

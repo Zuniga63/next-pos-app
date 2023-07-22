@@ -26,9 +26,8 @@ module.exports = {
         header: '#161b22',
         'btn-bg': '#21262d',
       },
-      screens: {
-        xxs: '180px',
-        '3xl': '1920px',
+      backgroundImage: {
+        login: 'url(/images/bg-login.jpg)',
       },
     },
   },

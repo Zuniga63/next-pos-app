@@ -1,5 +1,5 @@
 import { loginUser } from '@/services/auth.service';
-import { saveCredentials } from '@/store/loginPageStore';
+import { saveCredentials } from '@/store/authStore';
 import { SigninData } from '@/types';
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';

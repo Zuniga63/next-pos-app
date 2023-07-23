@@ -17,7 +17,7 @@ export const Links = [
   {
     id: 1,
     name: 'Dashboard',
-    path: '/',
+    path: '/dashboard',
     active: false,
     Icon: IconDashboard,
   },

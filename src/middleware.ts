@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAuthenticated) {
-    if (isLoginPage) return NextResponse.redirect(new URL('/dashboard', request.url));
+    if (isLoginPage) return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     return NextResponse.next();
   } else {
     if (isLoginPage) return NextResponse.next();
@@ -38,5 +38,5 @@ export const config = {
    * - favicon.ico (favicon file)
    * - image on public folder
    */
-  matcher: ['/((?!api|_next/static|_nex/image|images|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)'],
 };

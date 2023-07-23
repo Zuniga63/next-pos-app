@@ -15,7 +15,7 @@ export default function UserAvatar() {
 
   const logoutHandle = () => {
     dispatch(logout());
-    router.push('/login');
+    router.push('/');
   };
 
   useEffect(() => {

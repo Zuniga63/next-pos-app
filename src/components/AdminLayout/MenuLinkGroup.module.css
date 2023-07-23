@@ -1,0 +1,3 @@
+.active {
+  @apply bg-cyan-400 text-white hover:text-dark;
+}

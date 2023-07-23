@@ -1,10 +1,10 @@
 import { loginUser } from '@/services/auth.service';
-import { saveCredentials } from '@/store/loginPageStore';
+import { saveCredentials } from '@/store/authStore';
 import { SigninData } from '@/types';
 import { useToast } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next-nprogress-bar';
 import { useState } from 'react';
 
 export function useLoginUser() {
@@ -23,7 +23,7 @@ export function useLoginUser() {
 
       if (user && access_token) {
         saveCredentials({ user, token: access_token });
-        router.push('/admin/dashboard');
+        router.push('/dashboard');
       }
     },
     onError: error => {

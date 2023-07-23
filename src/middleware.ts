@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAuthenticated) {
-    if (isLoginPage) return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+    if (isLoginPage) return NextResponse.redirect(new URL('/dashboard', request.url));
     return NextResponse.next();
   } else {
     if (isLoginPage) return NextResponse.next();

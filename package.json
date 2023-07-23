@@ -32,6 +32,7 @@
     "dayjs": "1.11.9",
     "framer-motion": "10.13.0",
     "next": "13.4.10",
+    "next-nprogress-bar": "2.0.3",
     "next-redux-wrapper": "7.0.5",
     "nprogress": "0.2.0",
     "react": "18.2.0",

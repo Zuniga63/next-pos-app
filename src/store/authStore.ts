@@ -23,5 +23,7 @@ export const saveCredentials = ({ user, token }: { user: IUser; token: string })
 };
 
 export const clearCredentials = () => {
+  setCookie('access_token', '', buildCookieOption(0));
+  axios.defaults.headers.common.Authorization = '';
   return useLoginStore.setState(() => ({ user: undefined, isAuth: false, isAdmin: false }));
 };

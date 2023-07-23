@@ -19,7 +19,7 @@ class MyDocument extends Document {
             />
             <link rel="shortcut icon" href={process.env.NEXT_PUBLIC_BRAND_LOGO_URL || ''} type="image/x-icon" />
           </Head>
-          <body className="bg-light dark:bg-defaul-body">
+          <body className="bg-light font-sans dark:bg-defaul-body">
             <Main />
             <NextScript />
           </body>

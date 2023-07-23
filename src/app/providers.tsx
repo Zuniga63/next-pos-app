@@ -1,5 +1,4 @@
 'use client';
-
 import { theme } from '@/config/chakra-theme';
 import queryClient from '@/config/queryClient';
 import { CacheProvider } from '@chakra-ui/next-js';
@@ -14,7 +13,7 @@ type Props = {
 export function Providers({ children }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
-      <CacheProvider>
+      <CacheProvider prepend={false}>
         <ChakraProvider theme={theme}>{children}</ChakraProvider>
       </CacheProvider>
       <ReactQueryDevtools initialIsOpen={false} />

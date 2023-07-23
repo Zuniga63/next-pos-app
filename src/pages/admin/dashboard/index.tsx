@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import { authSelector } from '@/features/Auth';
 import Image from 'next/image';
-import buildingPic from '../../public/images/building-page.png';
+import buildingPic from 'public/images/building-page.png';
 
 dayjs.extend(isLeapYear);
 

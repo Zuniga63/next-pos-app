@@ -111,7 +111,7 @@ const BoxShow = () => {
             </div>
           </header>
 
-          <ScrollArea className="relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header 3xl:h-[40rem]">
+          <ScrollArea className="3xl:h-[40rem] relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header">
             {allTransactions.length > 0 ? (
               <TransactionTable transactions={transactions} />
             ) : (

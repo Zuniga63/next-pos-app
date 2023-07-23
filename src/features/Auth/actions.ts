@@ -1,7 +1,7 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
-import { SigninData, AuthResponse, IUser } from './types';
+import { SigninData, AuthResponse, IUser } from '@/types';
 
 const baseUrl = '/auth/local';
 

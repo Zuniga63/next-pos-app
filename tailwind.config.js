@@ -7,9 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-body)', 'sans-serif', ...defaultTheme.fontFamily.sans],
+        sans: ['var(--font-body)', 'Roboto', 'sans-serif', ...defaultTheme.fontFamily.sans],
         display: ['var(--font-heading)', 'cursive', ...defaultTheme.fontFamily.sans],
-        hand: ['Dancing Script', 'cursive', ...defaultTheme.fontFamily.sans],
       },
       zIndex: {
         back: '-1',

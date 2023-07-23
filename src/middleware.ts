@@ -3,29 +3,40 @@ import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token');
-  let isAuthenticated = false;
-  const isLoginPage = request.nextUrl.pathname.startsWith('/login');
+  const isLoginPage = request.nextUrl.pathname === '/';
 
-  if (token) {
-    const baseUrl = process.env.NEXT_PUBLIC_URL_API;
-    const url = `${baseUrl}/auth/local/profile`;
-    const headers = { Authorization: `Bearer ${token.value}` };
-    try {
-      const res = await fetch(url, { headers });
-      const data = await res.json();
-      isAuthenticated = data && data.isActive && data.isAdmin;
-    } catch (error) {
-      console.log(error);
-    }
+  if (!token && isLoginPage) return NextResponse.next();
+
+  const baseUrl = process.env.NEXT_PUBLIC_URL_API;
+  const url = `${baseUrl}/auth/local/profile`;
+  const headers = { Authorization: `Bearer ${token?.value}` };
+  let isAuthenticated = false;
+
+  try {
+    const res = await fetch(url, { headers });
+    const data = await res.json();
+    isAuthenticated = data && data.isActive && data.isAdmin;
+  } catch (error) {
+    console.log(error);
   }
 
-  if (isLoginPage && isAuthenticated)
-    return NextResponse.redirect(new URL('/', request.url));
-  if ((isLoginPage && !isAuthenticated) || isAuthenticated)
+  if (isAuthenticated) {
+    if (isLoginPage) return NextResponse.redirect(new URL('/admin/dashboard', request.url));
     return NextResponse.next();
-  else return NextResponse.redirect(new URL('/login', request.url));
+  } else {
+    if (isLoginPage) return NextResponse.next();
+    return NextResponse.redirect(new URL('/', request.url));
+  }
 }
 
 export const config = {
-  matcher: ['/', '/login', '/admin/:path*'],
+  /**
+   * Match all request paths execpt for the ones starting with:
+   * - api (API routes)
+   * - _next/static (stactic files)
+   * - _next/image (image optimization files)
+   * - favicon.ico (favicon file)
+   * - image on public folder
+   */
+  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico).*)'],
 };

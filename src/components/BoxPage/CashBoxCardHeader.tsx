@@ -1,12 +1,7 @@
 import { ActionIcon, Tooltip } from '@mantine/core';
-import {
-  IconAward,
-  IconFolder,
-  IconStarFilled,
-  IconTrash,
-} from '@tabler/icons-react';
-import { mountBox } from 'src/features/BoxPage';
-import { useAppDispatch } from 'src/store/hooks';
+import { IconAward, IconFolder, IconStarFilled, IconTrash } from '@tabler/icons-react';
+import { mountBox } from '@/features/BoxPage';
+import { useAppDispatch } from '@/store/hooks';
 
 type Props = {
   boxId: string;
@@ -17,14 +12,7 @@ type Props = {
   onDelete(): void;
 };
 
-function CashBoxCardHeader({
-  boxId,
-  boxName,
-  cashierName,
-  isOpen,
-  isSelected,
-  onDelete,
-}: Props) {
+function CashBoxCardHeader({ boxId, boxName, cashierName, isOpen, isSelected, onDelete }: Props) {
   const dispatch = useAppDispatch();
 
   return (
@@ -35,19 +23,13 @@ function CashBoxCardHeader({
           <div className="flex-shrink-0">
             <IconStarFilled
               size={14}
-              className={
-                isSelected
-                  ? 'text-amber-500 transition-colors'
-                  : 'text-neutral-500 transition-colors'
-              }
+              className={isSelected ? 'text-amber-500 transition-colors' : 'text-neutral-500 transition-colors'}
             />
           </div>
 
           {/* BOX INFO */}
           <div className="flex-grow">
-            <h1 className="text-center text-sm font-bold tracking-wider line-clamp-1">
-              {boxName}
-            </h1>
+            <h1 className="line-clamp-1 text-center text-sm font-bold tracking-wider">{boxName}</h1>
             {isOpen && (
               <div className="flex items-center justify-center gap-x-2 text-gray-dark dark:text-gray-400">
                 <IconAward size={18} />

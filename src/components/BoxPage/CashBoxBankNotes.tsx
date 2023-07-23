@@ -1,6 +1,6 @@
 import { Table } from '@mantine/core';
 import { useEffect, useState, FC } from 'react';
-import { currencyFormat } from 'src/utils';
+import { currencyFormat } from '@/utils';
 import CashBoxBankNotesItem from './CashBoxBankNotesItem';
 
 interface Props {
@@ -28,9 +28,7 @@ const initialBankNotes = [
 ];
 
 const CashBoxBankNotes: FC<Props> = ({ amount, onChange, coins }) => {
-  const [bankNotes, setBankNotes] = useState(
-    coins ? structuredClone(initialCoins) : structuredClone(initialBankNotes)
-  );
+  const [bankNotes, setBankNotes] = useState(coins ? structuredClone(initialCoins) : structuredClone(initialBankNotes));
 
   const updateCount = (index: number, count: number) => {
     setBankNotes(current => {
@@ -91,9 +89,7 @@ const CashBoxBankNotes: FC<Props> = ({ amount, onChange, coins }) => {
           <tfoot>
             <tr>
               <th colSpan={3}>
-                <p className="text-right font-bold tracking-widest">
-                  Total: {currencyFormat(amount)}
-                </p>
+                <p className="text-right font-bold tracking-widest">Total: {currencyFormat(amount)}</p>
               </th>
             </tr>
           </tfoot>

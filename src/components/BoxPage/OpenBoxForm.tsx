@@ -2,14 +2,10 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Button, Checkbox, Modal, NumberInput } from '@mantine/core';
 import { IconLockOpen } from '@tabler/icons-react';
 import { toast } from 'react-toastify';
-import {
-  boxPageSelector,
-  unmountBoxToOpen,
-  openBox,
-} from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { IValidationErrors } from 'src/types';
-import { cashFormatter, cashParser, currencyFormat } from 'src/utils';
+import { boxPageSelector, unmountBoxToOpen, openBox } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { IValidationErrors } from '@/types';
+import { cashFormatter, cashParser, currencyFormat } from '@/utils';
 import dayjs from 'dayjs';
 import CashBoxBankNotes from './CashBoxBankNotes';
 
@@ -97,7 +93,7 @@ const OpenBoxForm = () => {
       transitionProps={{ duration: 150 }}
     >
       <form onSubmit={submitHandler}>
-        <div className="mb-4 flex flex-col gap-y-2 lg:grid lg:grid-cols-4 lg:items-center lg:gap-y-0 lg:gap-x-12">
+        <div className="mb-4 flex flex-col gap-y-2 lg:grid lg:grid-cols-4 lg:items-center lg:gap-x-12 lg:gap-y-0">
           <div className="lg:col-span-3">
             <NumberInput
               label="Base"
@@ -118,19 +114,12 @@ const OpenBoxForm = () => {
             <Checkbox
               label="Ingresar billetes y monedas"
               checked={checked}
-              onChange={({ currentTarget }) =>
-                setChecked(currentTarget.checked)
-              }
+              onChange={({ currentTarget }) => setChecked(currentTarget.checked)}
               className="mb-4"
             />
           </div>
 
-          <Button
-            leftIcon={<IconLockOpen size={18} />}
-            loading={loading}
-            type="submit"
-            size="xs"
-          >
+          <Button leftIcon={<IconLockOpen size={18} />} loading={loading} type="submit" size="xs">
             Abrir Caja
           </Button>
         </div>
@@ -138,17 +127,10 @@ const OpenBoxForm = () => {
         {checked ? (
           <div className="mb-16 grid gap-x-4 lg:grid-cols-2">
             {/* COINS */}
-            <CashBoxBankNotes
-              amount={coinAmount}
-              onChange={setCoinAmount}
-              coins
-            />
+            <CashBoxBankNotes amount={coinAmount} onChange={setCoinAmount} coins />
 
             {/* BANK NOTES */}
-            <CashBoxBankNotes
-              amount={bankNotesAmount}
-              onChange={setBankNotesAmount}
-            />
+            <CashBoxBankNotes amount={bankNotesAmount} onChange={setBankNotesAmount} />
           </div>
         ) : null}
       </form>

@@ -1,7 +1,7 @@
 import { ActionIcon, NumberInput, NumberInputHandlers } from '@mantine/core';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { currencyFormat } from 'src/utils';
+import { currencyFormat } from '@/utils';
 
 interface Props {
   denomination: string;
@@ -10,12 +10,7 @@ interface Props {
   onChange(index: number, count: number): void;
 }
 
-const CashBoxCountableItem: FC<Props> = ({
-  denomination,
-  value,
-  index,
-  onChange,
-}) => {
+const CashBoxCountableItem: FC<Props> = ({ denomination, value, index, onChange }) => {
   const [count, setCount] = useState<number | ''>(0);
   const handlers = useRef<NumberInputHandlers>();
   const [amount, setAmount] = useState(0);
@@ -30,11 +25,7 @@ const CashBoxCountableItem: FC<Props> = ({
       <td>
         <div className="flex justify-center">
           <div className="flex w-32 items-center gap-x-2">
-            <ActionIcon
-              size={30}
-              variant="default"
-              onClick={() => handlers.current?.decrement()}
-            >
+            <ActionIcon size={30} variant="default" onClick={() => handlers.current?.decrement()}>
               <IconMinus stroke={2} size={14} />
             </ActionIcon>
             <NumberInput
@@ -49,11 +40,7 @@ const CashBoxCountableItem: FC<Props> = ({
               }}
               onFocus={({ currentTarget }) => currentTarget.select()}
             />
-            <ActionIcon
-              size={30}
-              variant="default"
-              onClick={() => handlers.current?.increment()}
-            >
+            <ActionIcon size={30} variant="default" onClick={() => handlers.current?.increment()}>
               <IconPlus stroke={2} size={14} />
             </ActionIcon>
           </div>

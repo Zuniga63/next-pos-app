@@ -40,7 +40,7 @@ export default function NavLinks({ close }: Props) {
       current.map(item => {
         item.active = item.path === router.asPath;
         return item;
-      })
+      }),
     );
   }, [router.asPath]);
 

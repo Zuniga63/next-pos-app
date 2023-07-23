@@ -6,7 +6,7 @@
   scroll-behavior: smooth;
 }
 
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -24,7 +24,7 @@ a {
 a,
 button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
+} */
 
 .scrollbar::-webkit-scrollbar {
   width: 10px;

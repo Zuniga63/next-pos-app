@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { ErrorResponse } from 'src/types';
+import { ErrorResponse } from '@/types';
 
 export interface ICashier {
   id: string;

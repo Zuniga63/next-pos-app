@@ -1,29 +1,10 @@
-import {
-  ActionIcon,
-  Button,
-  Loader,
-  Notification,
-  Pagination,
-  ScrollArea,
-  TextInput,
-} from '@mantine/core';
-import {
-  IconArrowsExchange,
-  IconCirclePlus,
-  IconFile,
-  IconSearch,
-  IconX,
-} from '@tabler/icons-react';
+import { ActionIcon, Button, Loader, Notification, Pagination, ScrollArea, TextInput } from '@mantine/core';
+import { IconArrowsExchange, IconCirclePlus, IconFile, IconSearch, IconX } from '@tabler/icons-react';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  boxPageSelector,
-  showCashTransferForm,
-  showTransactionForm,
-  unmountBox,
-} from 'src/features/BoxPage';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { ITransaction } from 'src/types';
-import { currencyFormat, normalizeText } from 'src/utils';
+import { boxPageSelector, showCashTransferForm, showTransactionForm, unmountBox } from '@/features/BoxPage';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { ITransaction } from '@/types';
+import { currencyFormat, normalizeText } from '@/utils';
 import TransactionTable from './TransactionTable';
 import WaitingBox from './WaitingBox';
 
@@ -45,9 +26,7 @@ const BoxShow = () => {
 
   const [paginationPages, setPaginationPages] = useState(0);
   const [activePage, setActivePage] = useState(12);
-  const [filteredTransactions, setFilteredTransactions] = useState<
-    ITransaction[]
-  >([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<ITransaction[]>([]);
   const [transactions, setTransactions] = useState<ITransaction[]>([]);
 
   const addHandler = () => dispatch(showTransactionForm());
@@ -65,9 +44,7 @@ const BoxShow = () => {
 
     if (search) {
       const text = normalizeText(search);
-      list = allTransactions.filter(item =>
-        normalizeText(item.description).includes(text)
-      );
+      list = allTransactions.filter(item => normalizeText(item.description).includes(text));
     } else {
       list = allTransactions.slice();
     }
@@ -117,10 +94,7 @@ const BoxShow = () => {
 
             <div className="absolute inset-0">
               <div className="flex h-full items-center justify-end pr-4">
-                <ActionIcon
-                  variant="transparent"
-                  onClick={() => dispatch(unmountBox())}
-                >
+                <ActionIcon variant="transparent" onClick={() => dispatch(unmountBox())}>
                   <IconX size={24} stroke={2} />
                 </ActionIcon>
               </div>
@@ -131,21 +105,13 @@ const BoxShow = () => {
                 size="xs"
                 placeholder="Buscar transacción"
                 onFocus={({ currentTarget }) => currentTarget.select()}
-                icon={
-                  searchLoading ? (
-                    <Loader size={14} variant="dots" />
-                  ) : (
-                    <IconSearch size={14} stroke={1.5} />
-                  )
-                }
-                onChange={({ currentTarget }) =>
-                  updateSearch(currentTarget.value)
-                }
+                icon={searchLoading ? <Loader size={14} variant="dots" /> : <IconSearch size={14} stroke={1.5} />}
+                onChange={({ currentTarget }) => updateSearch(currentTarget.value)}
               />
             </div>
           </header>
 
-          <ScrollArea className="relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header 3xl:h-[40rem]">
+          <ScrollArea className="3xl:h-[40rem] relative h-[60vh] overflow-y-auto border border-y-0 border-x-gray-400 dark:border-x-header">
             {allTransactions.length > 0 ? (
               <TransactionTable transactions={transactions} />
             ) : (
@@ -166,28 +132,18 @@ const BoxShow = () => {
             <div className="flex flex-col items-center gap-y-1 lg:flex-row lg:gap-x-2">
               <span className="text-xs lg:text-base">Saldo:</span>
               <span className="text-center text-xs font-bold lg:text-base">
-                {currencyFormat(
-                  showingMainBox ? globalBalance : boxSelected?.balance
-                )}
+                {currencyFormat(showingMainBox ? globalBalance : boxSelected?.balance)}
               </span>
             </div>
 
             <div>
               {paginationPages > 1 ? (
-                <Pagination
-                  total={paginationPages}
-                  value={activePage}
-                  onChange={setActivePage}
-                />
+                <Pagination total={paginationPages} value={activePage} onChange={setActivePage} />
               ) : null}
             </div>
 
             <div className="flex flex-col gap-x-2 gap-y-2 lg:flex-row">
-              <Button
-                leftIcon={<IconCirclePlus size="1.5rem" stroke={1.5} />}
-                onClick={addHandler}
-                size="xs"
-              >
+              <Button leftIcon={<IconCirclePlus size="1.5rem" stroke={1.5} />} onClick={addHandler} size="xs">
                 Agregar Transacción
               </Button>
 

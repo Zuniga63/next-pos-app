@@ -15,7 +15,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-y-4">
+    <form onSubmit={handleSubmit} className="mb-8 flex flex-col gap-y-4 xl:mb-14 xl:gap-y-6">
       <EmailInput value={email} onChange={updateEmail} label="Correo Electronico" isRequired />
       <PasswordInput
         value={password}
@@ -25,9 +25,10 @@ export default function LoginForm() {
         placeholder="Contraseña"
       />
 
-      <footer className="flex items-center justify-end">
+      <footer className="mx-auto flex w-full items-center xl:w-10/12">
         <Button
           colorScheme="blue"
+          w="full"
           type="submit"
           isLoading={isLoading}
           loadingText="Iniciando Sesión..."

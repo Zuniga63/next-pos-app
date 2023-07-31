@@ -26,8 +26,8 @@ export default function MenuLink({ name, icon, url = '', className }: Props) {
   return (
     <Link
       href={url}
-      className={`block px-4 py-2 transition-colors hover:bg-cyan-200 ${className} ${
-        isActive && 'bg-cyan-300 font-bold'
+      className={`mt-2 block rounded-lg px-4 py-2 text-dark transition-colors hover:bg-green-300 hover:bg-opacity-30 ${className} ${
+        isActive && 'bg-green-300 bg-opacity-30 font-bold text-green-700'
       }`}
       onClick={hide}
     >

@@ -2,13 +2,13 @@
 import { Collapse } from '@chakra-ui/react';
 import MenuLinks from './MenuLinks';
 import { useSidebarMenuStore } from '@/store/sidebarStore';
+import { shallow } from 'zustand/shallow';
 
 export default function LeftSidebar() {
-  const [collapsed, isLargeScreen, headerHeight] = useSidebarMenuStore(state => [
-    state.collapsed,
-    state.isLargeScreen,
-    state.headerHeight,
-  ]);
+  const [collapsed, isLargeScreen, headerHeight] = useSidebarMenuStore(
+    state => [state.collapsed, state.isLargeScreen, state.headerHeight],
+    shallow,
+  );
 
   if (!isLargeScreen) return null;
 
@@ -21,11 +21,11 @@ export default function LeftSidebar() {
         height: `calc(100vh - ${headerHeight}px)`,
       }}
     >
-      <div className="absolute inset-0 overflow-y-auto shadow-xl">
-        <Collapse in={!collapsed} animateOpacity>
+      <Collapse in={!collapsed} animateOpacity>
+        <div className="absolute inset-0 overflow-y-auto pl-3 pr-3 shadow-xl">
           <MenuLinks />
-        </Collapse>
-      </div>
+        </div>
+      </Collapse>
     </aside>
   );
 }

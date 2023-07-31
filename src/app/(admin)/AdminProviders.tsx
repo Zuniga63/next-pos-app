@@ -8,5 +8,5 @@ type Props = {
 
 export default function AdminProviders({ children }: Props) {
   useSidebarMenu();
-  return children;
+  return <>{children}</>;
 }

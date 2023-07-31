@@ -1,7 +1,6 @@
 import { Collapse } from '@chakra-ui/react';
 import { IconChevronDown } from '@tabler/icons-react';
 import { ReactNode } from 'react';
-import styles from './MenuLinkGroup.module.css';
 import { useMenuLinkGroup } from '@/hooks/useMenuLinkGroup';
 
 type Props = {
@@ -18,12 +17,14 @@ export default function MenuLinkGroup({ title, children, leftIcon, rootUrl }: Pr
     <>
       <button onClick={onToggle} className="w-full">
         <div
-          className={`flex items-center justify-between py-3 pl-4 pr-2 transition-colors hover:bg-zinc-200 ${
-            isActive && styles.active
+          className={`flex items-center justify-between rounded-lg py-3 pl-4 pr-2 pt-2 transition-colors hover:bg-zinc-200 ${
+            isActive && 'bg-neutral-200'
           }`}
         >
-          {leftIcon}
-          <h2 className={`flex-grow text-sm font-bold tracking-wider`}>{title}</h2>
+          <div className="flex items-center gap-4">
+            {leftIcon}
+            <h2 className={`flex-grow text-sm font-bold tracking-wider`}>{title}</h2>
+          </div>
           <IconChevronDown
             size={20}
             stroke={3}

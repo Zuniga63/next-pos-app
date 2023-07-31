@@ -13,12 +13,12 @@ const links: ILink[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: <IconDashboard className="text-zinc-800" size={24} />,
+    icon: <IconDashboard className="text-zinc-600" size={24} />,
   },
   {
     name: 'Cajas',
     url: '/admin/boxes',
-    icon: <IconBox className="text-zinc-800" size={24} />,
+    icon: <IconBox className="text-zinc-600" size={24} />,
   },
 ];
 
@@ -35,7 +35,7 @@ export default function MenuLinks() {
                   name={subLink.name}
                   url={subLink.url}
                   icon={subLink.icon}
-                  className="pl-6"
+                  className="pl-4"
                 />
               ))}
             </MenuLinkGroup>

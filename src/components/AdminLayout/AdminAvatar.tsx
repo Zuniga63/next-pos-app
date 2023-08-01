@@ -19,7 +19,7 @@ export default function AdminAvatar() {
       </MenuButton>
       <MenuList>
         <MenuGroup title="Profile">
-          <MenuItem as={Link} href="/admin/profile">
+          <MenuItem as={Link} href="/profile">
             My Perfil
           </MenuItem>
           <MenuItem isDisabled>Projects</MenuItem>

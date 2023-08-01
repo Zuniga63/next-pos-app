@@ -2,6 +2,7 @@
 import {
   Button,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -12,14 +13,26 @@ import { IconEyeOff, IconEye, IconLockAccess } from '@tabler/icons-react';
 import { ChangeEvent, useState } from 'react';
 
 type Props = {
+  name?: string;
   value?: string;
   isRequired?: boolean;
   label?: string;
   placeholder?: string;
   onChange?(value: string): void;
+  className?: string;
+  error?: string;
 };
 
-export default function PasswordInput({ value, isRequired, label, onChange, placeholder = 'password' }: Props) {
+export default function PasswordInput({
+  name,
+  value,
+  isRequired,
+  label,
+  onChange,
+  placeholder = 'password',
+  className,
+  error,
+}: Props) {
   const [show, setShow] = useState(false);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +42,7 @@ export default function PasswordInput({ value, isRequired, label, onChange, plac
   const handleClick = () => setShow(!show);
 
   return (
-    <FormControl isRequired={isRequired}>
+    <FormControl isRequired={isRequired} className={className} isInvalid={Boolean(error)}>
       {label && <FormLabel className="text-dark">{label}</FormLabel>}
       <InputGroup size="md">
         <InputLeftElement pointerEvents="none" className="text-dark">
@@ -43,6 +56,8 @@ export default function PasswordInput({ value, isRequired, label, onChange, plac
           value={value}
           onChange={handleChange}
           onFocus={e => e.currentTarget.select()}
+          name={name}
+          autoComplete="password"
         />
         <InputRightElement width="4.5rem" className="text-dark">
           <Button h="1.75rem" size="sm" variant="ghost" onClick={handleClick}>
@@ -54,6 +69,7 @@ export default function PasswordInput({ value, isRequired, label, onChange, plac
           </Button>
         </InputRightElement>
       </InputGroup>
+      <FormErrorMessage>{error}</FormErrorMessage>
     </FormControl>
   );
 }

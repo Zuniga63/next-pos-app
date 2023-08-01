@@ -47,7 +47,7 @@ export default function UserAvatar() {
           <p className="scale-90 text-center text-sm text-dark dark:text-gray-100">{user?.email}</p>
         </div>
         <Menu.Divider />
-        <Menu.Item component={Link} href="/admin/profile">
+        <Menu.Item component={Link} href="/profile">
           Perfil de usuario
         </Menu.Item>
         <Menu.Divider />

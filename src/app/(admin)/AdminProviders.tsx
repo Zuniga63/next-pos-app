@@ -1,5 +1,5 @@
 'use client';
-import { useSidebarMenu } from '@/hooks/useSidebarMenu';
+import { useAdminProviders } from '@/hooks/useAdminProviders';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -7,6 +7,6 @@ type Props = {
 };
 
 export default function AdminProviders({ children }: Props) {
-  useSidebarMenu();
+  useAdminProviders();
   return <>{children}</>;
 }

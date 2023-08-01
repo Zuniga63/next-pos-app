@@ -1,8 +1,9 @@
+import { setAuthTokens } from '@/logic/set-auth-token';
 import { useSidebarMenuStore } from '@/store/sidebarStore';
 import { useMediaQuery } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
-export function useSidebarMenu() {
+export function useAdminProviders() {
   const opened = useSidebarMenuStore(state => state.opened);
   const updateHeaderHeight = useSidebarMenuStore(state => state.updateHeaderHeight);
   const hide = useSidebarMenuStore(state => state.hide);
@@ -12,6 +13,10 @@ export function useSidebarMenu() {
     ssr: true,
     fallback: true,
   });
+
+  useEffect(() => {
+    setAuthTokens();
+  }, []);
 
   useEffect(() => {
     // * Hide the drawer if opened

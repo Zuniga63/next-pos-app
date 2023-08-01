@@ -4,7 +4,7 @@ import EmailInput from '../form/EmailInput';
 import PasswordInput from '../form/PasswordInput';
 import { Button } from '@chakra-ui/react';
 import { IconLogin } from '@tabler/icons-react';
-import { useLoginUser } from '@/hooks/react-query/auth.hooks';
+import { useLoginUser } from '@/hooks/auth/useLoginUser';
 
 export default function LoginForm() {
   const { email, password, isLoading, updateEmail, updatePassword, login } = useLoginUser();

@@ -1,9 +1,10 @@
 import { IBox } from '@/types';
-import { currencyFormat } from '@/utils';
-import Actions from './Actions';
-import CloseState from './CloseState';
-import Header from './Header';
-import Container from './Container';
+import Actions from './BoxActions';
+import CloseState from './BoxCloseState';
+import Header from './BoxHeader';
+import Container from './BoxContainer';
+import Content from './BoxContent';
+import BoxBalance from './BoxBalance';
 
 type Props = {
   box: IBox;
@@ -15,11 +16,10 @@ export default function BoxCard({ box }: Props) {
   return (
     <Container isOpen={isOpen}>
       <Header boxName={box.name} />
-      <div className="border-x border-gray-200 bg-light px-4 py-2 dark:bg-none">
-        {isOpen && <p className="text-center text-xl font-bold tracking-wider">{currencyFormat(box.balance)}</p>}
-        <CloseState isOpen={isOpen} closed={box.closed} />B
-      </div>
-
+      <Content>
+        <BoxBalance isOpen={isOpen} balance={box.balance} />
+        <CloseState isOpen={isOpen} closed={box.closed} />
+      </Content>
       <Actions isOpen={isOpen} />
     </Container>
   );

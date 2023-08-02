@@ -15,7 +15,7 @@ export default function BoxCard({ box }: Props) {
 
   return (
     <Container isOpen={isOpen}>
-      <Header boxName={box.name} isOpen={isOpen} />
+      <Header boxName={box.name} isOpen={isOpen} boxId={box.id} />
       <Content>
         <BoxBalance isOpen={isOpen} balance={box.balance} />
         <CloseState isOpen={isOpen} closed={box.closed} />

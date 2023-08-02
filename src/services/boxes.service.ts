@@ -12,3 +12,8 @@ export const createMinorBox = async (data: { name: string }) => {
   const res = await boxesApi.post<IBox>('/minors', data);
   return res.data;
 };
+
+export const deleteMinorBox = async ({ id }: { id: string }) => {
+  const res = await boxesApi.delete<IBox>(`/minors/${id}`);
+  return res.data;
+};

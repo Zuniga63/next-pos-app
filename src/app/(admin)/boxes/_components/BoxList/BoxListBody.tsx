@@ -1,5 +1,5 @@
 'use client';
-import { useGetMinorBoxes } from '@/hooks/boxes/useGetMinorBoxes';
+import { useGetMinorBoxes } from '@/hooks/react-query/boxes.hooks';
 import { ReactNode } from 'react';
 import BoxCard from '../BoxCard';
 

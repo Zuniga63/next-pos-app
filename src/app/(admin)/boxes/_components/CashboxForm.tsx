@@ -1,6 +1,4 @@
 'use client';
-
-import { useCreateMinorBox } from '@/hooks/boxes/useCreateMinorBox';
 import {
   Button,
   FormControl,
@@ -16,9 +14,10 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react';
 import { FormEvent } from 'react';
+import { useCashboxForm } from '../_hooks/useCashboxForm';
 
 export default function CashboxForm() {
-  const { name, formId, isOpen, isLoading, errors, close, updateName, submit } = useCreateMinorBox();
+  const { name, formId, isOpen, isLoading, errors, close, updateName, submit } = useCashboxForm();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

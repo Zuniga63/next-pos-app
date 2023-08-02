@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import BoxList from './components/BoxList';
-import BoxesContainer from './components/BoxesContainer';
-import CashboxForm from './components/CashboxForm';
+import BoxList from './_components/BoxList';
+import BoxesContainer from './_components/BoxesContainer';
+import CashboxForm from './_components/CashboxForm';
 
 export const metadata: Metadata = {
   title: 'Cajas',

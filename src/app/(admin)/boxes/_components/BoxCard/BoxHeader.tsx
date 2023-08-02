@@ -1,8 +1,11 @@
+import DeleteIconButton from '@/components/form/DeleteIconButton';
+
 type Props = {
   boxName: string;
+  isOpen?: boolean;
 };
 
-export default function Header({ boxName }: Props) {
+export default function Header({ boxName, isOpen }: Props) {
   return (
     <header className={`flex items-center gap-x-2 bg-gray-200 px-4 py-2`}>
       <div className="flex-grow">
@@ -11,6 +14,13 @@ export default function Header({ boxName }: Props) {
           <div className="flex-grow">
             <h1 className="line-clamp-1 text-center font-display text-sm font-bold tracking-wider">{boxName}</h1>
           </div>
+          <DeleteIconButton
+            ariaLabel="Delete box"
+            size="xs"
+            iconSize={16}
+            iconStroke={1.5}
+            display={!isOpen ? 'flex' : 'none'}
+          />
         </div>
       </div>
     </header>

@@ -1,7 +1,7 @@
 'use client';
 import { useGetMinorBoxes } from '@/hooks/boxes/useGetMinorBoxes';
 import { ReactNode } from 'react';
-import BoxCard from './BoxCard';
+import BoxCard from '../BoxCard';
 
 type Props = {
   children?: ReactNode;

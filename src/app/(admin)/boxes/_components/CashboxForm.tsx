@@ -17,7 +17,7 @@ import { FormEvent } from 'react';
 import { useCashboxForm } from '../_hooks/useCashboxForm';
 
 export default function CashboxForm() {
-  const { name, formId, isOpen, isLoading, errors, close, updateName, submit } = useCashboxForm();
+  const { name, formId, isOpen, isLoading, errors, isCreate, close, updateName, submit } = useCashboxForm();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,10 +25,10 @@ export default function CashboxForm() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close} closeOnOverlayClick={!isLoading}>
+    <Modal isOpen={isOpen} onClose={close} closeOnOverlayClick={!isLoading} colorScheme="green">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader fontFamily="heading">Nueva Caja</ModalHeader>
+        <ModalHeader fontFamily="heading">{isCreate ? 'Registrar Caja' : 'Actualizar Caja'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <form onSubmit={handleSubmit} id={formId}>
@@ -44,8 +44,14 @@ export default function CashboxForm() {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" form={formId} type="submit" isLoading={isLoading} loadingText="Guardando...">
-            Guardar
+          <Button
+            colorScheme={isCreate ? 'green' : 'blue'}
+            form={formId}
+            type="submit"
+            isLoading={isLoading}
+            loadingText={isCreate ? 'Guardando...' : 'Actualizando...'}
+          >
+            {isCreate ? 'Guardar' : 'Actualizar'}
           </Button>
         </ModalFooter>
       </ModalContent>

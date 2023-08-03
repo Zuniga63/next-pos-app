@@ -13,6 +13,11 @@ export const createMinorBox = async (data: { name: string }) => {
   return res.data;
 };
 
+export const updateMinorBox = async ({ name, id }: { name: string; id: string }) => {
+  const res = await boxesApi.patch<IBox>(`/minors/${id}`, { name });
+  return res.data;
+};
+
 export const deleteMinorBox = async ({ id }: { id: string }) => {
   const res = await boxesApi.delete<IBox>(`/minors/${id}`);
   return res.data;

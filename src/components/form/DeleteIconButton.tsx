@@ -1,5 +1,5 @@
 'use client';
-import { ColorProps, IconButton, LayoutProps, ThemingProps } from '@chakra-ui/react';
+import { ColorProps, IconButton, LayoutProps, ThemingProps, Tooltip } from '@chakra-ui/react';
 import { IconTrash } from '@tabler/icons-react';
 
 type Props = {
@@ -27,15 +27,17 @@ export default function DeleteIconButton({
   ariaLabel = 'delete',
 }: Props) {
   return (
-    <IconButton
-      colorScheme={colorScheme}
-      aria-label={ariaLabel}
-      isLoading={isLoading}
-      size={size}
-      variant={variant}
-      icon={<IconTrash size={iconSize} stroke={iconStroke} />}
-      display={display}
-      onClick={onClick}
-    />
+    <Tooltip label={ariaLabel} hasArrow bg="red">
+      <IconButton
+        colorScheme={colorScheme}
+        aria-label={ariaLabel}
+        isLoading={isLoading}
+        size={size}
+        variant={variant}
+        icon={<IconTrash size={iconSize} stroke={iconStroke} />}
+        display={display}
+        onClick={onClick}
+      />
+    </Tooltip>
   );
 }

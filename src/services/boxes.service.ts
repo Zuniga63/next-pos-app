@@ -1,4 +1,4 @@
-import { IBox } from '@/types';
+import { IBox, IOpenBoxRequest } from '@/types';
 import axios from 'axios';
 
 export const boxesApi = axios.create({ baseURL: `${process.env.NEXT_PUBLIC_URL_API}/cashboxes` });
@@ -20,5 +20,10 @@ export const updateMinorBox = async ({ name, id }: { name: string; id: string })
 
 export const deleteMinorBox = async ({ id }: { id: string }) => {
   const res = await boxesApi.delete<IBox>(`/minors/${id}`);
+  return res.data;
+};
+
+export const openMinorBox = async ({ boxId, base, cashierId }: IOpenBoxRequest) => {
+  const res = await boxesApi.patch<IBox>(`/minors/${boxId}/open-box`, { base, cashierId });
   return res.data;
 };

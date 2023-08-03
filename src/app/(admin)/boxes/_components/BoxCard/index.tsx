@@ -20,7 +20,7 @@ export default function BoxCard({ box }: Props) {
         <BoxBalance isOpen={isOpen} balance={box.balance} />
         <CloseState isOpen={isOpen} closed={box.closed} />
       </Content>
-      <Actions isOpen={isOpen} />
+      <Actions isOpen={isOpen} cashboxId={box.id} />
     </Container>
   );
 }

@@ -4,6 +4,7 @@ interface ICashboxesState {
   cashboxFormOpened: boolean;
   cashboxIdToEdit?: string;
   cashboxIdToDelete?: string;
+  cashboxIdToOpen?: string;
 }
 
 interface ICashboxesActions {
@@ -11,6 +12,8 @@ interface ICashboxesActions {
   hideCashboxForm: () => void;
   showDeleteDialog: (id: string) => void;
   closeDeleteDialog: () => void;
+  showOpenBoxForm: (id: string) => void;
+  closeOpenBoxForm: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
@@ -28,5 +31,11 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   },
   closeDeleteDialog() {
     set(() => ({ cashboxIdToDelete: undefined }));
+  },
+  showOpenBoxForm(id) {
+    set(() => ({ cashboxIdToOpen: id }));
+  },
+  closeOpenBoxForm() {
+    set(() => ({ cashboxIdToOpen: undefined }));
   },
 }));

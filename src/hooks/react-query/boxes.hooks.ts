@@ -1,5 +1,13 @@
-import { createMinorBox, deleteMinorBox, getMinorBoxes, openMinorBox, updateMinorBox } from '@/services/boxes.service';
+import {
+  closeMinorBox,
+  createMinorBox,
+  deleteMinorBox,
+  getMinorBoxes,
+  openMinorBox,
+  updateMinorBox,
+} from '@/services/boxes.service';
 import { IBox } from '@/types';
+import { currencyFormat } from '@/utils';
 import { ServerStateKeysEnum } from '@/utils/server-state-key.enum';
 import { useToast } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -92,13 +100,41 @@ export function useOpenMinorBox() {
 
   return useMutation({
     mutationFn: openMinorBox,
-    onSuccess(data, variables, context) {
-      console.log(context, variables);
+    onSuccess(data) {
       toast({
         title: `¡${data.name} ahora está abierta!`,
         status: 'success',
       });
-      queryClient.invalidateQueries({ queryKey: [ServerStateKeysEnum.MinorBoxes] });
+      queryClient.setQueriesData(
+        [ServerStateKeysEnum.MinorBoxes],
+        (old: IBox[] | undefined) => old?.map(item => (item.id === data.id ? data : item)),
+      );
+    },
+    onError(error) {
+      if (error instanceof Error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const { data, status } = error.response;
+          if ((status === 422 || status === 400) && data.errors) return;
+          if (status === 404) queryClient.invalidateQueries({ queryKey: [ServerStateKeysEnum.MinorBoxes] });
+        }
+
+        toast({ title: '¡Opps, algo salio mal!', description: error.message, status: 'error' });
+      }
+    },
+  });
+}
+
+export function useCloseMinorBox() {
+  const toast = useToast({ position: 'top-left' });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: closeMinorBox,
+    onSuccess(data, variables) {
+      toast({
+        title: `¡Se ha cerrado ${data.name} con ${currencyFormat(variables.cash)}!`,
+        status: 'success',
+      });
       queryClient.setQueriesData(
         [ServerStateKeysEnum.MinorBoxes],
         (old: IBox[] | undefined) => old?.map(item => (item.id === data.id ? data : item)),

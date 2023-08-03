@@ -27,14 +27,9 @@ export function useDeleteDialog() {
   };
 
   useEffect(() => {
-    if (!boxes || !boxId) {
-      close();
-      return;
-    }
-
-    const boxData = boxes.find(item => item.id === boxId);
+    const boxData = boxes?.find(item => item.id === boxId);
     if (!boxData) {
-      close();
+      if (isOpen) close();
       return;
     }
 

@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 
 export function useDeleteDialog() {
   const boxId = useCashboxesStore(state => state.cashboxIdToDelete);
-  const closeDialog = useCashboxesStore(state => state.closeDeleteDialog);
+  const closeDialog = useCashboxesStore(state => state.unmountBoxToDelete);
 
   const [box, setBox] = useState<IBox | null>(null);
   const [isOpen, setIsOpen] = useState(false);

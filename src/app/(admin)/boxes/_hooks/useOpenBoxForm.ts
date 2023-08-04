@@ -12,7 +12,7 @@ export function useOpenBoxForm() {
 
   const [isOpen, setIsOpen] = useState(false);
   const cashboxId = useCashboxesStore(state => state.cashboxIdToOpen);
-  const closeForm = useCashboxesStore(state => state.closeOpenBoxForm);
+  const closeForm = useCashboxesStore(state => state.unmountBoxToOpen);
   const { data: boxes } = useGetMinorBoxes();
 
   const { mutate, isLoading, isSuccess, isError, error } = useOpenMinorBox();

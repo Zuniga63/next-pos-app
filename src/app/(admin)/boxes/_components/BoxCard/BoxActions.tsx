@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function Actions({ isOpen, cashboxId }: Props) {
-  const showOpenBoxForm = useCashboxesStore(state => state.showOpenBoxForm);
+  const showOpenBoxForm = useCashboxesStore(state => state.mountBoxToOpen);
   const handleOpenBox = () => showOpenBoxForm(cashboxId);
 
   return (

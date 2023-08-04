@@ -12,7 +12,7 @@ export function useCloseBoxForm() {
 
   const [isOpen, setIsOpen] = useState(false);
   const cashboxId = useCashboxesStore(state => state.cashboxIdToClose);
-  const closeForm = useCashboxesStore(state => state.hideCloseBoxForm);
+  const closeForm = useCashboxesStore(state => state.unmountBoxToClose);
   const { data: boxes } = useGetMinorBoxes();
 
   const { mutate, isLoading, isSuccess, isError, error } = useCloseMinorBox();

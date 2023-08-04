@@ -11,9 +11,9 @@ type Props = {
 };
 
 export default function Header({ boxName, isOpen, boxId }: Props) {
-  const showDeleteDialog = useCashboxesStore(state => state.showDeleteDialog);
+  const showDeleteDialog = useCashboxesStore(state => state.mountBoxToDelete);
   const showEditForm = useCashboxesStore(state => state.showCashboxForm);
-  const showCloseBoxForm = useCashboxesStore(state => state.showCloseBoxForm);
+  const showCloseBoxForm = useCashboxesStore(state => state.mountBoxToClose);
 
   const handleDeleteAction = () => {
     showDeleteDialog(boxId);

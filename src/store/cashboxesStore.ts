@@ -11,40 +11,49 @@ interface ICashboxesState {
 interface ICashboxesActions {
   showCashboxForm: (id?: string) => void;
   hideCashboxForm: () => void;
-  showDeleteDialog: (id: string) => void;
-  closeDeleteDialog: () => void;
-  showOpenBoxForm: (id: string) => void;
-  closeOpenBoxForm: () => void;
-  showCloseBoxForm: (id: string) => void;
-  hideCloseBoxForm: () => void;
+  mountBoxToDelete: (id: string) => void;
+  unmountBoxToDelete: () => void;
+  mountBoxToOpen: (id: string) => void;
+  unmountBoxToOpen: () => void;
+  mountBoxToClose: (id: string) => void;
+  unmountBoxToClose: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
   cashboxFormOpened: false,
   cashboxIdToEdit: undefined,
   cashboxIdToDelete: undefined,
+  // --------------------------------------------------------------------------
+  // CREATE AND UPDATE ACTIONS
+  // --------------------------------------------------------------------------
   showCashboxForm(id) {
     set(() => ({ cashboxFormOpened: true, cashboxIdToEdit: id }));
   },
   hideCashboxForm() {
     set(() => ({ cashboxFormOpened: false, cashboxIdToEdit: undefined }));
   },
-  showDeleteDialog(id) {
+  // --------------------------------------------------------------------------
+  // DELETE ACTIONS
+  // --------------------------------------------------------------------------
+  mountBoxToDelete(id) {
     set(() => ({ cashboxIdToDelete: id }));
   },
-  closeDeleteDialog() {
+  unmountBoxToDelete() {
     set(() => ({ cashboxIdToDelete: undefined }));
   },
-  showOpenBoxForm(id) {
+  // --------------------------------------------------------------------------
+  // OPEN AND CLOSE BOX ACTIONS
+  // --------------------------------------------------------------------------
+  mountBoxToOpen(id) {
     set(() => ({ cashboxIdToOpen: id }));
   },
-  closeOpenBoxForm() {
+  unmountBoxToOpen() {
     set(() => ({ cashboxIdToOpen: undefined }));
   },
-  showCloseBoxForm(id) {
+  mountBoxToClose(id) {
     set(() => ({ cashboxIdToClose: id }));
   },
-  hideCloseBoxForm() {
+  unmountBoxToClose() {
     set(() => ({ cashboxIdToClose: undefined }));
   },
 }));

@@ -3,10 +3,9 @@ import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay } f
 import AdminBrandLogo from './AdminBrandLogo';
 import MenuLinks from './MenuLinks';
 import { useSidebarMenuStore } from '@/store/sidebarStore';
-import { shallow } from 'zustand/shallow';
 
 export default function MenuDrawer() {
-  const [opened, isLargeScreen] = useSidebarMenuStore(state => [state.opened, state.isLargeScreen], shallow);
+  const [opened, isLargeScreen] = useSidebarMenuStore(state => [state.opened, state.isLargeScreen]);
   const toggle = useSidebarMenuStore(state => state.toggle);
 
   if (isLargeScreen) return null;

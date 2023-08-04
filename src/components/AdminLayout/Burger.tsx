@@ -2,13 +2,13 @@
 import { IconButton } from '@chakra-ui/react';
 import { IconMenu2, IconArrowBadgeRight } from '@tabler/icons-react';
 import { useSidebarMenuStore } from '@/store/sidebarStore';
-import { shallow } from 'zustand/shallow';
 
 export default function Burger() {
-  const [opened, isLargeScreen, collapsed] = useSidebarMenuStore(
-    state => [state.opened, state.isLargeScreen, state.collapsed],
-    shallow,
-  );
+  const [opened, isLargeScreen, collapsed] = useSidebarMenuStore(state => [
+    state.opened,
+    state.isLargeScreen,
+    state.collapsed,
+  ]);
   const toggle = useSidebarMenuStore(state => state.toggle);
 
   const Icon = isLargeScreen && collapsed ? IconArrowBadgeRight : IconMenu2;

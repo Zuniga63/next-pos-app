@@ -2,13 +2,13 @@
 import { Collapse } from '@chakra-ui/react';
 import MenuLinks from './MenuLinks';
 import { useSidebarMenuStore } from '@/store/sidebarStore';
-import { shallow } from 'zustand/shallow';
 
 export default function LeftSidebar() {
-  const [collapsed, isLargeScreen, headerHeight] = useSidebarMenuStore(
-    state => [state.collapsed, state.isLargeScreen, state.headerHeight],
-    shallow,
-  );
+  const [collapsed, isLargeScreen, headerHeight] = useSidebarMenuStore(state => [
+    state.collapsed,
+    state.isLargeScreen,
+    state.headerHeight,
+  ]);
 
   if (!isLargeScreen) return null;
 

@@ -2,7 +2,8 @@ import { IUser } from '@/types';
 import { buildCookieOption } from '@/utils';
 import axios from 'axios';
 import { setCookie } from 'cookies-next';
-import { create } from 'zustand';
+import { shallow } from 'zustand/shallow';
+import { createWithEqualityFn } from 'zustand/traditional';
 
 interface IAuthState {
   isAuth: boolean;
@@ -10,11 +11,14 @@ interface IAuthState {
   isAdmin: boolean;
 }
 
-export const useLoginStore = create<IAuthState>(() => ({
-  isAuth: false,
-  isAdmin: false,
-  user: undefined,
-}));
+export const useLoginStore = createWithEqualityFn<IAuthState>(
+  () => ({
+    isAuth: false,
+    isAdmin: false,
+    user: undefined,
+  }),
+  shallow,
+);
 
 export const saveCredentials = ({ user, token }: { user: IUser; token: string }) => {
   setCookie('access_token', token, buildCookieOption(30));

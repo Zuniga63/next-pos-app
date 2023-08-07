@@ -1,0 +1,28 @@
+.pagination {
+  @apply isolate inline-flex rounded-md bg-gray-200 shadow-sm;
+}
+
+.button {
+  @apply relative z-10 inline-flex items-center px-4 py-2 text-xs font-bold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent xs:text-sm;
+}
+
+.prev {
+  @apply rounded-l-md;
+}
+
+.next {
+  @apply rounded-r-md;
+}
+
+.prev,
+.next {
+  @apply z-auto px-2 text-gray-400;
+}
+
+.dots {
+  @apply hover:bg-none focus:z-auto;
+}
+
+.is_current {
+  @apply bg-cyan-600 text-white ring-0 hover:bg-cyan-600 focus-visible:outline-offset-2 focus-visible:outline-cyan-600;
+}

@@ -6,6 +6,8 @@ interface ICashboxesState {
   cashboxIdToDelete?: string;
   cashboxIdToOpen?: string;
   cashboxIdToClose?: string;
+  loadingInfo?: string;
+  cashboxIdToShow?: string;
 }
 
 interface ICashboxesActions {
@@ -17,6 +19,9 @@ interface ICashboxesActions {
   unmountBoxToOpen: () => void;
   mountBoxToClose: (id: string) => void;
   unmountBoxToClose: () => void;
+  mountBoxToShow: (id: string) => void;
+  unmountBoxToShow: () => void;
+  notifyLoadingInfoEnd: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
@@ -55,5 +60,17 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   },
   unmountBoxToClose() {
     set(() => ({ cashboxIdToClose: undefined }));
+  },
+  // --------------------------------------------------------------------------
+  // VIZUALIZE BOX INFO
+  // --------------------------------------------------------------------------
+  mountBoxToShow(id) {
+    set(() => ({ cashboxIdToShow: id, loadingInfo: id }));
+  },
+  unmountBoxToShow() {
+    set(() => ({ cashboxIdToShow: undefined, loadingInfo: undefined }));
+  },
+  notifyLoadingInfoEnd() {
+    set(() => ({ loadingInfo: undefined }));
   },
 }));

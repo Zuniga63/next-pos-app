@@ -9,8 +9,15 @@ type Props = {
 };
 
 export default function Actions({ isOpen, cashboxId }: Props) {
-  const showOpenBoxForm = useCashboxesStore(state => state.mountBoxToOpen);
-  const handleOpenBox = () => showOpenBoxForm(cashboxId);
+  const loadigInfo = useCashboxesStore(state => state.loadingInfo);
+  const cashboxMount = useCashboxesStore(state => state.cashboxIdToShow);
+  const mountBoxToOpen = useCashboxesStore(state => state.mountBoxToOpen);
+  const handleShowBoxInfo = () => mountBoxToShow(cashboxId);
+
+  const mountBoxToShow = useCashboxesStore(state => state.mountBoxToShow);
+  const handleOpenBox = () => mountBoxToOpen(cashboxId);
+
+  const isLoading = cashboxId === loadigInfo;
 
   return (
     <footer className={`grid grid-cols-2 gap-x-2 bg-gray-200 px-4 py-2 ${!isOpen && 'bg-opacity-50'}`}>
@@ -20,9 +27,12 @@ export default function Actions({ isOpen, cashboxId }: Props) {
           size="xs"
           className="col-span-2"
           leftIcon={<IconFolder size={14} stroke={1.5} />}
-          onClick={handleOpenBox}
+          onClick={handleShowBoxInfo}
+          isLoading={isLoading}
+          loadingText={<span className="animate-pulse">Cargando info...</span>}
+          isDisabled={cashboxId === cashboxMount}
         >
-          Ver Transacciones
+          Cargar Info
         </Button>
       ) : (
         <Button

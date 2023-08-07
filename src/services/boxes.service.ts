@@ -1,10 +1,16 @@
-import { IBox, ICloseBoxRequest, IOpenBoxRequest } from '@/types';
+import { IBox, ICashboxFull, ICloseBoxRequest, IOpenBoxRequest } from '@/types';
 import axios from 'axios';
 
 export const boxesApi = axios.create({ baseURL: `${process.env.NEXT_PUBLIC_URL_API}/cashboxes` });
 
 export const getMinorBoxes = async () => {
   const res = await boxesApi.get<IBox[]>('/minors');
+  return res.data;
+};
+
+export const getMinorBox = async ({ id }: { id?: string }) => {
+  if (!id) return null;
+  const res = await boxesApi.get<ICashboxFull>(`/minors/${id}`);
   return res.data;
 };
 

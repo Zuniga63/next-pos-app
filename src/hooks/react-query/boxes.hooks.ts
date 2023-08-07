@@ -2,6 +2,7 @@ import {
   closeMinorBox,
   createMinorBox,
   deleteMinorBox,
+  getMinorBox,
   getMinorBoxes,
   openMinorBox,
   updateMinorBox,
@@ -17,6 +18,13 @@ export function useGetMinorBoxes() {
   return useQuery({
     queryKey: [ServerStateKeysEnum.MinorBoxes],
     queryFn: getMinorBoxes,
+  });
+}
+
+export function useGetMinorBox({ id }: { id?: string }) {
+  return useQuery({
+    queryKey: [ServerStateKeysEnum.MinorBox, id],
+    queryFn: () => getMinorBox({ id }),
   });
 }
 

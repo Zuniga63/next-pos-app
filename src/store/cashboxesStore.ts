@@ -13,6 +13,7 @@ interface ICashboxesState {
   transactionToDelete?: ITransaction;
   transactionFormOpened: boolean;
   transactionToEdit?: ITransaction;
+  cashTransferFormOpened: boolean;
 }
 
 interface ICashboxesActions {
@@ -31,6 +32,8 @@ interface ICashboxesActions {
   unmountTransactionToDelete: () => void;
   showTransactionForm: (transaction?: ITransaction) => void;
   hideTransactionForm: () => void;
+  showCashTransferForm: () => void;
+  hideCashTransferForm: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
@@ -39,6 +42,7 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   cashboxIdToEdit: undefined,
   cashboxIdToDelete: undefined,
   transactionFormOpened: false,
+  cashTransferFormOpened: false,
   // --------------------------------------------------------------------------
   // CREATE AND UPDATE ACTIONS
   // --------------------------------------------------------------------------
@@ -98,5 +102,11 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   },
   hideTransactionForm() {
     set(() => ({ transactionFormOpened: false, transactionToEdit: undefined }));
+  },
+  showCashTransferForm() {
+    set(() => ({ cashTransferFormOpened: true }));
+  },
+  hideCashTransferForm() {
+    set(() => ({ cashTransferFormOpened: false }));
   },
 }));

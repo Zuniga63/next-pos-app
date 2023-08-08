@@ -14,6 +14,7 @@ import { useCashboxesStore } from '@/store/cashboxesStore';
 export default function MinorBoxInfo() {
   const { boxSelected, search, cashbox, isLoading, setSearch } = useMinorBoxInfo();
   const showTransactionForm = useCashboxesStore(state => state.showTransactionForm);
+  const showCashTransferForm = useCashboxesStore(state => state.showCashTransferForm);
 
   const { transactions, currentPage, pageCount, nextPage, prevPage, goToPage } = useTransactions({
     search,
@@ -40,7 +41,13 @@ export default function MinorBoxInfo() {
             Registrar Transacción
           </Button>
 
-          <Button colorScheme="orange" leftIcon={<IconArrowsExchange size={14} />} size="xs" flexShrink={0}>
+          <Button
+            colorScheme="orange"
+            leftIcon={<IconArrowsExchange size={14} />}
+            size="xs"
+            flexShrink={0}
+            onClick={() => showCashTransferForm()}
+          >
             Realizar Transferencia
           </Button>
         </div>

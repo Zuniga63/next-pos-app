@@ -6,6 +6,7 @@ import {
   getMinorBox,
   getMinorBoxes,
   openMinorBox,
+  storeCashTransfer,
   storeTransaction,
   updateMinorBox,
 } from '@/services/boxes.service';
@@ -201,6 +202,32 @@ export function useStoreTransaction() {
       if (variables.boxId) queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.boxId]);
       queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
       toast({ title: '¡Transacción Registrada!', status: 'success' });
+    },
+    onError(error) {
+      if (error instanceof Error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const { data, status } = error.response;
+          if ((status === 422 || status === 400) && data.errors) return;
+        }
+
+        toast({ title: '¡Opps, algo salio mal!', description: error.message, status: 'error' });
+      }
+    },
+  });
+}
+
+export function useStoreCashTransfer() {
+  const toast = useToast({ position: 'top-left' });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: storeCashTransfer,
+    onSuccess(data, variables) {
+      if (variables.data.senderBoxId) {
+        queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.data.senderBoxId]);
+      }
+      queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
+      toast({ title: 'Transferencia Registrada!', status: 'success' });
     },
     onError(error) {
       if (error instanceof Error) {

@@ -8,6 +8,7 @@ import CloseBoxForm from './_components/CloseBoxForm';
 import MinorBoxInfo from './_components/MinorBoxInfo';
 import DeleteTransactionDialog from './_components/DeleteTransactionDialog';
 import TransactionForm from './_components/TransactionForm';
+import CashTransferForm from './_components/CashTransferForm';
 
 export const metadata: Metadata = {
   title: 'Cajas',
@@ -25,6 +26,7 @@ export default function BoxesPage() {
       <CloseBoxForm />
       <DeleteTransactionDialog />
       <TransactionForm />
+      <CashTransferForm />
     </BoxesContainer>
   );
 }

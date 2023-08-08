@@ -1,4 +1,13 @@
-import { IBox, ICashboxFull, ICloseBoxRequest, IOpenBoxRequest, IStoreTransactionRequest, ITransaction } from '@/types';
+import {
+  IBox,
+  ICashTransferRequest,
+  ICashTransferResponse,
+  ICashboxFull,
+  ICloseBoxRequest,
+  IOpenBoxRequest,
+  IStoreTransactionRequest,
+  ITransaction,
+} from '@/types';
 import axios from 'axios';
 
 export const boxesApi = axios.create({ baseURL: `${process.env.NEXT_PUBLIC_URL_API}/cashboxes` });
@@ -64,5 +73,10 @@ export const storeTransaction = async ({
 }) => {
   const url = isGlobal ? `/main/transactions` : `/minors/${boxId}/transactions`;
   const res = await boxesApi.post<ITransaction>(url, data);
+  return res.data;
+};
+
+export const storeCashTransfer = async ({ data }: { data: ICashTransferRequest }) => {
+  const res = await boxesApi.post<ICashTransferResponse>('/minors/cash-transfer', data);
   return res.data;
 };

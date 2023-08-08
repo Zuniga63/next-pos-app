@@ -9,9 +9,11 @@ import Pagination from '@/components/Pagination';
 import { useTransactions } from '../../_hooks/useTransactions';
 import SearchInput from '../SearchInput';
 import { useMinorBoxInfo } from '../../_hooks/useMinorBoxInfo';
+import { useCashboxesStore } from '@/store/cashboxesStore';
 
 export default function MinorBoxInfo() {
   const { boxSelected, search, cashbox, isLoading, setSearch } = useMinorBoxInfo();
+  const showTransactionForm = useCashboxesStore(state => state.showTransactionForm);
 
   const { transactions, currentPage, pageCount, nextPage, prevPage, goToPage } = useTransactions({
     search,
@@ -28,7 +30,13 @@ export default function MinorBoxInfo() {
         <div className="flex gap-x-2 p-2">
           <SearchInput value={search} onChange={setSearch} />
 
-          <Button colorScheme="blue" size="xs" flexShrink={0} leftIcon={<IconCirclePlus size={14} />}>
+          <Button
+            colorScheme="blue"
+            size="xs"
+            flexShrink={0}
+            leftIcon={<IconCirclePlus size={14} />}
+            onClick={() => showTransactionForm()}
+          >
             Registrar Transacción
           </Button>
 

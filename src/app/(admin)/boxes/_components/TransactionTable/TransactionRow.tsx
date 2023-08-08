@@ -1,3 +1,6 @@
+'use client';
+
+import { useCashboxesStore } from '@/store/cashboxesStore';
 import { ITransaction } from '@/types';
 import { currencyFormat } from '@/utils';
 import { Tr, Td, IconButton } from '@chakra-ui/react';
@@ -16,6 +19,9 @@ export default function TransactionRow({ transaction, isGlobalBox = false }: Pro
   const isTransfer = Boolean(transaction.isTransfer);
   const otherBox =
     isGlobalBox && transaction.cashbox && typeof transaction.cashbox !== 'string' ? transaction.cashbox : null;
+
+  const mountToDelete = useCashboxesStore(state => state.mountTransactionToDelte);
+  const handleDeleteAction = () => mountToDelete(transaction);
 
   return (
     <Tr key={transaction.id}>
@@ -57,6 +63,7 @@ export default function TransactionRow({ transaction, isGlobalBox = false }: Pro
             colorScheme="red"
             variant="ghost"
             size="xs"
+            onClick={handleDeleteAction}
             icon={<IconTrash size={14} stroke={1.5} />}
           />
         )}

@@ -1,6 +1,8 @@
+import { ITransaction } from '@/types';
 import { create } from 'zustand';
 
 interface ICashboxesState {
+  isGlobal: boolean;
   cashboxFormOpened: boolean;
   cashboxIdToEdit?: string;
   cashboxIdToDelete?: string;
@@ -8,6 +10,7 @@ interface ICashboxesState {
   cashboxIdToClose?: string;
   loadingInfo?: string;
   cashboxIdToShow?: string;
+  transactionToDelete?: ITransaction;
 }
 
 interface ICashboxesActions {
@@ -22,9 +25,12 @@ interface ICashboxesActions {
   mountBoxToShow: (id: string) => void;
   unmountBoxToShow: () => void;
   notifyLoadingInfoEnd: () => void;
+  mountTransactionToDelte: (transaction: ITransaction) => void;
+  unmountTransactionToDelete: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
+  isGlobal: false,
   cashboxFormOpened: false,
   cashboxIdToEdit: undefined,
   cashboxIdToDelete: undefined,
@@ -72,5 +78,14 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   },
   notifyLoadingInfoEnd() {
     set(() => ({ loadingInfo: undefined }));
+  },
+  // --------------------------------------------------------------------------
+  // TRANSACTION CRUD
+  // --------------------------------------------------------------------------
+  mountTransactionToDelte(transaction) {
+    set(() => ({ transactionToDelete: transaction }));
+  },
+  unmountTransactionToDelete() {
+    set(() => ({ transactionToDelete: undefined }));
   },
 }));

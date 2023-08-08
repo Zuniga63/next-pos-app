@@ -2,6 +2,7 @@ import {
   closeMinorBox,
   createMinorBox,
   deleteMinorBox,
+  deleteTransaction,
   getMinorBox,
   getMinorBoxes,
   openMinorBox,
@@ -154,6 +155,33 @@ export function useCloseMinorBox() {
           const { data, status } = error.response;
           if ((status === 422 || status === 400) && data.errors) return;
           if (status === 404) queryClient.invalidateQueries({ queryKey: [ServerStateKeysEnum.MinorBoxes] });
+        }
+
+        toast({ title: '¡Opps, algo salio mal!', description: error.message, status: 'error' });
+      }
+    },
+  });
+}
+
+export function useDeleteTransaction() {
+  const toast = useToast({ position: 'top-left' });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteTransaction,
+    onSuccess(data, variables) {
+      if (variables.boxId) queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.boxId]);
+      queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
+    },
+    onError(error) {
+      if (error instanceof Error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const { data, status } = error.response;
+          if ((status === 422 || status === 400) && data.errors) return;
+          if (status === 404) {
+            queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox]);
+            queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
+          }
         }
 
         toast({ title: '¡Opps, algo salio mal!', description: error.message, status: 'error' });

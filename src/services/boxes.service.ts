@@ -1,4 +1,4 @@
-import { IBox, ICashboxFull, ICloseBoxRequest, IOpenBoxRequest } from '@/types';
+import { IBox, ICashboxFull, ICloseBoxRequest, IOpenBoxRequest, ITransaction } from '@/types';
 import axios from 'axios';
 
 export const boxesApi = axios.create({ baseURL: `${process.env.NEXT_PUBLIC_URL_API}/cashboxes` });
@@ -36,5 +36,19 @@ export const openMinorBox = async ({ boxId, base, cashierId }: IOpenBoxRequest) 
 
 export const closeMinorBox = async ({ boxId, cash, observations }: ICloseBoxRequest) => {
   const res = await boxesApi.patch<IBox>(`/minors/${boxId}/close-box`, { cash, observations });
+  return res.data;
+};
+
+export const deleteTransaction = async ({
+  id,
+  boxId,
+  isGlobal = false,
+}: {
+  id: string;
+  boxId?: string;
+  isGlobal?: boolean;
+}) => {
+  const url = isGlobal ? `/main/transactions/${id}` : `/minors/${boxId}/transactions/${id}`;
+  const res = await boxesApi.delete<ITransaction>(url);
   return res.data;
 };

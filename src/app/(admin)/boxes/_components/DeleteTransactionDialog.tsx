@@ -60,7 +60,7 @@ export default function DeleteTransactionDialog() {
     <AlertDialog
       isOpen={Boolean(transaction)}
       leastDestructiveRef={cancelRef}
-      onClose={close}
+      onClose={closeDialog}
       closeOnOverlayClick={!isLoading}
     >
       <AlertDialogOverlay>

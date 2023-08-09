@@ -5,6 +5,10 @@ module.exports = {
   darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
+    screens: {
+      xs: '425px',
+      ...defaultTheme.screens,
+    },
     extend: {
       fontFamily: {
         sans: ['var(--font-body)', 'Roboto', 'sans-serif', ...defaultTheme.fontFamily.sans],

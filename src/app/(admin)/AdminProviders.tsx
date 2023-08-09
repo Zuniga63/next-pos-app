@@ -1,12 +1,13 @@
 'use client';
-import { useSidebarMenu } from '@/hooks/useSidebarMenu';
+import { useAdminProviders } from '@/hooks/useAdminProviders';
 import { ReactNode } from 'react';
+import '@/config/dayj.config';
 
 type Props = {
   children: ReactNode;
 };
 
 export default function AdminProviders({ children }: Props) {
-  useSidebarMenu();
-  return children;
+  useAdminProviders();
+  return <>{children}</>;
 }

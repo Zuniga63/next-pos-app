@@ -21,11 +21,11 @@ export default function LeftSidebar() {
         height: `calc(100vh - ${headerHeight}px)`,
       }}
     >
-      <div className="absolute inset-0 overflow-y-auto shadow-xl">
-        <Collapse in={!collapsed} animateOpacity>
+      <Collapse in={!collapsed} animateOpacity>
+        <div className="absolute inset-0 overflow-y-auto pl-3 pr-3 shadow-xl">
           <MenuLinks />
-        </Collapse>
-      </div>
+        </div>
+      </Collapse>
     </aside>
   );
 }

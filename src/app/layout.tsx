@@ -1,10 +1,7 @@
 import { Providers } from './providers';
 import '@/styles/globals.css';
 import { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
-
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-body' });
-const poppins = Poppins({ subsets: ['latin'], display: 'swap', weight: ['400', '700'], variable: '--font-heading' });
+import { inter, poppins } from '@/config/google-fonts';
 
 export const metadata: Metadata = {
   title: {

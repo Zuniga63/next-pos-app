@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: Props) {
       <AdminHeader />
       <div className="flex">
         <LeftSidebar />
-        <div className="flex-grow p-6">{children}</div>
+        <div className="flex-grow">{children}</div>
       </div>
       <MenuDrawer />
     </AdminProviders>

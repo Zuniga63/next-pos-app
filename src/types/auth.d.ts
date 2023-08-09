@@ -39,3 +39,9 @@ export type AuthState = {
   loading: boolean;
   authIsSuccess: boolean;
 };
+
+export type UpdatePasswordRequest = {
+  password: string;
+  newPassword: string;
+  passwordConfirm: string;
+};

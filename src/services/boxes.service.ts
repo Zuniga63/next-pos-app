@@ -80,3 +80,8 @@ export const storeCashTransfer = async ({ data }: { data: ICashTransferRequest }
   const res = await boxesApi.post<ICashTransferResponse>('/minors/cash-transfer', data);
   return res.data;
 };
+
+export const getGlobalTransactions = async () => {
+  const res = await boxesApi.get<ITransaction[]>('/main/transactions');
+  return res.data;
+};

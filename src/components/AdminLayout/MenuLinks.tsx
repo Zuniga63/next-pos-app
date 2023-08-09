@@ -17,7 +17,7 @@ const links: ILink[] = [
   },
   {
     name: 'Cajas',
-    url: '/admin/boxes',
+    url: '/boxes',
     icon: <IconBox className="text-zinc-600" size={24} />,
   },
 ];

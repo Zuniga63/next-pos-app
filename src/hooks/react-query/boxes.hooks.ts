@@ -1,8 +1,10 @@
+import { addTransactionToMinorBox } from '@/logic/boxes-logic';
 import {
   closeMinorBox,
   createMinorBox,
   deleteMinorBox,
   deleteTransaction,
+  getGlobalTransactions,
   getMinorBox,
   getMinorBoxes,
   openMinorBox,
@@ -10,7 +12,7 @@ import {
   storeTransaction,
   updateMinorBox,
 } from '@/services/boxes.service';
-import { IBox } from '@/types';
+import { IBox, ICashboxFull, ITransaction } from '@/types';
 import { currencyFormat } from '@/utils';
 import { ServerStateKeysEnum } from '@/utils/server-state-key.enum';
 import { useToast } from '@chakra-ui/react';
@@ -28,6 +30,14 @@ export function useGetMinorBox({ id }: { id?: string }) {
   return useQuery({
     queryKey: [ServerStateKeysEnum.MinorBox, id],
     queryFn: () => getMinorBox({ id }),
+  });
+}
+
+export function useGetGlobalTransactions({ enabled = false }: { enabled?: boolean }) {
+  return useQuery({
+    queryKey: [ServerStateKeysEnum.GlobalTransactions],
+    queryFn: getGlobalTransactions,
+    enabled: enabled,
   });
 }
 
@@ -173,6 +183,7 @@ export function useDeleteTransaction() {
     mutationFn: deleteTransaction,
     onSuccess(data, variables) {
       if (variables.boxId) queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.boxId]);
+      if (variables.isGlobal) queryClient.invalidateQueries([ServerStateKeysEnum.GlobalTransactions]);
       queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
     },
     onError(error) {
@@ -199,7 +210,20 @@ export function useStoreTransaction() {
   return useMutation({
     mutationFn: storeTransaction,
     onSuccess(data, variables) {
-      if (variables.boxId) queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.boxId]);
+      const { boxId, isGlobal } = variables;
+      if (boxId) {
+        queryClient.setQueryData([ServerStateKeysEnum.MinorBox, boxId], (old: ICashboxFull | undefined) => {
+          return addTransactionToMinorBox(old, data);
+        });
+      } else if (isGlobal) {
+        queryClient.setQueryData([ServerStateKeysEnum.GlobalTransactions], (old: ITransaction[] | undefined) => {
+          if (!old) return old;
+          const balance = old.reduce((balance, { amount }) => balance + amount, 0) + data.amount;
+          data.balance = balance;
+          return [...old, data];
+        });
+      }
+
       queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
       toast({ title: '¡Transacción Registrada!', status: 'success' });
     },
@@ -224,7 +248,12 @@ export function useStoreCashTransfer() {
     mutationFn: storeCashTransfer,
     onSuccess(data, variables) {
       if (variables.data.senderBoxId) {
-        queryClient.invalidateQueries([ServerStateKeysEnum.MinorBox, variables.data.senderBoxId]);
+        queryClient.setQueryData(
+          [ServerStateKeysEnum.MinorBox, variables.data.senderBoxId],
+          (old: ICashboxFull | undefined) => {
+            return addTransactionToMinorBox(old, data.senderTransaction);
+          },
+        );
       }
       queryClient.invalidateQueries([ServerStateKeysEnum.MinorBoxes]);
       toast({ title: 'Transferencia Registrada!', status: 'success' });

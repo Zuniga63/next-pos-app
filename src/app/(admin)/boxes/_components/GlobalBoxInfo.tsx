@@ -17,7 +17,7 @@ export default function GlobalBoxInfo() {
   const showTransactionForm = useCashboxesStore(state => state.showTransactionForm);
 
   const [search, setSearch] = useState<string | undefined>('');
-  const { data } = useGetGlobalTransactions({ enabled: isOpen });
+  const { data, isLoading } = useGetGlobalTransactions({ enabled: isOpen });
 
   const { transactions, currentPage, pageCount, nextPage, prevPage, goToPage } = useTransactions({
     search,
@@ -31,7 +31,7 @@ export default function GlobalBoxInfo() {
 
   if (!isOpen) return null;
   return (
-    <Skeleton isLoaded={true} fadeDuration={1} className="mt-4 flex-grow lg:mt-0">
+    <Skeleton isLoaded={!isLoading} fadeDuration={1} className="mt-4 flex-grow lg:mt-0">
       <header className="relative rounded-t-md bg-gray-300 px-6 py-2">
         <div className="flex items-center gap-x-2">
           <h2 className="flex-grow text-lg font-bold tracking-wider">Caja Global</h2>

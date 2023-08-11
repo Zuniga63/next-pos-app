@@ -26,10 +26,9 @@ export function useOpenBoxForm() {
     setIsOpen(false);
   };
 
-  const updateBase = (value: string) => {
-    const baseValue = Number(value);
-    if (isNaN(baseValue)) setBase('');
-    setBase(baseValue);
+  const updateBase = (value: number) => {
+    if (isNaN(value)) setBase('');
+    setBase(value);
   };
 
   const submit = () => {

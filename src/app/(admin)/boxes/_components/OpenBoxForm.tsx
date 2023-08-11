@@ -2,10 +2,6 @@
 
 import {
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  FormLabel,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,12 +9,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  NumberInput,
-  NumberInputField,
 } from '@chakra-ui/react';
 import { useOpenBoxForm } from '../_hooks/useOpenBoxForm';
 import { FormEvent } from 'react';
-import { currencyFormat } from '@/utils';
+import CurrencyInput from '@/components/form/CurrencyInput';
 
 export default function OpenBoxForm() {
   const { box, isOpen, base, isLoading, formId, errors, close, submit, updateBase } = useOpenBoxForm();
@@ -41,14 +35,14 @@ export default function OpenBoxForm() {
             </h2>
           </div>
           <form onSubmit={handleSubmit} id={formId}>
-            <FormControl isInvalid={Boolean(errors?.name)}>
-              <FormLabel>Base</FormLabel>
-              <NumberInput min={0} value={base} onChange={updateBase}>
-                <NumberInputField placeholder="$100.000" textAlign="right" />
-              </NumberInput>
-              <FormErrorMessage>{errors?.base.message}</FormErrorMessage>
-              <FormHelperText textAlign="right">{currencyFormat(base)}</FormHelperText>
-            </FormControl>
+            <CurrencyInput
+              label="Base"
+              placeholder="$100.000"
+              value={base}
+              onChange={updateBase}
+              errorMessage={errors?.base.message}
+              textAlign="right"
+            />
           </form>
         </ModalBody>
         <ModalFooter>

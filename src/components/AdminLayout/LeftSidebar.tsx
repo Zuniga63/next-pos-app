@@ -23,7 +23,9 @@ export default function LeftSidebar() {
     >
       <Collapse in={!collapsed} animateOpacity>
         <div className="absolute inset-0 overflow-y-auto pl-3 pr-3 shadow-xl">
-          <MenuLinks />
+          <nav className="flex flex-col gap-y-1 pb-24">
+            <MenuLinks />
+          </nav>
         </div>
       </Collapse>
     </aside>

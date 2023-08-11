@@ -39,7 +39,7 @@ export default function Header({ boxName, isOpen, boxId }: Props) {
         <div className="flex items-center gap-x-1">
           {isSelected && <IconFolderOpen size={16} className="text-yellow-500" />}
 
-          <h1 className="line-clamp-1 flex-grow font-display text-sm font-bold tracking-wider">{boxName}</h1>
+          <h1 className="line-clamp-1 flex-grow font-display text-xs font-bold tracking-wider">{boxName}</h1>
 
           <DeleteIconButton
             ariaLabel="Eliminar caja"

@@ -32,7 +32,7 @@ export default function Actions({ isOpen, cashboxId }: Props) {
           loadingText={<span className="animate-pulse">Cargando info...</span>}
           isDisabled={cashboxId === cashboxMount}
         >
-          Cargar Info
+          Ver Transacciones
         </Button>
       ) : (
         <Button

@@ -26,10 +26,9 @@ export function useCashTransferForm() {
 
   const { mutate, isLoading, isSuccess, isError, error } = useStoreCashTransfer();
 
-  const updateAmount = (value: string) => {
-    const baseValue = Number(value);
-    if (isNaN(baseValue)) setAmount('');
-    setAmount(baseValue);
+  const updateAmount = (value: number) => {
+    if (isNaN(value)) setAmount('');
+    else setAmount(value);
   };
 
   const validateData = () => {

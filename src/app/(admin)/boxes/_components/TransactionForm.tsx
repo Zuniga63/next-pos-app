@@ -6,7 +6,6 @@ import {
   Checkbox,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -16,13 +15,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  NumberInput,
-  NumberInputField,
   Textarea,
 } from '@chakra-ui/react';
 import { IconArrowBigRightLineFilled, IconDeviceFloppy } from '@tabler/icons-react';
 import { FormEvent } from 'react';
 import { TransactionPropertyEnum, useTransactionForm } from '../_hooks/useTransactionForm';
+import CurrencyInput from '@/components/form/CurrencyInput';
 
 export default function TransactionForm() {
   const { form, isOpen, cashbox, errors, updateForm, updateAmount, submit, closeModal } = useTransactionForm();
@@ -101,23 +99,25 @@ export default function TransactionForm() {
               <Textarea
                 value={form.description}
                 onChange={({ currentTarget }) => updateForm(currentTarget.value, TransactionPropertyEnum.DESCRIPTION)}
-                size="xs"
+                size="sm"
                 resize="none"
                 placeholder="Describe la transacción aquí"
                 name={TransactionPropertyEnum.DESCRIPTION}
+                rows={2}
               />
               <FormErrorMessage>{errors?.description.message}</FormErrorMessage>
             </FormControl>
 
             {/* IMPORTE */}
-            <FormControl isInvalid={Boolean(errors?.amount)} isRequired mt="2">
-              <FormLabel>Importe</FormLabel>
-              <NumberInput min={0} value={form.amount} onChange={updateAmount} name={TransactionPropertyEnum.AMOUNT}>
-                <NumberInputField placeholder="$100.000" textAlign="right" />
-              </NumberInput>
-              <FormErrorMessage>{errors?.amount.message}</FormErrorMessage>
-              <FormHelperText textAlign="right">{currencyFormat(form.amount)}</FormHelperText>
-            </FormControl>
+            <CurrencyInput
+              label="Importe"
+              isRequired
+              placeholder="$ 100.000"
+              value={form.amount}
+              onChange={updateAmount}
+              textAlign="right"
+              errorMessage={errors?.amount.message}
+            />
 
             <Checkbox
               isChecked={form.isExpense}

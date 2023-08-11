@@ -28,29 +28,23 @@ export const buildCookieOption = (duration = 1) => ({
 // UTIL FOR FORMAT CURRENCY
 //-----------------------------------------------------------------------------
 export function currencyFormat(value: string | number | undefined, fractionDigits = 0): string {
-  const parseValue = parseFloat(String(value));
+  if (typeof value === 'undefined') return '';
 
-  if (!isNaN(parseValue)) {
-    const style = 'currency';
-    const currency = 'COP';
-    const formarter = new Intl.NumberFormat('es-CO', {
-      style,
-      currency,
-      minimumFractionDigits: fractionDigits,
-    });
+  const parseValue = typeof value === 'string' ? parseFloat(currencyParse(value)) : value;
+  if (isNaN(parseValue)) return '';
 
-    return formarter.format(parseValue);
-  }
+  const formarter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: fractionDigits,
+  });
 
-  return String(value);
+  return formarter.format(parseValue);
 }
 
-export function cashFormatter(value: string) {
-  return !Number.isNaN(parseFloat(value)) ? `$ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',') : '$ ';
-}
-
-export function cashParser(value: string) {
-  return value.replace(/\$\s?|(,*)/g, '');
+export function currencyParse(value: string, decimalSeparator: '.' | ',' = ',') {
+  const exp = decimalSeparator === '.' ? /\$\s?|(,*)/g : /\$\s?|(\.*)/g;
+  return value.replace(exp, '').replaceAll(decimalSeparator, '.');
 }
 
 //-----------------------------------------------------------------------------

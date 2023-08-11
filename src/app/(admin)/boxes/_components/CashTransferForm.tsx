@@ -5,7 +5,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  FormHelperText,
   FormLabel,
   Modal,
   ModalBody,
@@ -14,14 +13,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  NumberInput,
-  NumberInputField,
   Select,
   Textarea,
 } from '@chakra-ui/react';
 import { IconArrowBigRightLineFilled, IconDeviceFloppy } from '@tabler/icons-react';
 import { FormEvent } from 'react';
 import { useCashTransferForm } from '../_hooks/useCashTransferForm';
+import CurrencyInput from '@/components/form/CurrencyInput';
 
 export default function CashTransferForm() {
   const {
@@ -83,27 +81,29 @@ export default function CashTransferForm() {
             </FormControl>
 
             {/* DESCRIPTION */}
-            <FormControl isInvalid={Boolean(errors?.description)} mt="2">
+            <FormControl isInvalid={Boolean(errors?.description)} mt="2" mb="2">
               <FormLabel>Descripción</FormLabel>
               <Textarea
                 value={form.description}
                 onChange={({ currentTarget }) => setDescription(currentTarget.value)}
-                size="xs"
+                size="sm"
                 resize="none"
                 placeholder="Describe la transacción aquí"
+                rows={2}
               />
               <FormErrorMessage>{errors?.description.message}</FormErrorMessage>
             </FormControl>
 
             {/* IMPORTE */}
-            <FormControl isInvalid={Boolean(errors?.amount)} isRequired mt="2">
-              <FormLabel>Importe</FormLabel>
-              <NumberInput min={0} value={form.amount} onChange={updateAmount}>
-                <NumberInputField placeholder="$100.000" textAlign="right" />
-              </NumberInput>
-              <FormErrorMessage>{errors?.amount.message}</FormErrorMessage>
-              <FormHelperText textAlign="right">{currencyFormat(form.amount)}</FormHelperText>
-            </FormControl>
+            <CurrencyInput
+              label="Importe"
+              isRequired
+              placeholder="$ 100.000"
+              value={form.amount}
+              onChange={updateAmount}
+              textAlign="right"
+              errorMessage={errors?.amount.message}
+            />
           </form>
         </ModalBody>
         <ModalFooter>

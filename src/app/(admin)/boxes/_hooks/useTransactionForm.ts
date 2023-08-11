@@ -34,10 +34,9 @@ export function useTransactionForm() {
 
   const { mutate, isLoading, isSuccess, isError, error } = useStoreTransaction();
 
-  const updateAmount = (value: string) => {
-    const baseValue = Number(value);
-    if (isNaN(baseValue)) setAmount('');
-    setAmount(baseValue);
+  const updateAmount = (value: number) => {
+    if (isNaN(value)) setAmount('');
+    else setAmount(value);
   };
 
   const updateForm = (value: boolean | string, propertyName: TransactionPropertyEnum) => {

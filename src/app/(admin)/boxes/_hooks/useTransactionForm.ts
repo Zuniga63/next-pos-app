@@ -3,7 +3,7 @@ import { useCashboxesStore } from '@/store/cashboxesStore';
 import { IBox, IValidationErrors } from '@/types';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export enum TransactionPropertyEnum {
   IS_RIGHT_NOW = 'right_now',
@@ -20,7 +20,6 @@ export function useTransactionForm() {
   const isGlobal = useCashboxesStore(state => state.isGlobal);
   const closeForm = useCashboxesStore(state => state.hideTransactionForm);
 
-  const formId = useId();
   const [isRigthNow, setIsRightNow] = useState(true);
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -142,7 +141,10 @@ export function useTransactionForm() {
   };
 
   useEffect(() => {
-    if (!isOpen || isGlobal || !boxId) return;
+    if (!isOpen || isGlobal || !boxId) {
+      setCashbox(null);
+      return;
+    }
     const box = boxes?.find(({ id }) => boxId === id);
     if (box) setCashbox(box);
   }, [isOpen, boxId, isGlobal]);
@@ -167,7 +169,6 @@ export function useTransactionForm() {
 
   return {
     form: {
-      id: formId,
       isCreate: true,
       isRigthNow,
       date,

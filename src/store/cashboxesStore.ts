@@ -36,6 +36,7 @@ interface ICashboxesActions {
   hideCashTransferForm: () => void;
   showGlobalBox: () => void;
   hideGlobalBox: () => void;
+  reset: () => void;
 }
 
 export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((set, get) => ({
@@ -116,5 +117,21 @@ export const useCashboxesStore = create<ICashboxesState & ICashboxesActions>()((
   },
   hideGlobalBox() {
     set(() => ({ isGlobal: false }));
+  },
+  reset() {
+    set(() => ({
+      isGlobal: false,
+      cashboxFormOpened: undefined,
+      cashboxIdToEdit: undefined,
+      cashboxIdToDelete: undefined,
+      cashboxIdToOpen: undefined,
+      cashboxIdToClose: undefined,
+      loadingInfo: undefined,
+      cashboxIdToShow: undefined,
+      transactionToDelete: undefined,
+      transactionFormOpened: false,
+      transactionToEdit: undefined,
+      cashTransferFormOpened: false,
+    }));
   },
 }));

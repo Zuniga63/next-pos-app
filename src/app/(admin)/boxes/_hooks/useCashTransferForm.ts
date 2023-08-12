@@ -3,14 +3,13 @@ import { useCashboxesStore } from '@/store/cashboxesStore';
 import { IBox, ICashTransferRequest, IValidationErrors } from '@/types';
 import { AxiosError } from 'axios';
 import dayjs from 'dayjs';
-import { useEffect, useId, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export function useCashTransferForm() {
   const isOpen = useCashboxesStore(state => state.cashTransferFormOpened);
   const boxId = useCashboxesStore(state => state.cashboxIdToShow);
   const closeForm = useCashboxesStore(state => state.hideCashTransferForm);
 
-  const formId = useId();
   const [addresseeBox, setAddressBox] = useState<string>('');
   const [amount, setAmount] = useState<number | ''>(0);
   const [description, setDescription] = useState('');
@@ -122,7 +121,6 @@ export function useCashTransferForm() {
 
   return {
     form: {
-      id: formId,
       amount,
       description,
       addresseeBox,

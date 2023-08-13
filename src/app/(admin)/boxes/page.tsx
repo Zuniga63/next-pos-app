@@ -10,6 +10,7 @@ import DeleteTransactionDialog from './_components/DeleteTransactionDialog';
 import TransactionForm from './_components/TransactionForm';
 import CashTransferForm from './_components/CashTransferForm';
 import GlobalBoxInfo from './_components/GlobalBoxInfo';
+import BoxSum from './_components/BoxSum';
 
 export const metadata: Metadata = {
   title: 'Cajas',
@@ -21,6 +22,7 @@ export default function BoxesPage() {
       <BoxList />
       <MinorBoxInfo />
       <GlobalBoxInfo />
+      <BoxSum />
 
       <CashboxForm />
       <DeleteDialog />

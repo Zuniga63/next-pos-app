@@ -2,6 +2,7 @@ import { useGetMinorBoxes, useStoreCashTransfer } from '@/hooks/react-query/boxe
 import { useCashboxesStore } from '@/store/cashboxesStore';
 import { IBox, ICashTransferRequest, IValidationErrors } from '@/types';
 import { AxiosError } from 'axios';
+import { SingleValue } from 'chakra-react-select';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -10,7 +11,7 @@ export function useCashTransferForm() {
   const boxId = useCashboxesStore(state => state.cashboxIdToShow);
   const closeForm = useCashboxesStore(state => state.hideCashTransferForm);
 
-  const [addresseeBox, setAddressBox] = useState<string>('');
+  const [addresseeBox, setAddressBox] = useState<SingleValue<{ label: string; value: string }>>();
   const [amount, setAmount] = useState<number | ''>(0);
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState<IValidationErrors | null>(null);
@@ -69,7 +70,7 @@ export function useCashTransferForm() {
     return {
       transferDate: dayjs(),
       senderBoxId: boxId || '',
-      addresseeBoxId: addresseeBox || '',
+      addresseeBoxId: addresseeBox?.value || '',
       amount: typeof amount === 'number' ? amount : 0,
       description: description || undefined,
     };
@@ -77,7 +78,7 @@ export function useCashTransferForm() {
 
   const reset = () => {
     setAmount('');
-    setAddressBox('');
+    setAddressBox(undefined);
     setErrors(null);
     setErrors(null);
   };

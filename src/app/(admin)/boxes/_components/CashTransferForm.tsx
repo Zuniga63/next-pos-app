@@ -1,7 +1,8 @@
 'use client';
 
 import { currencyFormat } from '@/utils';
-import { FormControl, FormErrorMessage, FormLabel, Select, Textarea } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react';
+import { Select } from 'chakra-react-select';
 import { useCashTransferForm } from '../_hooks/useCashTransferForm';
 import CurrencyInput from '@/components/form/CurrencyInput';
 import FormModal from '@/app/(admin)/boxes/_components/FormModal';
@@ -35,7 +36,7 @@ export default function CashTransferForm() {
       {/* ADDREESSES BOX*/}
       <FormControl isInvalid={Boolean(errors?.addresseeBox)} isRequired mt="2">
         <FormLabel>Caja destino</FormLabel>
-        <Select
+        {/* <Select
           placeholder="Selecciona una caja"
           size="xs"
           value={form.addresseeBox}
@@ -48,7 +49,19 @@ export default function CashTransferForm() {
               {box.name} - {currencyFormat(box.balance)}{' '}
             </option>
           ))}
-        </Select>
+        </Select> */}
+        <Select
+          placeholder="Selecciona una caja"
+          value={form.addresseeBox}
+          onChange={value => setAddressBox(value)}
+          // value={form.addresseeBox}
+          isClearable
+          options={addresseeBoxes.map(box => ({
+            label: `${box.name} (${currencyFormat(box.balance)})`,
+            value: box.id,
+          }))}
+        />
+
         <FormErrorMessage>{errors?.addresseeBox.message}</FormErrorMessage>
       </FormControl>
 

@@ -17,7 +17,7 @@ export default function BoxCard({ box }: Props) {
     <Container isOpen={isOpen}>
       <Header boxName={box.name} isOpen={isOpen} boxId={box.id} />
       <Content>
-        <BoxBalance isOpen={isOpen} balance={box.balance} />
+        <BoxBalance boxId={box.id} isOpen={isOpen} balance={box.balance} />
         <CloseState isOpen={isOpen} closed={box.closed} />
       </Content>
       <Actions isOpen={isOpen} cashboxId={box.id} />

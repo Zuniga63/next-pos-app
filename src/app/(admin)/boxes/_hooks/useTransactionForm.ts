@@ -21,8 +21,7 @@ export function useTransactionForm() {
   const closeForm = useCashboxesStore(state => state.hideTransactionForm);
 
   const [isRigthNow, setIsRightNow] = useState(true);
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const [transactionDate, setTransactionDate] = useState<Date | null>(null);
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState<number | string>(0);
   const [isExpense, setIsExpense] = useState(false);
@@ -38,14 +37,27 @@ export function useTransactionForm() {
     else setAmount(value);
   };
 
+  const updateTransactionDate = (value: Date | null) => {
+    if (value) {
+      const now = dayjs();
+      if (now.isBefore(value)) setTransactionDate(now.toDate());
+      else if (cashbox && cashbox.openBox) {
+        const openBox = dayjs(cashbox.openBox);
+        if (openBox.isValid() && openBox.isAfter(value)) setTransactionDate(openBox.toDate());
+        else setTransactionDate(value);
+      }
+      return;
+    }
+
+    setTransactionDate(value);
+  };
+
   const updateForm = (value: boolean | string, propertyName: TransactionPropertyEnum) => {
     if (typeof value === 'boolean') {
       if (propertyName === TransactionPropertyEnum.IS_RIGHT_NOW) setIsRightNow(value);
       else if (propertyName === TransactionPropertyEnum.IS_EXPENSE) setIsExpense(value);
     } else {
       if (propertyName === TransactionPropertyEnum.DESCRIPTION) setDescription(value);
-      else if (propertyName === TransactionPropertyEnum.DATE) setDate(value);
-      else if (propertyName === TransactionPropertyEnum.TIME) setTime(value);
     }
   };
 
@@ -85,36 +97,15 @@ export function useTransactionForm() {
   };
 
   const getFormData = () => {
-    let transactionDate = dayjs();
+    let date = dayjs();
 
-    if (!isRigthNow) {
-      const dateFormat = 'YYYY-MM-DD';
-      const timeFormat = 'HH:mm';
-
-      if (date && time) {
-        const tempDate = dayjs(`${dayjs(date).format(dateFormat)} ${time}`);
-        if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
-          transactionDate = tempDate;
-        } else if (tempDate.isToday()) {
-          setTime(transactionDate.format(timeFormat));
-        }
-      } else if (date) {
-        const tempDate = dayjs(date);
-        if (tempDate.isValid() && !tempDate.isToday()) {
-          transactionDate = tempDate.endOf('day');
-        }
-      } else if (time) {
-        const tempDate = dayjs(`${dayjs().format(dateFormat)} ${time}`);
-        if (tempDate.isValid() && tempDate.isBefore(transactionDate)) {
-          transactionDate = tempDate;
-        } else {
-          setTime(transactionDate.format(timeFormat));
-        }
-      }
+    if (!isRigthNow && transactionDate) {
+      const tempDate = dayjs(transactionDate);
+      if (tempDate.isValid()) date = tempDate;
     }
 
     return {
-      transactionDate: transactionDate,
+      transactionDate: date,
       description: description.trim(),
       amount: isExpense ? (amount as number) * -1 : (amount as number),
     };
@@ -171,8 +162,7 @@ export function useTransactionForm() {
     form: {
       isCreate: true,
       isRigthNow,
-      date,
-      time,
+      transactionDate,
       description,
       amount,
       isExpense,
@@ -183,6 +173,7 @@ export function useTransactionForm() {
     cashbox,
     updateForm,
     updateAmount,
+    updateTransactionDate,
     submit,
     closeModal,
   };

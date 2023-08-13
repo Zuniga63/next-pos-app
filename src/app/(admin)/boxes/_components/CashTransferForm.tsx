@@ -36,25 +36,10 @@ export default function CashTransferForm() {
       {/* ADDREESSES BOX*/}
       <FormControl isInvalid={Boolean(errors?.addresseeBox)} isRequired mt="2">
         <FormLabel>Caja destino</FormLabel>
-        {/* <Select
-          placeholder="Selecciona una caja"
-          size="xs"
-          value={form.addresseeBox}
-          onChange={({ currentTarget }) => {
-            setAddressBox(currentTarget.value);
-          }}
-        >
-          {addresseeBoxes.map(box => (
-            <option value={box.id} key={box.id}>
-              {box.name} - {currencyFormat(box.balance)}{' '}
-            </option>
-          ))}
-        </Select> */}
         <Select
           placeholder="Selecciona una caja"
           value={form.addresseeBox}
           onChange={value => setAddressBox(value)}
-          // value={form.addresseeBox}
           isClearable
           options={addresseeBoxes.map(box => ({
             label: `${box.name} (${currencyFormat(box.balance)})`,

@@ -1,12 +1,14 @@
 'use client';
 
-import { Checkbox, FormControl, FormErrorMessage, FormLabel, Input, Textarea } from '@chakra-ui/react';
+import { Checkbox, FormControl, FormErrorMessage, FormLabel, Textarea } from '@chakra-ui/react';
 import { TransactionPropertyEnum, useTransactionForm } from '../_hooks/useTransactionForm';
 import CurrencyInput from '@/components/form/CurrencyInput';
 import FormModal from '@/app/(admin)/boxes/_components/FormModal';
+import CustomDatePicker from '@/components/form/CustomDatePicker';
 
 export default function TransactionForm() {
-  const { form, isOpen, cashbox, errors, updateForm, updateAmount, submit, closeModal } = useTransactionForm();
+  const { form, isOpen, cashbox, errors, updateForm, updateAmount, updateTransactionDate, submit, closeModal } =
+    useTransactionForm();
 
   return (
     <FormModal
@@ -24,31 +26,17 @@ export default function TransactionForm() {
       <FormControl isInvalid={Boolean(errors?.transactionDate)}>
         <FormLabel>Fecha de la transacción</FormLabel>
         <div className="flex flex-col gap-y-2">
-          <div className="gap-x-2 md:mb-2 md:grid md:grid-cols-5">
-            <Input
-              type="date"
-              className="mb-2 md:col-span-3 md:mb-0"
-              size="sm"
-              isDisabled={form.isRigthNow}
-              value={form.date}
-              name={TransactionPropertyEnum.DATE}
-              onChange={({ currentTarget }) => {
-                updateForm(currentTarget.value, TransactionPropertyEnum.DATE);
-              }}
-            />
-            <Input
-              type="time"
-              className="mb-2 md:col-span-2 md:mb-0"
-              size="sm"
-              isDisabled={form.isRigthNow}
-              name={TransactionPropertyEnum.TIME}
-              value={form.time}
-              onChange={({ currentTarget }) => {
-                updateForm(currentTarget.value, TransactionPropertyEnum.TIME);
-              }}
-            />
-          </div>
+          <CustomDatePicker
+            value={form.transactionDate}
+            onChange={updateTransactionDate}
+            maxDate={new Date()}
+            placeholder="Selecciona la fecha aquí"
+            className="w-full rounded border border-gray-200 px-4 py-2 disabled:cursor-not-allowed"
+            isDisabled={form.isRigthNow}
+            isClearable
+          />
           <FormErrorMessage>{errors?.transactionDate.message}</FormErrorMessage>
+
           <Checkbox
             isChecked={form.isRigthNow}
             name={TransactionPropertyEnum.IS_RIGHT_NOW}
